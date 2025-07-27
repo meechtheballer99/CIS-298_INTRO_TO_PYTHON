@@ -1,0 +1,6 @@
+REMEMBER ROBERT MAN 5 RULES OF PROGRAMMING FOR THE EXAM!
+3X5 CHEET CARD, BOTH SIDES; CAN PRINT IT OR HAND WRITE IT...
+
+NOTE ON STRINGS: [ : : ] == [:], first value is start, next is stop, last is step count and direction, where direction defines relative beginning;
+	+ direction means start is relative to beginning and moving through to the end,
+		 and - direction means start is relative to the end and goes through to the beginning.
