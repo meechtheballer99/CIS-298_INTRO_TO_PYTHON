@@ -1,0 +1,253 @@
+#Author: Demetrius Johnson
+#CIS-298 Intro to Python with Professor Robert Mann
+#HW7 - Working with Files
+#Remember to copy/paste your code for each question separately. 
+#Then, follow it with a snippet showing the output.
+#Due: Thu March 14, 2023 4:00pm
+
+#special note:
+#A CSV (Comma Separated Values) file is a list of data separated by commas. For instance, it may look like the following: 
+#Name,email,phone number,address. Example,example@example.com,555-555-5555,Example Address.
+#Description:
+
+#For this assignment, you will be processing a CSV file containing scores from a game tournament.
+
+ 
+
+#Requirements:
+
+#You shall manually create a CSV file to store names and scores.
+#The file format is last name, first name, score 1, score 2, score 3, score 4.
+#Scores range from 1-50, or -1 if no score available.
+#Enter at least 7 players into your data file.
+import random
+#I will recycle my code for random number generator from hw6 and make some adaptations
+def get_random_num(positive_range=50, negative_range=1):
+       #random() function returns a number between 0 and 1
+       #Multiply pos_range*random() and subtract neg_range*random() in order to make the values have a range of [pos_range,neg_range]
+        random_num = positive_range * random.random() - negative_range * random.random()
+        return random_num if random_num >=1 else -1 #increase chances of -1 being returned --> return -1 for all numbers < 1
+#use list comprehension and random number function to create csv (comma separated values) string
+number_of_players = 7
+all_player_names_and_scores = [
+    "P_%d_last,P_%d_first,%d,%d,%d,%d\n" #added a newline at the end so when it is written to file each player+stats are written on their own line
+    %(iterator,iterator,get_random_num(),
+      get_random_num(),
+      get_random_num(),
+      get_random_num()) #generate 4 random numbers [-1 to 50, 0 not included] for all players
+        for iterator in range(number_of_players)]
+#use join() to make player_names list into a single string with each element separated by ''
+#we need player_names string without the final '\n' char, so get range [0,last_char)
+all_player_names_and_scores = ''.join(all_player_names_and_scores)
+all_player_names_and_scores = all_player_names_and_scores[:-1]
+#default path is current working directory (environment) of where the current
+#Python process is running in (so no need to specify the path in this case, just file name):
+#open for reading (r) and writing without truncating (+) and in text mode (t) = 'r+t'
+#open for writing (and truncating the file) and in text mode = 'wt'
+player_scores_file = open("player_names_and_scores.csv", 'wt') 
+for player in all_player_names_and_scores:
+    player_scores_file.write(player)
+player_scores_file.close() #done with writing in player scores; close file.
+
+
+#Read in the tournament results data file (created above):
+player_scores_file = open("player_names_and_scores.csv", 'rt')
+player_scores_data = player_scores_file.read() #get all data from the file (string) then close file.
+print(player_scores_data, '\n')
+player_scores_file.close()
+
+#Players with one or more -1 scores are disqualified and their names are written to an output file using the format: 
+# "NAME didn't participate in round(s)", and list the rounds in which the player did not participate (those with a -1 value). 
+#Raise a custom exception to process disqualifying rounds.
+
+#create custom exception class with Exception as base (parent) class
+class DisqualifiedException(Exception):
+    #raise this exception if a player has a round with a score == -1
+    #note: all default constructors and other functions and variables from base class are inherited.
+    pass
+#reset this file so that data from last program run will be truncated:
+
+#use this to track disqualified players:
+dq_players_file = open("dq_player_list.csv", 'w')
+dq_players_file.close()
+dq_players_file = open("dq_player_list.csv", 'at') #now reopen file in append mode, and in text mode
+#use this to track only qualified players:
+qualified_players_file = open("qualified_player_list.csv", 'w')
+qualified_players_file.close()
+qualified_players_file = open("qualified_player_list.csv", 'at') #now reopen file in append mode, and in text mode
+
+check_rounds = [False,False,False,False]
+player_scores_data = player_scores_data.split('\n') #first we need to take out newline characters from string and create a list of player+data strings
+for player in player_scores_data: #now we need to check each player from the list and check if they have a round with -1
+    for score in range(2,6): #elements 2-5 are scores (as strings, and we need to cast as int to check)
+        if int(player.split(',')[score]) == -1:
+           check_rounds[score - 2] = True
+        else:
+            check_rounds[score - 2] = False
+    try:
+        #cast as set for faster search since sets use hash tables to store items (and thus no duplicate items stored), so lookup is faster.
+        if True in set(check_rounds):
+            raise DisqualifiedException("Exception raised: Found a disqualified player! Updating Disqualification Database File!")
+        else:
+            qualified_players_file.write(player + '\n')
+    except DisqualifiedException as dq_exception: #catch the thrown exception and store the object (label/alias the object) in dq_exception
+        print(dq_exception) # __str__ function in Exception objects allows args string array/list of the Exeception object to be printed directly
+        #need round_num+1 because we do not want element 0 to count as a round, but start from round 1;
+        #also, we need to enumerate so we know the location (round) of the True elements in rounds array:
+        dq_rounds = [(round_num + 1) for round_num,dq_val in enumerate(check_rounds) if dq_val == True] #using list comprehension...
+        dq_players_file.write("Player: %s, %s Disqualified at round(s): %s\n"
+                %((player.split(',')[0]),
+                (player.split(',')[1]), 
+                str(dq_rounds)))
+        print(
+            "Player: %s, %s Disqualified at round(s): "
+                %((player.split(',')[0]),
+                (player.split(',')[1])), 
+                dq_rounds
+                )
+#close files:
+qualified_players_file.close()
+dq_players_file.close()
+
+#Generate and display to the user the following:
+
+#Person(s) with highest total (sum) score from all four rounds (score 1 – score 4) and their score (compared to all players). #Include -1 scores.
+#Person(s) with lowest total score from all four rounds and their score (compared to all players). Include -1 scores.
+
+#print all player scores:
+for player in player_scores_data:
+    print(player)
+
+#now get max and min sum scores:
+
+maxscore = -5 #initiate max with smallest possible score (I may or may not use this fact)
+minscore = 200  #initiate min with largest possible score (I may or may not use this fact)
+#track players with max or mnin score:
+max_sum_players = []
+min_sum_players = []
+player_scores_SUM = []
+
+#use this loop to collect sums of the scores of all players, then we can find the player with max sum scores:
+#note: we need to strip - sign in case we encounter a negative number (string with - and digits) 
+#in order to use isdigit function to still consider -# strings as numeric:
+#I will make this a function to recycle later in my code...
+def get_player_scores_SUM (scores_data):
+    sums = []
+    for player in scores_data:
+        rounds = [ int(score) for score in player.split(',') if score.strip('-').isdigit() ] #use list comprhension to extract the scores of each player, then sum them
+        sums += [[player, sum(rounds)]]
+    return sums
+player_scores_SUM = get_player_scores_SUM(player_scores_data)
+#sort based on key = list_element[2], since the third element is where the sum score is stored for each player in the player_scores_SUM list
+    #note: setting key to sort with key = lambda is simply creating a function with no label, 
+    #passing list_element to it, and returning whatever list_element[2] returns, which is assigned to key;
+    #underneath, key is really a pointer to the third element in each list_element:
+
+player_scores_SUM_max = sorted(player_scores_SUM, key = lambda list_element: list_element[1], reverse=True) #reverse=True == descending order == max to min
+player_scores_SUM_min = sorted(player_scores_SUM, key = lambda list_element: list_element[1])
+#now take advantage of our sorted lists to get max and min sums, and also the name(s) of the player(s) who have the max and min scores:
+#front of each sorted list will be the max or min score, respectively:
+maxscore = player_scores_SUM_max[0][1]
+minscore = player_scores_SUM_min[0][1]
+
+for player in player_scores_SUM_max:
+    if player[1] == maxscore:
+        max_sum_players += [player[0]] #add player to max score list
+    else:
+        break #have reached the end of players with the max score
+
+for player in player_scores_SUM_min:
+    if player[1] == minscore:
+        min_sum_players += [player[0]] #add player to min score list
+    else:
+        break #have reached the end of players with the min score
+
+#now print player(s) with max score:
+print("The player(s) with the max score sum of %d is(are): "%maxscore)
+for player in max_sum_players:
+    print(player)
+print()#newline
+
+#now print player(s) with min score:
+print("The player(s) with the min score sum of %d is(are): "%minscore)
+for player in min_sum_players:
+    print(player)
+print()#newline
+
+
+#The median and mean (to one decimal place) overall total scores using only qualified participants:
+qualified_players_file = open("qualified_player_list.csv", 'rt') #now reopen file in text mode
+qualified_players_list = qualified_players_file.read().split('\n')
+qualified_players_list.pop() #need to delete last element, which is just storing a empty string from file (I could truncate last char in file but this is faster)
+player_scores_SUM = get_player_scores_SUM(qualified_players_list)
+
+import statistics
+#sorting just for debugging and checking my program for correctness:
+sum_scores_only = sorted([sums[1] for sums in player_scores_SUM]) #I acquired scores from an already soreted list 
+median_sum = round(statistics.median(sum_scores_only), 1)
+mean_sum = round(statistics.mean(sum_scores_only), 1)
+#need to use %.1f to specify to string replacement % operator that I want it to only print out the number with precision of 1 decimal place.
+print("[excluding dq'd players] The median of player score sums is %.1f and the mean is %.1f "%(median_sum,mean_sum))
+
+#The mean score for each round, only using participants with valid scores (1-50) in that round, shown to one decimal place.
+
+ #           Ex. Bob Mann has scores 48, -1, 13, -1 so would be included in average score calculation for rounds 1 & 3 only
+
+
+
+#Write to a second output file the name and total score (exclude -1 values) of all participants, 
+#highest score to lowest score. In case of ties, 
+#list tying participants in alphabetical order, by last name then first name.
+
+ 
+
+#Report:
+
+#Submit a report listing your script, snippets (snipping tool) of your output, 
+#listings of your input file, and listings of both output files.  
+#Make sure your snippets and output files demonstrate all program requirements as having been met.
+
+
+
+
+#Notes on Exceptions (from Python 3.11.2 Tutorial Documentation):
+
+#print(ValueError.__mro__) --> use className.__mro__ to print a list of the base classes (in order from immediate parent to oldest grandparent)
+#use className.__bases__ to return a string of immediate parent of a class.
+
+'''
+BaseException is the common base class of all exceptions. One of its subclasses, Exception, is the base class of
+all the non-fatal exceptions. Exceptions which are not subclasses of Exception are not typically handled, because they
+are used to indicate that the program should terminate. They include SystemExit which is raised by sys.exit()
+and KeyboardInterrupt which is raised when a user wishes to interrupt the program.
+Exception can be used as a wildcard that catches (almost) everything. However, it is good practice to be as specific as
+possible with the types of exceptions that we intend to handle, and to allow any unexpected exceptions to propagate on.
+'''
+
+#other special notes on key functions and lambda functions:
+'''
+Key functions: key function A key function or collation function is a callable that returns a value used for sorting or ordering. For
+example, locale.strxfrm() is used to produce a sort key that is aware of locale specific sort conventions.
+A number of tools in Python accept key functions to control how elements are ordered or grouped. They include min(), max(), sorted(), list.sort(), heapq.merge(), heapq.nsmallest(), heapq.
+nlargest(), and itertools.groupby().
+There are several ways to create a key function. For example. the str.lower() method can serve as a key
+function for case insensitive sorts. Alternatively, a key function can be built from a lambda expression such as
+lambda r: (r[0], r[2]). Also, operator.attrgetter(), operator.itemgetter(), and
+operator.methodcaller() are three key function constructors.
+
+lambda: An anonymous inline function consisting of a single expression which is evaluated when the function is called.
+The syntax to create a lambda function is lambda [parameters]: expression
+Note that the first parameter passed to the lambda function is a pointer to the list passed into the function associted with the key function
+For example: 
+print(max(player_scores_SUM, key = lambda this_is_the_list, this_is_another_parameter=2: this_is_the_list[this_is_another_parameter]))
+
+'''
+
+#Addtional code I did:
+'''
+This code I used to find mode on accident but I am keeping it for future reference:
+
+sum_scores_only = [sums[1] for sums in player_scores_SUM]
+median_sum = max(sum_scores_only, key = sum_scores_only.count)
+print(median_sum)
+'''

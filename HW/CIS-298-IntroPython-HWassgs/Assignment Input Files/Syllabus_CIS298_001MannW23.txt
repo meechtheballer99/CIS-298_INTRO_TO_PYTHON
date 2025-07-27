@@ -1,0 +1,143 @@
+
+                             CIS 298
+                              Intro to Python
+3 Credit Hours, Winter 2023
+Tuesday/Thursday 2-3:15 P.M.
+
+Contact Information:
+? Robert Mann
+Email: RCMann@umich.edu ? Office Hours:
+Tuesday & Thursday 12:30-1:30 pm
+or by appointment? Phone Number: (313) 436-9145 (CIS Department)
+Learning Goals: 
+Program Learning Goals:
+BS in Data Science: click here
+
+
+Course Objectives: 
+* Students will gain an ability to write small programs in a modern programming language
+* Students will learn to use Python packages and toolkits
+* Students will learn to develop analytic/data science applications
+Pre-requisites: Undergraduate level CIS 200 or IMSE 200, either with passing grade, or equivalent.
+
+
+Required Materials and/or Technology: 
+* Textbook is provided as a PDF in Canvas, under files, along with another reference text
+* Any Python interpreter. I use an add-on in Visual Studio.
+
+
+Assignments and Grading Distributions: 
+Midterm & Final Exam								40%
+Homework exercises								60%
+
+
+Grading Scale:  
+98.0 - 100%		A+
+92.5 - 97.9%		A 89.5 - 92.4%		A-86.5 - 89.4%		B+
+82.5 - 86.4%		B
+79.5 - 82.4%		B-76.5 - 79.4%		C+
+72.5 - 76.4%		C
+69.5 - 72.4%		C-
+64.5 - 69.4%		D+
+59.5 - 64.4%		D
+0 - 59.4%		E
+
+Note: Final grades are rounded. Score of 92.44% is an A-; score of 92.45% is an A
+
+
+
+Course and University Policies: 
+The instructor reserves the right to modify policies to improve the execution of this course.
+* Announcements will be posted on Canvas. Please read your email/canvas regularly for announcements.
+* Use email (RCMann@umich.edu) to message me, not Canvas.
+* You are expected to submit your lab assignments by the due date/time. Late assignments will decrease their potential points every 24 hours from when due: 15%, 25%, 50%; 0 points after 72 hours late.
+* If there are mistakes in grading any assignment, please contact me or your lab instructor within one week after the grade is posted. The entire work will be graded again and the new grade will replace the original one, whether the new grade is higher or lower than the original grade.
+* A grade of C- or better is required in this course in order to take any future CIS courses.
+* If you need a B or A or whatever to maintain your scholarship or stay in the country or any other reason, then you?d better work hard to ensure you achieve that grade.	 Requests for final grade improvements will reduce your final course grade by 2 points.
+* Don?t ask for extra credit. If you?re doing the work you won?t need it
+
+Academic Integrity
+The Faculty of the University of Michigan - Dearborn, College of Engineering and Computer Science (CECS) believe that our students are honorable, ethical, trustworthy people.  Students who engage in cheating of any kind place the academic integrity and reputation of our university and our college in jeopardy.
+
+To ensure that all CECS students receive an equitable education and are prepared for the workforce, the University of Michigan - Dearborn Academic Code of Conduct will be strictly enforced in all CECS courses.  All CECS students are required to read, understand, and follow the Academic Code of Conduct.  Students who violate the Academic Code of Conduct or course rules are subject to all penalties indicated, including failing the course, potential loss of scholarship funds, or even expulsion from the university.  
+
+Cheating includes, but is not limited to:
+? Receiving assistance of any kind on an exam
+? Providing assistance of any kind on an exam
+? Using notes, compiler, internet, books, other people during an exam
+? Using materials or resources that are prohibited on any graded assignment or exam
+? Completing an individual exam or assignment as a group (two or more people) project
+? Collusion/Deception of any kind, including but not limited to:
+? coordinating with others to obtain or distribute prohibited or unpublished materials
+? giving false information to receive time extensions or re-takes
+? obtaining and using previous exams not provided by the instructor
+? Paying another person to complete any coursework, including exams
+? Receiving compensation of any kind to complete another student?s work, including exams
+? Requesting and using help from Chegg, Course Hero, or any other such service
+? Submitting lab or examination information to Chegg, Course Hero, or any other such service
+? Plagiarism - using another person?s work, except as authorized by your instructor
+? Any ?hacks? used to access Canvas content or other materials
+? Any other action that violates course rules and/or the Academic Code of Conduct
+
+If you are questioning an action you are about to take and cannot reach your instructor to verify, it is likely that you should not proceed with that action
+
+University-wide Policies or Statements Relevant to Courses: 
+Please see the ?Course Policies? Menu on Canvas for information on the following:
+* 
+* University Attendance Policy 
+* Academic Integrity Policy
+* Counseling 
+* Disabilities Services 
+* Safety Statement 
+* Harassment, Sexual Violence, Bias, and Discrimination
+
+
+
+
+Tentative Course Outline and Schedule: 
+
+The instructor reserves the right to adjust the schedule during the semester.
+
+WeekDateTopicNotes1
+Jan 5Introduction to Python 3
+Variables and Expressions2Jan 
+10, 12Types
+practice exercises
+3Jan 
+17, 19Branching & Loops
+practice exercises4Jan 
+24, 26Strings
+practice exercises5Jan 31 
+Feb 2Functions
+practice exercises6Feb 
+7, 9Lists and Dictionaries
+practice exercises7Feb 
+14, 16 Classes / Inheritance
+practice exercises8Feb
+ 21, 23Review for midterm
+Midterm
+Midterm9 Feb 28
+Mar 2Spring Break:
+No class10Mar 
+7, 9review Midterm / Exceptions
+practice exercises
+11Mar 
+14, 16Files
+practice exercises12Mar
+ 21, 23Modules & Plotting
+practice exercises13Mar 
+28, 30Searching and Sorting
+practice exercises14Apr
+4, 6practice exercises
+practice exercises15Apr 
+11, 13Review
+Review
+16
+Apr 
+18, 25Written Final Exam during final lecture
+Take home final 3-6Final Exam
+
+
+ 
+
+
