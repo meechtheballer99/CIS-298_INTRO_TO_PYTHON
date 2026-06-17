@@ -1,5 +1,7 @@
 {
     "workbench.colorTheme": "Solarized Light",
+    "terminal.integrated.defaultLocation": "editor",
+    "workbench.editor.openSideBySideDirection": "down",
     "workbench.colorCustomizations": {
     "terminal.background": "#000000",
     "terminal.foreground": "#bda718f4",
