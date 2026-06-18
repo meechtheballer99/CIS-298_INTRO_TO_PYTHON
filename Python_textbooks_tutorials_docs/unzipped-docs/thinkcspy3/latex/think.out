@@ -1,0 +1,307 @@
+\BOOKMARK [0][-]{chapter.1}{The way of the program}{}% 1
+\BOOKMARK [1][-]{section.1.1}{The Python programming language}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{What is a program?}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{What is debugging?}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Syntax errors}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.5}{Runtime errors}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.6}{Semantic errors}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.7}{Experimental debugging}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.8}{Formal and natural languages}{chapter.1}% 9
+\BOOKMARK [1][-]{section.1.9}{The first program}{chapter.1}% 10
+\BOOKMARK [1][-]{section.1.10}{Comments}{chapter.1}% 11
+\BOOKMARK [1][-]{section.1.11}{Glossary}{chapter.1}% 12
+\BOOKMARK [1][-]{section.1.12}{Exercises}{chapter.1}% 13
+\BOOKMARK [0][-]{chapter.2}{Variables, expressions and statements}{}% 14
+\BOOKMARK [1][-]{section.2.1}{Values and data types}{chapter.2}% 15
+\BOOKMARK [1][-]{section.2.2}{Variables}{chapter.2}% 16
+\BOOKMARK [1][-]{section.2.3}{Variable names and keywords}{chapter.2}% 17
+\BOOKMARK [1][-]{section.2.4}{Statements}{chapter.2}% 18
+\BOOKMARK [1][-]{section.2.5}{Evaluating expressions}{chapter.2}% 19
+\BOOKMARK [1][-]{section.2.6}{Operators and operands}{chapter.2}% 20
+\BOOKMARK [1][-]{section.2.7}{Type converter functions}{chapter.2}% 21
+\BOOKMARK [1][-]{section.2.8}{Order of operations}{chapter.2}% 22
+\BOOKMARK [1][-]{section.2.9}{Operations on strings}{chapter.2}% 23
+\BOOKMARK [1][-]{section.2.10}{Input}{chapter.2}% 24
+\BOOKMARK [1][-]{section.2.11}{Composition}{chapter.2}% 25
+\BOOKMARK [1][-]{section.2.12}{The modulus operator}{chapter.2}% 26
+\BOOKMARK [1][-]{section.2.13}{Glossary}{chapter.2}% 27
+\BOOKMARK [1][-]{section.2.14}{Exercises}{chapter.2}% 28
+\BOOKMARK [0][-]{chapter.3}{Hello, little turtles!}{}% 29
+\BOOKMARK [1][-]{section.3.1}{Our first turtle program}{chapter.3}% 30
+\BOOKMARK [1][-]{section.3.2}{Instances \204 a herd of turtles}{chapter.3}% 31
+\BOOKMARK [1][-]{section.3.3}{The for loop}{chapter.3}% 32
+\BOOKMARK [1][-]{section.3.4}{Flow of Execution of the for loop}{chapter.3}% 33
+\BOOKMARK [1][-]{section.3.5}{The loop simplifies our turtle program}{chapter.3}% 34
+\BOOKMARK [1][-]{section.3.6}{A few more turtle methods and tricks}{chapter.3}% 35
+\BOOKMARK [1][-]{section.3.7}{Glossary}{chapter.3}% 36
+\BOOKMARK [1][-]{section.3.8}{Exercises}{chapter.3}% 37
+\BOOKMARK [0][-]{chapter.4}{Functions}{}% 38
+\BOOKMARK [1][-]{section.4.1}{Functions}{chapter.4}% 39
+\BOOKMARK [1][-]{section.4.2}{Functions can call other functions}{chapter.4}% 40
+\BOOKMARK [1][-]{section.4.3}{Flow of execution}{chapter.4}% 41
+\BOOKMARK [1][-]{section.4.4}{Functions that require arugments}{chapter.4}% 42
+\BOOKMARK [1][-]{section.4.5}{Functions that return values}{chapter.4}% 43
+\BOOKMARK [1][-]{section.4.6}{Variables and parameters are local}{chapter.4}% 44
+\BOOKMARK [1][-]{section.4.7}{Turtles Revisited}{chapter.4}% 45
+\BOOKMARK [1][-]{section.4.8}{Glossary}{chapter.4}% 46
+\BOOKMARK [1][-]{section.4.9}{Exercises}{chapter.4}% 47
+\BOOKMARK [0][-]{chapter.5}{Conditionals}{}% 48
+\BOOKMARK [1][-]{section.5.1}{Boolean values and expressions}{chapter.5}% 49
+\BOOKMARK [1][-]{section.5.2}{Logical operators}{chapter.5}% 50
+\BOOKMARK [1][-]{section.5.3}{Truth Tables}{chapter.5}% 51
+\BOOKMARK [1][-]{section.5.4}{Simplifying Boolean Expressions}{chapter.5}% 52
+\BOOKMARK [1][-]{section.5.5}{Conditional execution}{chapter.5}% 53
+\BOOKMARK [1][-]{section.5.6}{Omitting the else clause}{chapter.5}% 54
+\BOOKMARK [1][-]{section.5.7}{Chained conditionals}{chapter.5}% 55
+\BOOKMARK [1][-]{section.5.8}{Nested conditionals}{chapter.5}% 56
+\BOOKMARK [1][-]{section.5.9}{The return statement}{chapter.5}% 57
+\BOOKMARK [1][-]{section.5.10}{Logical opposites}{chapter.5}% 58
+\BOOKMARK [1][-]{section.5.11}{Type conversion}{chapter.5}% 59
+\BOOKMARK [1][-]{section.5.12}{A Turtle Bar Chart}{chapter.5}% 60
+\BOOKMARK [1][-]{section.5.13}{Glossary}{chapter.5}% 61
+\BOOKMARK [1][-]{section.5.14}{Exercises}{chapter.5}% 62
+\BOOKMARK [0][-]{chapter.6}{Fruitful functions}{}% 63
+\BOOKMARK [1][-]{section.6.1}{Return values}{chapter.6}% 64
+\BOOKMARK [1][-]{section.6.2}{Program development}{chapter.6}% 65
+\BOOKMARK [1][-]{section.6.3}{Debugging with print}{chapter.6}% 66
+\BOOKMARK [1][-]{section.6.4}{Composition}{chapter.6}% 67
+\BOOKMARK [1][-]{section.6.5}{Boolean functions}{chapter.6}% 68
+\BOOKMARK [1][-]{section.6.6}{Programming with style}{chapter.6}% 69
+\BOOKMARK [1][-]{section.6.7}{Unit testing}{chapter.6}% 70
+\BOOKMARK [1][-]{section.6.8}{Glossary}{chapter.6}% 71
+\BOOKMARK [1][-]{section.6.9}{Exercises}{chapter.6}% 72
+\BOOKMARK [0][-]{chapter.7}{Iteration}{}% 73
+\BOOKMARK [1][-]{section.7.1}{Assignment}{chapter.7}% 74
+\BOOKMARK [1][-]{section.7.2}{Updating variables}{chapter.7}% 75
+\BOOKMARK [1][-]{section.7.3}{The for loop revisited}{chapter.7}% 76
+\BOOKMARK [1][-]{section.7.4}{The while statement}{chapter.7}% 77
+\BOOKMARK [1][-]{section.7.5}{The Collatz 3n + 1 sequence}{chapter.7}% 78
+\BOOKMARK [1][-]{section.7.6}{Tracing a program}{chapter.7}% 79
+\BOOKMARK [1][-]{section.7.7}{Counting digits}{chapter.7}% 80
+\BOOKMARK [1][-]{section.7.8}{Abbreviated assignment}{chapter.7}% 81
+\BOOKMARK [1][-]{section.7.9}{Help and meta-notation}{chapter.7}% 82
+\BOOKMARK [1][-]{section.7.10}{Tables}{chapter.7}% 83
+\BOOKMARK [1][-]{section.7.11}{Two-dimensional tables}{chapter.7}% 84
+\BOOKMARK [1][-]{section.7.12}{Encapsulation and generalization}{chapter.7}% 85
+\BOOKMARK [1][-]{section.7.13}{More encapsulation}{chapter.7}% 86
+\BOOKMARK [1][-]{section.7.14}{Local variables}{chapter.7}% 87
+\BOOKMARK [1][-]{section.7.15}{The break statement}{chapter.7}% 88
+\BOOKMARK [1][-]{section.7.16}{Other flavours of loops}{chapter.7}% 89
+\BOOKMARK [1][-]{section.7.17}{An example}{chapter.7}% 90
+\BOOKMARK [1][-]{section.7.18}{The continue statement}{chapter.7}% 91
+\BOOKMARK [1][-]{section.7.19}{More generalization}{chapter.7}% 92
+\BOOKMARK [1][-]{section.7.20}{Functions}{chapter.7}% 93
+\BOOKMARK [1][-]{section.7.21}{Paired Data}{chapter.7}% 94
+\BOOKMARK [1][-]{section.7.22}{Nested Loops for Nested Data}{chapter.7}% 95
+\BOOKMARK [1][-]{section.7.23}{Newton's method for finding square roots}{chapter.7}% 96
+\BOOKMARK [1][-]{section.7.24}{Algorithms}{chapter.7}% 97
+\BOOKMARK [1][-]{section.7.25}{Glossary}{chapter.7}% 98
+\BOOKMARK [1][-]{section.7.26}{Exercises}{chapter.7}% 99
+\BOOKMARK [0][-]{chapter.8}{Strings}{}% 100
+\BOOKMARK [1][-]{section.8.1}{A compound data type}{chapter.8}% 101
+\BOOKMARK [1][-]{section.8.2}{Working with strings as single things}{chapter.8}% 102
+\BOOKMARK [1][-]{section.8.3}{Working with the parts of a string}{chapter.8}% 103
+\BOOKMARK [1][-]{section.8.4}{Length}{chapter.8}% 104
+\BOOKMARK [1][-]{section.8.5}{Traversal and the for loop}{chapter.8}% 105
+\BOOKMARK [1][-]{section.8.6}{Slices}{chapter.8}% 106
+\BOOKMARK [1][-]{section.8.7}{String comparison}{chapter.8}% 107
+\BOOKMARK [1][-]{section.8.8}{Strings are immutable}{chapter.8}% 108
+\BOOKMARK [1][-]{section.8.9}{The in and not in operators}{chapter.8}% 109
+\BOOKMARK [1][-]{section.8.10}{A find function}{chapter.8}% 110
+\BOOKMARK [1][-]{section.8.11}{Looping and counting}{chapter.8}% 111
+\BOOKMARK [1][-]{section.8.12}{Optional parameters}{chapter.8}% 112
+\BOOKMARK [1][-]{section.8.13}{The built-in find method}{chapter.8}% 113
+\BOOKMARK [1][-]{section.8.14}{The split method}{chapter.8}% 114
+\BOOKMARK [1][-]{section.8.15}{Cleaning up your strings}{chapter.8}% 115
+\BOOKMARK [1][-]{section.8.16}{The string format method}{chapter.8}% 116
+\BOOKMARK [1][-]{section.8.17}{Summary}{chapter.8}% 117
+\BOOKMARK [1][-]{section.8.18}{Glossary}{chapter.8}% 118
+\BOOKMARK [1][-]{section.8.19}{Exercises}{chapter.8}% 119
+\BOOKMARK [0][-]{chapter.9}{Tuples}{}% 120
+\BOOKMARK [1][-]{section.9.1}{Tuples are used for grouping data}{chapter.9}% 121
+\BOOKMARK [1][-]{section.9.2}{Tuple assignment}{chapter.9}% 122
+\BOOKMARK [1][-]{section.9.3}{Tuples as return values}{chapter.9}% 123
+\BOOKMARK [1][-]{section.9.4}{Composability of Data Structures}{chapter.9}% 124
+\BOOKMARK [1][-]{section.9.5}{Glossary}{chapter.9}% 125
+\BOOKMARK [1][-]{section.9.6}{Exercises}{chapter.9}% 126
+\BOOKMARK [0][-]{chapter.10}{Event-Driven Programming}{}% 127
+\BOOKMARK [1][-]{section.10.1}{Keypress events}{chapter.10}% 128
+\BOOKMARK [1][-]{section.10.2}{Mouse events}{chapter.10}% 129
+\BOOKMARK [1][-]{section.10.3}{Automatic events from a timer}{chapter.10}% 130
+\BOOKMARK [1][-]{section.10.4}{An example: state machines}{chapter.10}% 131
+\BOOKMARK [1][-]{section.10.5}{Glossary}{chapter.10}% 132
+\BOOKMARK [1][-]{section.10.6}{Exercises}{chapter.10}% 133
+\BOOKMARK [0][-]{chapter.11}{Lists}{}% 134
+\BOOKMARK [1][-]{section.11.1}{List values}{chapter.11}% 135
+\BOOKMARK [1][-]{section.11.2}{Accessing elements}{chapter.11}% 136
+\BOOKMARK [1][-]{section.11.3}{List length}{chapter.11}% 137
+\BOOKMARK [1][-]{section.11.4}{List membership}{chapter.11}% 138
+\BOOKMARK [1][-]{section.11.5}{List operations}{chapter.11}% 139
+\BOOKMARK [1][-]{section.11.6}{List slices}{chapter.11}% 140
+\BOOKMARK [1][-]{section.11.7}{Lists are mutable}{chapter.11}% 141
+\BOOKMARK [1][-]{section.11.8}{List deletion}{chapter.11}% 142
+\BOOKMARK [1][-]{section.11.9}{Objects and references}{chapter.11}% 143
+\BOOKMARK [1][-]{section.11.10}{Aliasing}{chapter.11}% 144
+\BOOKMARK [1][-]{section.11.11}{Cloning lists}{chapter.11}% 145
+\BOOKMARK [1][-]{section.11.12}{Lists and for loops}{chapter.11}% 146
+\BOOKMARK [1][-]{section.11.13}{List parameters}{chapter.11}% 147
+\BOOKMARK [1][-]{section.11.14}{List methods}{chapter.11}% 148
+\BOOKMARK [1][-]{section.11.15}{Pure functions and modifiers}{chapter.11}% 149
+\BOOKMARK [1][-]{section.11.16}{Functions that produce lists}{chapter.11}% 150
+\BOOKMARK [1][-]{section.11.17}{Strings and lists}{chapter.11}% 151
+\BOOKMARK [1][-]{section.11.18}{list and range}{chapter.11}% 152
+\BOOKMARK [1][-]{section.11.19}{Nested lists}{chapter.11}% 153
+\BOOKMARK [1][-]{section.11.20}{Matrices}{chapter.11}% 154
+\BOOKMARK [1][-]{section.11.21}{Glossary}{chapter.11}% 155
+\BOOKMARK [1][-]{section.11.22}{Exercises}{chapter.11}% 156
+\BOOKMARK [0][-]{chapter.12}{Modules}{}% 157
+\BOOKMARK [1][-]{section.12.1}{Random numbers}{chapter.12}% 158
+\BOOKMARK [1][-]{section.12.2}{The time module}{chapter.12}% 159
+\BOOKMARK [1][-]{section.12.3}{The math module}{chapter.12}% 160
+\BOOKMARK [1][-]{section.12.4}{Creating your own modules}{chapter.12}% 161
+\BOOKMARK [1][-]{section.12.5}{Namespaces}{chapter.12}% 162
+\BOOKMARK [1][-]{section.12.6}{Scope and lookup rules}{chapter.12}% 163
+\BOOKMARK [1][-]{section.12.7}{Attributes and the dot operator}{chapter.12}% 164
+\BOOKMARK [1][-]{section.12.8}{Three import statement variants}{chapter.12}% 165
+\BOOKMARK [1][-]{section.12.9}{Turn your unit tester into a module}{chapter.12}% 166
+\BOOKMARK [1][-]{section.12.10}{Glossary}{chapter.12}% 167
+\BOOKMARK [1][-]{section.12.11}{Exercises}{chapter.12}% 168
+\BOOKMARK [0][-]{chapter.13}{Files}{}% 169
+\BOOKMARK [1][-]{section.13.1}{About files}{chapter.13}% 170
+\BOOKMARK [1][-]{section.13.2}{Writing our first file}{chapter.13}% 171
+\BOOKMARK [1][-]{section.13.3}{Reading a file line-at-a-time}{chapter.13}% 172
+\BOOKMARK [1][-]{section.13.4}{Turning a file into a list of lines}{chapter.13}% 173
+\BOOKMARK [1][-]{section.13.5}{Reading the whole file at once}{chapter.13}% 174
+\BOOKMARK [1][-]{section.13.6}{Working with binary files}{chapter.13}% 175
+\BOOKMARK [1][-]{section.13.7}{An example}{chapter.13}% 176
+\BOOKMARK [1][-]{section.13.8}{Directories}{chapter.13}% 177
+\BOOKMARK [1][-]{section.13.9}{What about fetching something from the web?}{chapter.13}% 178
+\BOOKMARK [1][-]{section.13.10}{Glossary}{chapter.13}% 179
+\BOOKMARK [1][-]{section.13.11}{Exercises}{chapter.13}% 180
+\BOOKMARK [0][-]{chapter.14}{List Algorithms}{}% 181
+\BOOKMARK [1][-]{section.14.1}{Test-driven development}{chapter.14}% 182
+\BOOKMARK [1][-]{section.14.2}{The linear search algorithm}{chapter.14}% 183
+\BOOKMARK [1][-]{section.14.3}{A more realistic problem}{chapter.14}% 184
+\BOOKMARK [1][-]{section.14.4}{Binary Search}{chapter.14}% 185
+\BOOKMARK [1][-]{section.14.5}{Removing adjacent duplicates from a list}{chapter.14}% 186
+\BOOKMARK [1][-]{section.14.6}{Merging sorted lists}{chapter.14}% 187
+\BOOKMARK [1][-]{section.14.7}{Alice in Wonderland, again!}{chapter.14}% 188
+\BOOKMARK [1][-]{section.14.8}{Eight Queens puzzle, part 1}{chapter.14}% 189
+\BOOKMARK [1][-]{section.14.9}{Eight Queens puzzle, part 2}{chapter.14}% 190
+\BOOKMARK [1][-]{section.14.10}{Glossary}{chapter.14}% 191
+\BOOKMARK [1][-]{section.14.11}{Exercises}{chapter.14}% 192
+\BOOKMARK [0][-]{chapter.15}{Classes and Objects \204 the Basics}{}% 193
+\BOOKMARK [1][-]{section.15.1}{Object-oriented programming}{chapter.15}% 194
+\BOOKMARK [1][-]{section.15.2}{User-defined compound data types}{chapter.15}% 195
+\BOOKMARK [1][-]{section.15.3}{Attributes}{chapter.15}% 196
+\BOOKMARK [1][-]{section.15.4}{Improving our initializer}{chapter.15}% 197
+\BOOKMARK [1][-]{section.15.5}{Adding other methods to our class}{chapter.15}% 198
+\BOOKMARK [1][-]{section.15.6}{Instances as arguments and parameters}{chapter.15}% 199
+\BOOKMARK [1][-]{section.15.7}{Converting an instance to a string}{chapter.15}% 200
+\BOOKMARK [1][-]{section.15.8}{Instances as return values}{chapter.15}% 201
+\BOOKMARK [1][-]{section.15.9}{A change of perspective}{chapter.15}% 202
+\BOOKMARK [1][-]{section.15.10}{Objects can have state}{chapter.15}% 203
+\BOOKMARK [1][-]{section.15.11}{Glossary}{chapter.15}% 204
+\BOOKMARK [1][-]{section.15.12}{Exercises}{chapter.15}% 205
+\BOOKMARK [0][-]{chapter.16}{Classes and Objects \204 Digging a little deeper}{}% 206
+\BOOKMARK [1][-]{section.16.1}{Rectangles}{chapter.16}% 207
+\BOOKMARK [1][-]{section.16.2}{Objects are mutable}{chapter.16}% 208
+\BOOKMARK [1][-]{section.16.3}{Sameness}{chapter.16}% 209
+\BOOKMARK [1][-]{section.16.4}{Copying}{chapter.16}% 210
+\BOOKMARK [1][-]{section.16.5}{Glossary}{chapter.16}% 211
+\BOOKMARK [1][-]{section.16.6}{Exercises}{chapter.16}% 212
+\BOOKMARK [0][-]{chapter.17}{PyGame}{}% 213
+\BOOKMARK [1][-]{section.17.1}{The game loop}{chapter.17}% 214
+\BOOKMARK [1][-]{section.17.2}{Displaying images and text}{chapter.17}% 215
+\BOOKMARK [1][-]{section.17.3}{Drawing a board for the N queens puzzle}{chapter.17}% 216
+\BOOKMARK [1][-]{section.17.4}{Sprites}{chapter.17}% 217
+\BOOKMARK [1][-]{section.17.5}{Events}{chapter.17}% 218
+\BOOKMARK [1][-]{section.17.6}{A wave of animation}{chapter.17}% 219
+\BOOKMARK [1][-]{section.17.7}{Aliens - a case study}{chapter.17}% 220
+\BOOKMARK [1][-]{section.17.8}{Reflections}{chapter.17}% 221
+\BOOKMARK [1][-]{section.17.9}{Glossary}{chapter.17}% 222
+\BOOKMARK [1][-]{section.17.10}{Exercises}{chapter.17}% 223
+\BOOKMARK [0][-]{chapter.18}{Recursion}{}% 224
+\BOOKMARK [1][-]{section.18.1}{Drawing Fractals}{chapter.18}% 225
+\BOOKMARK [1][-]{section.18.2}{Recursive data structures}{chapter.18}% 226
+\BOOKMARK [1][-]{section.18.3}{Processing recursive number lists}{chapter.18}% 227
+\BOOKMARK [1][-]{section.18.4}{Case study: Fibonacci numbers}{chapter.18}% 228
+\BOOKMARK [1][-]{section.18.5}{Example with recursive directories and files}{chapter.18}% 229
+\BOOKMARK [1][-]{section.18.6}{Glossary}{chapter.18}% 230
+\BOOKMARK [1][-]{section.18.7}{Exercises}{chapter.18}% 231
+\BOOKMARK [0][-]{chapter.19}{Exceptions}{}% 232
+\BOOKMARK [1][-]{section.19.1}{Catching exceptions}{chapter.19}% 233
+\BOOKMARK [1][-]{section.19.2}{Raising our own exceptions}{chapter.19}% 234
+\BOOKMARK [1][-]{section.19.3}{Revisiting an earlier example}{chapter.19}% 235
+\BOOKMARK [1][-]{section.19.4}{The finally clause of the try statement}{chapter.19}% 236
+\BOOKMARK [1][-]{section.19.5}{Glossary}{chapter.19}% 237
+\BOOKMARK [1][-]{section.19.6}{Exercises}{chapter.19}% 238
+\BOOKMARK [0][-]{chapter.20}{Dictionaries}{}% 239
+\BOOKMARK [1][-]{section.20.1}{Dictionary operations}{chapter.20}% 240
+\BOOKMARK [1][-]{section.20.2}{Dictionary methods}{chapter.20}% 241
+\BOOKMARK [1][-]{section.20.3}{Aliasing and copying}{chapter.20}% 242
+\BOOKMARK [1][-]{section.20.4}{Sparse matrices}{chapter.20}% 243
+\BOOKMARK [1][-]{section.20.5}{Memoization}{chapter.20}% 244
+\BOOKMARK [1][-]{section.20.6}{Counting letters}{chapter.20}% 245
+\BOOKMARK [1][-]{section.20.7}{Glossary}{chapter.20}% 246
+\BOOKMARK [1][-]{section.20.8}{Exercises}{chapter.20}% 247
+\BOOKMARK [0][-]{chapter.21}{Even more OOP}{}% 248
+\BOOKMARK [1][-]{section.21.1}{MyTime}{chapter.21}% 249
+\BOOKMARK [1][-]{section.21.2}{Pure functions}{chapter.21}% 250
+\BOOKMARK [1][-]{section.21.3}{Modifiers}{chapter.21}% 251
+\BOOKMARK [1][-]{section.21.4}{Converting increment to a method}{chapter.21}% 252
+\BOOKMARK [1][-]{section.21.5}{An ``Aha!'' insight}{chapter.21}% 253
+\BOOKMARK [1][-]{section.21.6}{Generalization}{chapter.21}% 254
+\BOOKMARK [1][-]{section.21.7}{Another example}{chapter.21}% 255
+\BOOKMARK [1][-]{section.21.8}{Operator overloading}{chapter.21}% 256
+\BOOKMARK [1][-]{section.21.9}{Polymorphism}{chapter.21}% 257
+\BOOKMARK [1][-]{section.21.10}{Glossary}{chapter.21}% 258
+\BOOKMARK [1][-]{section.21.11}{Exercises}{chapter.21}% 259
+\BOOKMARK [0][-]{chapter.22}{Collections of objects}{}% 260
+\BOOKMARK [1][-]{section.22.1}{Composition}{chapter.22}% 261
+\BOOKMARK [1][-]{section.22.2}{Card objects}{chapter.22}% 262
+\BOOKMARK [1][-]{section.22.3}{Class attributes and the \137\137str\137\137 method}{chapter.22}% 263
+\BOOKMARK [1][-]{section.22.4}{Comparing cards}{chapter.22}% 264
+\BOOKMARK [1][-]{section.22.5}{Decks}{chapter.22}% 265
+\BOOKMARK [1][-]{section.22.6}{Printing the deck}{chapter.22}% 266
+\BOOKMARK [1][-]{section.22.7}{Shuffling the deck}{chapter.22}% 267
+\BOOKMARK [1][-]{section.22.8}{Removing and dealing cards}{chapter.22}% 268
+\BOOKMARK [1][-]{section.22.9}{Glossary}{chapter.22}% 269
+\BOOKMARK [1][-]{section.22.10}{Exercises}{chapter.22}% 270
+\BOOKMARK [0][-]{chapter.23}{Inheritance}{}% 271
+\BOOKMARK [1][-]{section.23.1}{Inheritance}{chapter.23}% 272
+\BOOKMARK [1][-]{section.23.2}{A hand of cards}{chapter.23}% 273
+\BOOKMARK [1][-]{section.23.3}{Dealing cards}{chapter.23}% 274
+\BOOKMARK [1][-]{section.23.4}{Printing a Hand}{chapter.23}% 275
+\BOOKMARK [1][-]{section.23.5}{The CardGame class}{chapter.23}% 276
+\BOOKMARK [1][-]{section.23.6}{OldMaidHand class}{chapter.23}% 277
+\BOOKMARK [1][-]{section.23.7}{OldMaidGame class}{chapter.23}% 278
+\BOOKMARK [1][-]{section.23.8}{Glossary}{chapter.23}% 279
+\BOOKMARK [1][-]{section.23.9}{Exercises}{chapter.23}% 280
+\BOOKMARK [0][-]{appendix.A}{Debugging}{}% 281
+\BOOKMARK [1][-]{section.A.1}{Syntax errors}{appendix.A}% 282
+\BOOKMARK [1][-]{section.A.2}{I can't get my program to run no matter what I do.}{appendix.A}% 283
+\BOOKMARK [1][-]{section.A.3}{Runtime errors}{appendix.A}% 284
+\BOOKMARK [1][-]{section.A.4}{My program does absolutely nothing.}{appendix.A}% 285
+\BOOKMARK [1][-]{section.A.5}{My program hangs.}{appendix.A}% 286
+\BOOKMARK [1][-]{section.A.6}{Infinite Loop}{appendix.A}% 287
+\BOOKMARK [1][-]{section.A.7}{Infinite Recursion}{appendix.A}% 288
+\BOOKMARK [1][-]{section.A.8}{Flow of Execution}{appendix.A}% 289
+\BOOKMARK [1][-]{section.A.9}{When I run the program I get an exception.}{appendix.A}% 290
+\BOOKMARK [1][-]{section.A.10}{I added so many print statements I get inundated with output.}{appendix.A}% 291
+\BOOKMARK [1][-]{section.A.11}{Semantic errors}{appendix.A}% 292
+\BOOKMARK [1][-]{section.A.12}{My program doesn't work.}{appendix.A}% 293
+\BOOKMARK [1][-]{section.A.13}{I've got a big hairy expression and it doesn't do what I expect.}{appendix.A}% 294
+\BOOKMARK [1][-]{section.A.14}{I've got a function or method that doesn't return what I expect.}{appendix.A}% 295
+\BOOKMARK [1][-]{section.A.15}{I'm really, really stuck and I need help.}{appendix.A}% 296
+\BOOKMARK [1][-]{section.A.16}{No, I really need help.}{appendix.A}% 297
+\BOOKMARK [0][-]{appendix.B}{An odds-and-ends Workbook}{}% 298
+\BOOKMARK [1][-]{section.B.1}{The Five Strands of Proficiency}{appendix.B}% 299
+\BOOKMARK [1][-]{section.B.2}{Sending Email}{appendix.B}% 300
+\BOOKMARK [1][-]{section.B.3}{Write your own Web Server}{appendix.B}% 301
+\BOOKMARK [1][-]{section.B.4}{Using a Database}{appendix.B}% 302
+\BOOKMARK [0][-]{appendix.C}{Some Tips, Tricks, and Common Errors}{}% 303
+\BOOKMARK [1][-]{section.C.1}{Functions}{appendix.C}% 304
+\BOOKMARK [1][-]{section.C.2}{String handling}{appendix.C}% 305
+\BOOKMARK [1][-]{section.C.3}{Looping and lists}{appendix.C}% 306
+\BOOKMARK [0][-]{section*.274}{Index}{}% 307
