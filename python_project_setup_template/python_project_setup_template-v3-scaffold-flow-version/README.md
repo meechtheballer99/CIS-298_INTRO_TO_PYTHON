@@ -1,21 +1,88 @@
 # Interactive Python Project Setup Helper
 
-This repo is an educational Python project generator.
-
-It does two things at once:
-
-1. It helps create a new Python project.
-2. It teaches how Python modules, packages, imports, virtual environments, `requirements.txt`, `pyproject.toml`, and CLI entry points work.
-
-The helper itself is packaged using the `src/` layout so the repo demonstrates the same packaging ideas it teaches.
+An educational Python project generator that teaches modern Python project structure while creating real projects.
 
 ---
 
-## What changed from the single-script version
+# Purpose
 
-The original version was one working script. This version is an installable package with modules and subpackages.
+This repository has two goals:
 
-Instead of editing a large CONFIG section first, you run the helper and answer prompts:
+1. Generate Python projects.
+2. Teach Python packaging concepts while doing it.
+
+Most tutorials explain:
+
+* virtual environments
+* packages
+* subpackages
+* submodules
+* imports
+* `requirements.txt`
+* `pyproject.toml`
+* CLI tools
+
+separately.
+
+This project demonstrates all of those concepts inside a working tool.
+
+The helper itself is built using the same package structure that it teaches.
+
+Think of this repository as both:
+
+* a project generator
+* a Python packaging tutorial
+
+
+---
+## Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd python_project_setup_template
+```
+
+### 2. Create a Virtual Environment
+
+macOS / Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+### 3. Install the Helper
+
+```bash
+pip install -e .
+```
+
+The `-e` flag performs an **editable install**, meaning changes to the source code are immediately available without reinstalling the package.
+
+### 4. Run the Helper
+
+```bash
+project-setup-helper
+```
+
+or:
+
+```bash
+python -m project_setup_helper
+```
+
+### 5. Follow the Interactive Prompts
+
+The helper will guide you through:
 
 ```text
 Step 1: Choose project type
@@ -31,19 +98,75 @@ Step 3: Choose destination
   2) generated_projects/
   3) Custom path
 
-Step 4: Generate project
+Step 4: Review summary
+
+Step 5: Generate project
 ```
 
-This makes the tool feel more like a real project scaffolder while still staying beginner-friendly.
+The generated project will include a virtual environment, dependency management files, project structure, setup notes, and optional development tooling.
+
+> Note: The generated `.venv/` directory is intentionally local to the project and should not be committed to Git.
 
 ---
 
-## Repo layout
+## Learning Path
+
+This project intentionally demonstrates a progression:
+
+```text
+Level 1: Single Script
+Level 2: Functions
+Level 3: Modules
+Level 4: Packages
+Level 5: Installable Package
+Level 6: CLI Tool
+Level 7: Project Scaffolder
+```
+
+The helper itself is a Level 6/7 project.
+
+The projects it generates become practice environments for learning the earlier levels.
+
+---
+
+# Interactive Flow
+
+Run the helper:
+
+```bash
+project-setup-helper
+```
+
+You will be guided through:
+
+```text
+Step 1: Choose project type
+
+  1) requirements.txt project
+  2) pyproject package
+
+Step 2: Choose project name
+
+Step 3: Choose destination
+
+  1) Current directory
+  2) generated_projects/
+  3) Custom path
+
+Step 4: Review summary
+
+Step 5: Generate project
+```
+
+---
+
+# Repository Layout
 
 ```text
 python_project_setup_template/
 ├── README.md
 ├── pyproject.toml
+│
 ├── src/
 │   └── project_setup_helper/
 │       ├── __init__.py
@@ -74,164 +197,915 @@ python_project_setup_template/
 ├── tests/
 │   ├── test_config.py
 │   └── test_os_detect.py
-└── examples/
-    └── generated_project_example/
+│
+├── examples/
+│   └── generated_project_example/
+│
+└── generated_projects/
 ```
 
 ---
 
-## What each part teaches
+# Package Hierarchy at a Glance
+
+This repository demonstrates how larger Python applications are organized.
 
 ```text
-src/project_setup_helper/
+project_setup_helper                  ← package
+│
+├── prompts.py                        ← module/submodule
+├── commands.py                       ← module/submodule
+├── os_detect.py                      ← module/submodule
+│
+├── installers                        ← subpackage
+│   ├── windows.py                    ← submodule
+│   ├── macos_linux.py                ← submodule
+│   └── macos_apple_silicon.py        ← submodule
+│
+└── project_files                     ← subpackage
+    ├── gitignore.py                  ← submodule
+    ├── requirements.py               ← submodule
+    └── pyproject.py                  ← submodule
 ```
 
-This is the main Python package.
+As projects grow, Python code is usually organized into:
 
 ```text
-installers/
-project_files/
+Functions
+    ↓
+Modules
+    ↓
+Packages
+    ↓
+Subpackages
+    ↓
+Submodules
 ```
 
-These are subpackages.
+Understanding this hierarchy is essential for understanding imports.
+
+---
+
+# Python Terminology
+
+Before going deeper, here is the short version:
+
+```text
+File                         → Module
+Directory package            → Package
+Package inside a package     → Subpackage
+Module inside a package      → Submodule
+Module inside a subpackage   → Submodule
+```
+
+---
+
+## What Is a Module?
+
+A module is a single Python file.
+
+Examples:
 
 ```text
 cli.py
-config.py
 prompts.py
 commands.py
+venv_tools.py
 ```
 
-These are modules.
+Example:
 
 ```python
-from project_setup_helper.project_files.pyproject import create_pyproject_package
-```
+# prompts.py
 
-This teaches imports across packages and modules.
+def ask_yes_no(prompt: str) -> bool:
+    ...
+```
 
 ---
 
-## Install for development
+## What Is a Package?
 
-From this repo folder:
+A package is a directory containing Python modules.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
+Example:
+
+```text
+project_setup_helper/
+├── __init__.py
+├── cli.py
+├── prompts.py
+└── commands.py
 ```
 
-On Windows:
-
-```powershell
-python -m venv .venv
-.venv\Scripts\activate
-pip install -e .
-```
-
-The `-e` means editable install. When you edit files under `src/project_setup_helper/`, the installed command sees those changes immediately.
+The package groups related modules together.
 
 ---
 
-## Run the helper
+## What Is a Subpackage?
 
-After installing in editable mode:
+Packages can contain other packages.
 
-```bash
-project-setup-helper
+Example:
+
+```text
+project_setup_helper/
+└── installers/
+    ├── __init__.py
+    ├── windows.py
+    └── macos_apple_silicon.py
 ```
 
-You can also run it as a module:
+Here:
+
+```text
+project_setup_helper
+```
+
+is the package.
+
+```text
+installers
+```
+
+is a subpackage.
+
+---
+
+# What Is a Submodule?
+
+A submodule is simply a module that lives inside a package or subpackage.
+
+Example:
+
+```text
+project_setup_helper/
+├── prompts.py
+├── commands.py
+│
+└── installers/
+    ├── windows.py
+    └── macos_apple_silicon.py
+```
+
+These are all submodules:
+
+```text
+project_setup_helper.prompts
+project_setup_helper.commands
+project_setup_helper.installers.windows
+project_setup_helper.installers.macos_apple_silicon
+```
+
+Python identifies modules by their full dotted path.
+
+---
+
+## Visualizing the Hierarchy
+
+```text
+project_setup_helper
+│
+├── prompts
+├── commands
+├── os_detect
+│
+└── installers
+    │
+    ├── windows
+    └── macos_apple_silicon
+```
+
+Think of each dot as moving one level deeper:
+
+```python
+project_setup_helper.installers.windows
+```
+
+means:
+
+```text
+package
+    ↓
+subpackage
+    ↓
+module
+```
+
+---
+
+## Importing a Submodule
+
+Import a specific function:
+
+```python
+from project_setup_helper.installers.windows import (
+    run_windows_check,
+)
+```
+
+Python resolves:
+
+```text
+project_setup_helper
+    ↓
+installers
+    ↓
+windows.py
+    ↓
+run_windows_check()
+```
+
+---
+
+## Importing the Entire Submodule
+
+You can import the whole submodule:
+
+```python
+import project_setup_helper.installers.windows
+```
+
+Usage:
+
+```python
+project_setup_helper.installers.windows.run_windows_check()
+```
+
+---
+
+## Importing a Submodule With an Alias
+
+Long paths are often shortened:
+
+```python
+import project_setup_helper.installers.windows as win
+```
+
+Usage:
+
+```python
+win.run_windows_check()
+```
+
+This is common when the full package path is long.
+
+---
+
+## Why Submodules Exist
+
+Imagine placing every function in one file:
+
+```text
+project_setup_helper/
+└── everything.py
+```
+
+After a few months:
+
+```text
+everything.py
+```
+
+might be:
+
+```text
+3,000+ lines
+```
+
+and difficult to navigate.
+
+Instead we separate responsibilities:
+
+```text
+project_setup_helper/
+├── prompts.py
+├── commands.py
+├── os_detect.py
+├── venv_tools.py
+│
+├── installers/
+│   ├── windows.py
+│   └── macos_apple_silicon.py
+│
+└── project_files/
+    ├── gitignore.py
+    ├── requirements.py
+    └── pyproject.py
+```
+
+Each submodule has one primary responsibility.
+
+This is called:
+
+```text
+Separation of Concerns
+```
+
+and is one of the main reasons packages exist.
+
+---
+
+## Real Example From This Repository
+
+When the CLI starts, it may import several submodules:
+
+```python
+from project_setup_helper.prompts import ask_choice
+from project_setup_helper.venv_tools import create_virtual_environment
+from project_setup_helper.project_files.pyproject import (
+    create_pyproject_package,
+)
+```
+
+Notice that:
+
+```text
+project_setup_helper.prompts
+```
+
+is a submodule.
+
+And:
+
+```text
+project_setup_helper.project_files.pyproject
+```
+
+is a submodule inside a subpackage.
+
+This demonstrates how larger Python applications are organized.
+
+---
+
+## Package → Subpackage → Submodule
+
+Using this repository:
+
+```text
+project_setup_helper
+│
+├── prompts.py
+│
+└── project_files
+    │
+    └── pyproject.py
+```
+
+The hierarchy becomes:
+
+```text
+Package:
+    project_setup_helper
+
+Subpackage:
+    project_files
+
+Submodule:
+    pyproject
+```
+
+Which Python references as:
+
+```python
+project_setup_helper.project_files.pyproject
+```
+
+Understanding this dotted path notation is one of the most important skills when learning larger Python projects.
+
+---
+
+# Understanding Imports
+
+Python imports code from modules and packages.
+
+---
+
+## Import a Function
+
+```python
+from project_setup_helper.prompts import ask_yes_no
+```
+
+Usage:
+
+```python
+answer = ask_yes_no("Continue?")
+```
+
+---
+
+## Import Multiple Functions
+
+```python
+from project_setup_helper.prompts import (
+    ask_yes_no,
+    ask_choice,
+    pause,
+)
+```
+
+---
+
+## Import a Module
+
+```python
+import project_setup_helper.prompts
+```
+
+Usage:
+
+```python
+project_setup_helper.prompts.ask_yes_no(
+    "Continue?"
+)
+```
+
+---
+
+## Import With an Alias
+
+```python
+import project_setup_helper.prompts as prompts
+```
+
+Usage:
+
+```python
+prompts.ask_yes_no("Continue?")
+```
+
+Another common example:
+
+```python
+import pathlib as pl
+
+root = pl.Path.cwd()
+```
+
+---
+
+## Relative Imports
+
+Inside packages:
+
+```python
+from .prompts import ask_yes_no
+```
+
+The dot means:
+
+```text
+Current package
+```
+
+Example:
+
+```python
+from .commands import run_command
+```
+
+---
+
+## Relative Imports With Two Dots
+
+```python
+from ..installers.windows import run_windows_check
+```
+
+Means:
+
+```text
+Move up one package level
+Then import windows
+```
+
+---
+
+## Avoid Wildcard Imports
+
+Avoid:
+
+```python
+from prompts import *
+```
+
+Prefer:
+
+```python
+from project_setup_helper.prompts import ask_yes_no
+```
+
+or:
+
+```python
+import project_setup_helper.prompts as prompts
+```
+
+---
+
+# Understanding `__init__.py`
+
+One of the most important files in Python packaging is:
+
+```text
+__init__.py
+```
+
+Example:
+
+```text
+project_setup_helper/
+├── __init__.py
+├── cli.py
+└── prompts.py
+```
+
+---
+
+## Minimal `__init__.py`
+
+```python
+# __init__.py
+```
+
+An empty file is valid.
+
+---
+
+## Package Metadata
+
+```python
+# __init__.py
+
+__version__ = "0.1.0"
+__author__ = "Demetrius Johnson"
+```
+
+Usage:
+
+```python
+import project_setup_helper
+
+print(project_setup_helper.__version__)
+```
+
+---
+
+## Re-exporting Functions
+
+```python
+# prompts.py
+
+def ask_yes_no():
+    ...
+```
+
+```python
+# __init__.py
+
+from .prompts import ask_yes_no
+```
+
+Now:
+
+```python
+from project_setup_helper import ask_yes_no
+```
+
+works.
+
+---
+
+## Package API Design
+
+Many libraries use `__init__.py` to create a cleaner public API.
+
+Instead of:
+
+```python
+from package.module.submodule import thing
+```
+
+users can write:
+
+```python
+from package import thing
+```
+
+because `__init__.py` re-exports it.
+
+---
+
+# Understanding `__main__.py`
+
+The second special file is:
+
+```text
+__main__.py
+```
+
+Example:
+
+```text
+project_setup_helper/
+├── __init__.py
+├── __main__.py
+└── cli.py
+```
+
+---
+
+## Typical `__main__.py`
+
+```python
+from project_setup_helper.cli import main
+
+if __name__ == "__main__":
+    main()
+```
+
+Its job is simple:
+
+```text
+Run the application's main entry point.
+```
+
+---
+
+## Why `__main__.py` Exists
+
+Because Python supports:
+
+```bash
+python -m package_name
+```
+
+Example:
 
 ```bash
 python -m project_setup_helper
 ```
 
-The package supports module execution because it includes:
+Python automatically looks for:
 
 ```text
-src/project_setup_helper/__main__.py
+project_setup_helper.__main__
+```
+
+and executes it.
+
+---
+
+## Execution Flow
+
+```text
+python -m project_setup_helper
+
+        │
+        ▼
+
+Find package
+
+        │
+        ▼
+
+Find __main__.py
+
+        │
+        ▼
+
+Run __main__.py
+
+        │
+        ▼
+
+Call cli.main()
 ```
 
 ---
 
-## The interactive flow
+# Running Files vs Running Packages
 
-### Step 1: Choose project type
-
-```text
-1) requirements.txt project
-2) pyproject package
-```
-
-Use `requirements.txt` for simple scripts and beginner projects.
-
-Use `pyproject.toml` for installable packages, reusable tools, or command-line programs.
+These are different.
 
 ---
 
-### Step 2: Choose project name
+## Running a File
+
+```bash
+python script.py
+```
+
+Python executes:
+
+```text
+script.py
+```
+
+directly.
+
+---
+
+## Running a Package
+
+```bash
+python -m project_setup_helper
+```
+
+Python executes:
+
+```text
+project_setup_helper/__main__.py
+```
+
+instead.
+
+---
+
+# Why This Repo Uses a `src` Layout
+
+The package lives here:
+
+```text
+src/project_setup_helper/
+```
+
+instead of:
+
+```text
+project_setup_helper/
+```
+
+directly in the repository root.
+
+This is called the:
+
+```text
+src layout
+```
+
+---
+
+## Benefits
+
+The `src` layout:
+
+* prevents accidental imports
+* matches installed behavior
+* encourages proper packaging
+* is common in professional projects
 
 Example:
 
 ```text
-weather-cli
+repo/
+├── pyproject.toml
+├── README.md
+└── src/
+    └── project_setup_helper/
 ```
 
-The helper teaches the difference between the distribution name and the import package name:
+---
+
+# Installation
+
+Create a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+Install:
+
+```bash
+pip install -e .
+```
+
+---
+
+# What Does `-e` Mean?
+
+```bash
+pip install -e .
+```
+
+means:
 
 ```text
-Distribution/folder name: weather-cli
-Import package name:      weather_cli
+Editable install
 ```
 
-This matters because Python imports cannot use hyphens:
+Python creates a link to the source code rather than copying it.
+
+That means changes to:
+
+```text
+src/project_setup_helper/
+```
+
+are immediately available.
+
+No reinstall is required.
+
+---
+
+# How the CLI Command Appears
+
+Inside:
+
+```text
+pyproject.toml
+```
+
+there is:
+
+```toml
+[project.scripts]
+project-setup-helper = "project_setup_helper.cli:main"
+```
+
+This tells Python:
+
+```text
+Create a terminal command named:
+
+project-setup-helper
+
+When executed:
+
+Import project_setup_helper.cli
+
+Call main()
+```
+
+Conceptually:
 
 ```python
-import weather_cli
+from project_setup_helper.cli import main
+
+main()
 ```
 
 ---
 
-### Step 3: Choose destination
+# Three Ways To Run The Helper
 
-```text
-1) Current directory
-2) generated_projects/
-3) Custom path
+## Method 1
+
+```bash
+project-setup-helper
 ```
 
-The default is `generated_projects/` so beginners can safely create multiple examples without cluttering the helper repo root.
+Uses:
 
-Example result:
-
-```text
-generated_projects/
-└── weather-cli/
+```toml
+[project.scripts]
 ```
 
 ---
 
-### Step 4: Generate project
+## Method 2
 
-Before writing files, the helper shows a review summary:
-
-```text
-Project type: pyproject
-Project name: weather-cli
-Package name: weather_cli
-Destination:  /path/to/generated_projects/weather-cli
-Dev tools:    yes
+```bash
+python -m project_setup_helper
 ```
 
-Then it creates the selected project.
+Uses:
+
+```text
+__main__.py
+```
 
 ---
 
-## Generated layout: requirements.txt project
+## Method 3: Direct file execution
 
-If you choose `requirements.txt project`, the helper creates something like:
+This is not recommended for normal use because package-relative imports may not behave the same way as installed execution.
+
+Prefer: `python -m project_setup_helper`
+
+```bash
+python src/project_setup_helper/cli.py
+```
+
+Development only.
+
+Not typically used after installation.
+
+---
+
+# Generated Requirements Project
+
+Example:
 
 ```text
 weather-scraper/
@@ -243,17 +1117,16 @@ weather-scraper/
 ├── requirements-dev.txt
 ├── SETUP_NOTES_YYYYMMDD_HHMMSS.md
 └── setup_logs/
-    └── python_project_setup_YYYYMMDD_HHMMSS.log
 ```
 
-Run it with:
+Run:
 
 ```bash
 source .venv/bin/activate
 python main.py
 ```
 
-On Windows:
+Windows:
 
 ```powershell
 .venv\Scripts\activate
@@ -262,9 +1135,9 @@ python main.py
 
 ---
 
-## Generated layout: pyproject package
+# Generated Package Project
 
-If you choose `pyproject package`, the helper creates something like:
+Example:
 
 ```text
 weather-cli/
@@ -272,27 +1145,28 @@ weather-cli/
 ├── .venv/
 ├── README.md
 ├── pyproject.toml
-├── SETUP_NOTES_YYYYMMDD_HHMMSS.md
-├── setup_logs/
-│   └── python_project_setup_YYYYMMDD_HHMMSS.log
 ├── src/
 │   └── weather_cli/
 │       ├── __init__.py
 │       ├── __main__.py
 │       └── cli.py
-└── tests/
-    └── test_cli.py
+├── tests/
+└── setup_logs/
 ```
 
-Run it with:
+Install:
 
 ```bash
-source .venv/bin/activate
 pip install -e .
+```
+
+Run:
+
+```bash
 weather-cli Demetrius
 ```
 
-Or:
+or:
 
 ```bash
 python -m weather_cli Demetrius
@@ -300,79 +1174,34 @@ python -m weather_cli Demetrius
 
 ---
 
-## Why generated projects are not timestamped by default
+# macOS Apple Silicon Support
 
-The generated project folder should look like a real project:
+The helper includes dedicated support for:
 
-```text
-weather-cli/
-├── pyproject.toml
-├── src/
-└── tests/
-```
+* Homebrew detection
+* Homebrew Python installation
+* PATH verification
+* Python resolution checks
 
-That is more useful than hiding the real layout inside a timestamped folder.
-
-The timestamped files are logs and setup notes:
+Relevant submodule:
 
 ```text
-setup_logs/python_project_setup_YYYYMMDD_HHMMSS.log
-SETUP_NOTES_YYYYMMDD_HHMMSS.md
+project_setup_helper.installers.macos_apple_silicon
 ```
 
-This keeps the project layout realistic while still preserving a history of each helper run.
-
----
-
-## macOS Apple Silicon support
-
-On Apple Silicon Macs, Apple's system-managed Python is usually located at:
-
-```text
-/usr/bin/python3
-```
-
-For development, you usually want Homebrew Python instead:
-
-```text
-/opt/homebrew/bin/python3
-```
-
-The helper includes a macOS Apple Silicon module that can check:
-
-- whether Homebrew is installed
-- whether Homebrew Python is installed
-- whether `/opt/homebrew/bin` appears before `/usr/bin` on `PATH`
-- which `python3` will be used to create the virtual environment
-
-The related code lives here:
+File path:
 
 ```text
 src/project_setup_helper/installers/macos_apple_silicon.py
 ```
 
----
-
-## Windows support
-
-The helper uses Windows-specific virtual environment paths when running on Windows:
-
-```text
-.venv\Scripts\python.exe
-.venv\Scripts\activate
-```
-
-The Windows-specific extension point lives here:
-
-```text
-src/project_setup_helper/installers/windows.py
-```
+The goal is to help ensure virtual environments are created using Homebrew-managed Python rather than Apple's system Python.
 
 ---
 
-## Development checks
+# Testing
 
-Compile-check the package:
+Compile-check:
 
 ```bash
 python -m compileall src tests
@@ -381,28 +1210,43 @@ python -m compileall src tests
 Run tests:
 
 ```bash
-PYTHONPATH=src pytest
+pytest
 ```
 
-Or, after installing development tools:
+or:
 
 ```bash
-pytest
+PYTHONPATH=src pytest
 ```
 
 ---
 
-## Teaching progression
+# Summary
 
-This repo supports this learning path:
+This repository intentionally demonstrates:
 
 ```text
-Level 1: single script
-Level 2: functions
-Level 3: modules
-Level 4: package
-Level 5: installable CLI tool
-Level 6: project scaffolder
+Functions
+    ↓
+Modules
+    ↓
+Imports
+    ↓
+Packages
+    ↓
+Subpackages
+    ↓
+Submodules
+    ↓
+Virtual Environments
+    ↓
+Editable Installs
+    ↓
+pyproject.toml
+    ↓
+CLI Entry Points
+    ↓
+Project Scaffolding
 ```
 
-The helper is now both the lesson and the tool that creates the next practice project.
+The helper is both a working tool and a complete example of modern Python project structure.
