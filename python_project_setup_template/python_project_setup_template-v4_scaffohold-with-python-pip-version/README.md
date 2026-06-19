@@ -1228,13 +1228,13 @@ Example:
   3.13.5
 ```
 
-Locate the interpreter:
+Locate the active interpreter:
 
 ```bash
 pyenv which python
 ```
 
-or use the version directly:
+or use a specific version directly:
 
 ```text
 ~/.pyenv/versions/3.8.13/bin/python
@@ -1246,16 +1246,94 @@ Create a virtual environment:
 ~/.pyenv/versions/3.8.13/bin/python -m venv .venv
 ```
 
-The helper does not need special support for pyenv.
+---
+
+### Where pyenv Stores Python Versions
+
+The helper searches the standard pyenv location:
+
+```text
+~/.pyenv/versions/
+```
+
+Example:
+
+```text
+~/.pyenv/versions/
+├── 3.8.13/
+├── 3.11.13/
+├── 3.12.11/
+└── 3.13.5/
+```
+
+Each version contains its own Python executable:
+
+```text
+~/.pyenv/versions/3.8.13/bin/python
+~/.pyenv/versions/3.11.13/bin/python
+~/.pyenv/versions/3.12.11/bin/python
+~/.pyenv/versions/3.13.5/bin/python
+```
+
+These interpreters can be selected directly by the helper when using the pyenv-managed Python option.
+
+---
+
+### Using pyenv with the Helper
+
+The helper can discover pyenv-managed Python versions automatically.
 
 Simply choose:
+
+```text
+Python interpreter:
+  5) pyenv-managed Python
+```
+
+If pyenv versions are installed, the helper will display the available interpreters and allow you to select one.
+
+Example:
+
+```text
+Choose pyenv Python interpreter
+
+1) 3.8.13
+2) 3.11.13
+3) 3.12.11
+4) 3.13.5
+```
+
+The selected interpreter will then be used to create the virtual environment.
+
+For example:
+
+```text
+Selected Interpreter:
+    ~/.pyenv/versions/3.8.13/bin/python
+```
+
+The helper will create the virtual environment using:
+
+```bash
+~/.pyenv/versions/3.8.13/bin/python -m venv .venv
+```
+
+and record that information in the generated setup notes.
+
+If no pyenv versions are discovered, you can still choose:
 
 ```text
 Python interpreter:
   3) Specific executable path
 ```
 
-and provide the path to the desired Python executable.
+and manually provide a path such as:
+
+```text
+~/.pyenv/versions/3.8.13/bin/python
+```
+
+---
 
 As a general rule:
 
@@ -1265,9 +1343,11 @@ Need Python 3.11, 3.12, or 3.13?
 
 Need an exact version such as 3.8.13?
     Use pyenv.
+
+Need a custom interpreter location?
+    Use Specific executable path.
 ```
 
----
 
 ## Creating a Virtual Environment Manually
 
