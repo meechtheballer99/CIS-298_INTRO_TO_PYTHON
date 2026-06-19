@@ -1341,7 +1341,9 @@ Result:
 
 The virtual environment itself can still be created successfully, but the project may not install or run correctly.
 
-A future version of the helper may warn when:
+The helper warns when the selected interpreter does not satisfy the declared project requirement.
+
+Example:
 
 ```text
 Minimum Python Version:
@@ -1353,6 +1355,9 @@ Selected Interpreter:
 
 because the selected interpreter does not satisfy the declared project requirement.
 
+In that case, the helper explains the mismatch and asks whether you want to continue.
+
+This matters because requires-python does not create or select Python for you. It only declares which Python versions the project supports. The actual Python version inside .venv/ comes from the interpreter used to create the virtual environment.
 ---
 
 ## Recommended Practice

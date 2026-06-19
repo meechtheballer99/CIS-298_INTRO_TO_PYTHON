@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -83,6 +84,27 @@ def choose_python_interpreter() -> Path:
     raise FileNotFoundError(f"Homebrew Python not found: {path}")
 
 
+def parse_major_minor(version_text: str) -> tuple[int, int] | None:
+    """
+    Extract major/minor version from text like:
+      Python 3.12.4
+      3.12.4
+    """
+    match = re.search(r"(\d+)\.(\d+)", version_text)
+
+    if not match:
+        return None
+
+    return int(match.group(1)), int(match.group(2))
+
+
+def get_interpreter_version(interpreter: Path) -> tuple[int, int] | None:
+    """Return the selected interpreter's major/minor Python version."""
+    result = run_command([str(interpreter), "--version"])
+    version_text = result.stdout.strip() or result.stderr.strip()
+    return parse_major_minor(version_text)
+
+
 def print_python_version(interpreter: Path) -> None:
     """Print the version reported by the selected interpreter."""
     result = run_command([str(interpreter), "--version"])
@@ -90,3 +112,36 @@ def print_python_version(interpreter: Path) -> None:
     print("\nSelected Python interpreter:")
     print(f"  {interpreter}")
     print(f"Version:\n  {version}")
+
+
+def warn_if_interpreter_too_old(
+    minimum_python_version: str,
+    interpreter: Path,
+) -> None:
+    """Warn if selected interpreter is lower than the project requirement."""
+    required = parse_major_minor(minimum_python_version)
+    actual = get_interpreter_version(interpreter)
+
+    if required is None or actual is None:
+        return
+
+    if actual >= required:
+        return
+
+    print("\nWARNING:")
+    print("The selected interpreter does not satisfy the project requirement.")
+    print("\nProject requires:")
+    print(f"  Python >= {minimum_python_version}")
+    print("\nSelected interpreter:")
+    print(f"  Python {actual[0]}.{actual[1]}")
+    print(f"  {interpreter}")
+    print("\nThe virtual environment could still be created,")
+    print("but package installation may fail because of requires-python.")
+
+    should_continue = ask_yes_no(
+        "\nContinue anyway?",
+        default=False,
+    )
+
+    if not should_continue:
+        raise SystemExit("Setup stopped because Python version requirement was not met.")

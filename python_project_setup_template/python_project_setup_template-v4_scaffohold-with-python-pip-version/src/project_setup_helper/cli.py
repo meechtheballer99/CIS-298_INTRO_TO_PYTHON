@@ -29,6 +29,7 @@ from project_setup_helper.python_versions import (
     choose_minimum_python_version,
     choose_python_interpreter,
     print_python_version,
+    warn_if_interpreter_too_old,
 )
 from project_setup_helper.project_files.gitignore import ensure_gitignore
 from project_setup_helper.project_files.pyproject import create_pyproject_package
@@ -124,12 +125,20 @@ def build_config() -> ProjectConfig:
 
     print("\nStep 2: Project details")
     project_name, package_name = choose_project_name()
+
     minimum_python_version = choose_minimum_python_version(
         SUPPORTED_PYTHON_VERSIONS,
         DEFAULT_MINIMUM_PYTHON_VERSION,
     )
+
     python_interpreter = choose_python_interpreter()
     print_python_version(python_interpreter)
+
+    warn_if_interpreter_too_old(
+        minimum_python_version,
+        python_interpreter,
+    )
+
     pip_version = ask_pip_version(DEFAULT_PIP_VERSION)
 
     project_root = choose_destination(project_name)
