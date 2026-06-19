@@ -996,6 +996,9 @@ pip install -e .
 # What Does `-e` Mean?
 
 ```bash
+# optional: upgrade pip first
+pip install --upgrade pip
+# now install the package from local repo in editable mode
 pip install -e .
 ```
 
@@ -1134,6 +1137,61 @@ Windows:
 python main.py
 ```
 
+When a user pulls your repo, they can simply create a virtual enviornment:
+
+macOS / Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+Then install the dependencies into the virtual environment from `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+If the project also includes development dependencies:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Verify the installed packages:
+
+```bash
+pip list
+```
+
+Then run the application:
+
+```bash
+python main.py
+```
+
+Because the virtual environment is activated, all packages are installed only inside `.venv/` and do not affect your system-wide Python installation.
+
+Overall, the workflow using requirements.txt project is as follows:
+
+```text
+Create venv
+    ↓
+Activate venv
+    ↓
+Install dependencies
+    ↓
+Verify installation
+    ↓
+Run application
+```
 ---
 
 # Generated Package Project
@@ -1172,6 +1230,101 @@ or:
 ```bash
 python -m weather_cli Demetrius
 ```
+
+When a user pulls your repo, they can create and activate a virtual environment:
+
+macOS / Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+Then install the package into the virtual environment:
+
+```bash
+pip install -e .
+```
+
+The `-e` flag means:
+
+```text
+Editable Install
+```
+
+Rather than copying the package into the virtual environment, Python creates a link to the source code.
+
+This means changes made to:
+
+```text
+src/weather_cli/
+```
+
+are immediately available without reinstalling the package.
+
+Verify the installation:
+
+```bash
+pip list
+```
+
+You should see:
+
+```text
+weather-cli
+```
+
+among the installed packages.
+
+Run the CLI command:
+
+```bash
+weather-cli Demetrius
+```
+
+or execute the package directly:
+
+```bash
+python -m weather_cli Demetrius
+```
+
+Because the package is installed in editable mode, changes to the source code are available immediately:
+
+```text
+Edit code
+    ↓
+Save file
+    ↓
+Run command again
+```
+
+No reinstall is required.
+
+Overall, the workflow using a pyproject.toml package is as follows:
+
+```text
+Create venv
+    ↓
+Activate venv
+    ↓
+Install package (editable mode)
+    ↓
+Verify installation
+    ↓
+Run CLI command
+    ↓
+Edit source code
+    ↓
+Run again without reinstalling
+```
+
 
 ---
 
