@@ -112,19 +112,19 @@ from package.subpackage.module import function
 From the repo root:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+python3 -m pip install --upgrade pip
+python3 -m pip install -e .
 ```
 
 On Windows PowerShell:
 
 ```powershell
-python -m venv .venv
+python3 -m venv .venv
 .venv\Scripts\activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+python3 -m pip install --upgrade pip
+python3 -m pip install -e .
 ```
 
 The `-e` means editable install. When you edit files under `src/project_setup_helper/`, Python sees the changes immediately.
@@ -142,7 +142,7 @@ project-setup-helper
 You can also run the package directly:
 
 ```bash
-python -m project_setup_helper
+python3 -m project_setup_helper
 ```
 
 Both call:
@@ -281,7 +281,7 @@ The helper itself now lives at Level 4/5 while still creating beginner-friendly 
 Install dev tools:
 
 ```bash
-python -m pip install -e ".[dev]"
+python3 -m pip install -e ".[dev]"
 ```
 
 Run tests:
