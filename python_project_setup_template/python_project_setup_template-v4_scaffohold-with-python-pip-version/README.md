@@ -1112,37 +1112,344 @@ For package projects, the Python requirement is written to `pyproject.toml`:
 requires-python = ">=3.12"
 ```
 
-The virtual environment is created using the selected interpreter:
+This tells users and tools that the project expects Python 3.12 or newer.
+
+---
+
+## Installing Multiple Python Versions with Homebrew
+
+On macOS Apple Silicon, Homebrew allows multiple Python versions to coexist.
+
+Examples:
+
+```bash
+brew install python@3.11
+brew install python@3.12
+brew install python@3.13
+```
+
+Verify installed versions:
+
+```bash
+brew list | grep python
+```
+
+You can also inspect a specific version:
+
+```bash
+brew info python@3.12
+```
+
+Typical Homebrew Python executables:
+
+```text
+/opt/homebrew/bin/python3.11
+/opt/homebrew/bin/python3.12
+/opt/homebrew/bin/python3.13
+```
+
+Verify each version:
+
+```bash
+/opt/homebrew/bin/python3.11 --version
+/opt/homebrew/bin/python3.12 --version
+/opt/homebrew/bin/python3.13 --version
+```
+
+Homebrew does not automatically switch your active Python version when multiple versions are installed.
+
+Instead, each version remains available as its own executable:
+
+```text
+/opt/homebrew/bin/python3.11
+/opt/homebrew/bin/python3.12
+/opt/homebrew/bin/python3.13
+```
+
+The helper uses the specific interpreter you select rather than attempting to modify your system-wide Python configuration.
+
+If a Python version is not installed through Homebrew (or otherwise available on your machine), the helper cannot create a virtual environment using that version until it is installed.
+
+---
+
+## Homebrew Python Versions and the Helper
+
+The helper can only select Python interpreters that already exist on your system.
+
+For macOS Apple Silicon users, the recommended approach is:
+
+```text
+Install Python version with Homebrew
+    ↓
+Verify installation
+    ↓
+Select interpreter in helper
+    ↓
+Create virtual environment
+```
+
+For example:
+
+```bash
+brew install python@3.12
+```
+
+Verify:
+
+```bash
+/opt/homebrew/bin/python3.12 --version
+```
+
+Then select:
+
+```text
+Python interpreter:
+    /opt/homebrew/bin/python3.12
+```
+
+The helper will create the virtual environment using:
 
 ```bash
 /opt/homebrew/bin/python3.12 -m venv .venv
 ```
 
-Pip is managed inside the virtual environment:
+and record that information in the generated setup notes.
+
+---
+
+## Creating a Virtual Environment Manually
+
+If you want to create a virtual environment using a specific Python version:
+
+```bash
+/opt/homebrew/bin/python3.12 -m venv .venv
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+Verify the version inside the virtual environment:
+
+```bash
+python --version
+```
+
+Expected output:
+
+```text
+Python 3.12.x
+```
+
+This guarantees the project is using Python 3.12 regardless of whatever other Python versions are installed on the machine.
+
+---
+
+## Creating a Virtual Environment with the Helper
+
+The helper can perform this step for you.
+
+During project creation, you may choose:
+
+```text
+Python interpreter:
+  1) Current Python interpreter
+  2) python3 from PATH
+  3) Specific executable path
+  4) Homebrew Python
+```
+
+For example:
+
+```text
+/opt/homebrew/bin/python3.12
+```
+
+The helper will then create the virtual environment using:
+
+```bash
+/opt/homebrew/bin/python3.12 -m venv .venv
+```
+
+and record that information in the generated setup notes.
+
+---
+
+## What Happens If Versions Do Not Match?
+
+Consider this configuration:
+
+```toml
+[project]
+requires-python = ">=3.12"
+```
+
+but the virtual environment is created using:
+
+```bash
+/opt/homebrew/bin/python3.11 -m venv .venv
+```
+
+The virtual environment itself will still be created successfully.
+
+However, problems may appear later:
+
+```text
+Create venv
+    ✓ succeeds
+
+Install dependencies
+    ✓ may succeed
+
+Install package
+    ✗ may fail
+
+Run application
+    ✗ may fail
+```
+
+Many modern packages check:
+
+```toml
+requires-python
+```
+
+during installation.
+
+For example:
+
+```toml
+requires-python = ">=3.12"
+```
+
+If your virtual environment is using Python 3.11, package installation may fail with an error indicating that the active interpreter does not satisfy the project's declared Python requirement.
+
+In other words:
+
+```text
+Project Requirement:
+    Python >=3.12
+
+Virtual Environment:
+    Python 3.11
+
+Result:
+    Configuration mismatch
+```
+
+The virtual environment itself can still be created successfully, but the project may not install or run correctly.
+
+A future version of the helper may warn when:
+
+```text
+Minimum Python Version:
+    3.12
+
+Selected Interpreter:
+    Python 3.11
+```
+
+because the selected interpreter does not satisfy the declared project requirement.
+
+---
+
+## Recommended Practice
+
+Keep these values aligned:
+
+```text
+Project Requirement:
+    >=3.12
+
+Virtual Environment:
+    Python 3.12
+
+Pip:
+    Latest or pinned version
+```
+
+In other words:
+
+```text
+Choose Python requirement
+    ↓
+Install that Python version
+    ↓
+Create venv using that interpreter
+    ↓
+Install dependencies
+    ↓
+Develop and run project
+```
+
+This is the workflow the helper is designed to encourage.
+
+---
+
+## Managing Pip Inside the Virtual Environment
+
+Once the virtual environment exists, pip is managed inside that environment.
+
+Upgrade to the latest pip:
 
 ```bash
 .venv/bin/python -m pip install --upgrade pip
 ```
 
-or, if pinned:
+Or install a specific pip version:
 
 ```bash
 .venv/bin/python -m pip install --upgrade pip==24.3.1
 ```
 
+Verify the active pip version:
+
+```bash
+python -m pip --version
+```
+
+Because pip is running inside `.venv`, these changes do not affect your system-wide Python installation.
+
+---
+
+## Putting It All Together
+
 This teaches an important distinction:
 
 ```text
-Choose Python first
+Choose Python version
+    ↓
+Select Python interpreter
     ↓
 Create virtual environment
     ↓
-Upgrade or pin pip inside that environment
+Upgrade or pin pip
     ↓
 Install project dependencies
+    ↓
+Run project
 ```
 
----
+For example:
+
+```text
+Python Requirement:
+    >=3.12
+
+Python Interpreter:
+    /opt/homebrew/bin/python3.12
+
+Pip Version:
+    24.3.1
+
+Virtual Environment:
+    .venv/
+```
+
+All four values are related, but they serve different purposes and should be understood separately.
+
 
 # Three Ways To Run The Helper
 
