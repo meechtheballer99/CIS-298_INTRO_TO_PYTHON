@@ -1,0 +1,47 @@
+2026-06-19 11:53:50,590 [INFO] Starting interactive Python project setup.
+2026-06-19 11:53:50,591 [INFO] Project type: requirements
+2026-06-19 11:53:50,591 [INFO] Project name: my-test-project-v4
+2026-06-19 11:53:50,591 [INFO] Package name: my_test_project_v4
+2026-06-19 11:53:50,591 [INFO] Project root: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4
+2026-06-19 11:53:50,591 [INFO] Minimum Python version: >=3.11
+2026-06-19 11:53:50,591 [INFO] Python interpreter: /Users/meechtheballer99/.pyenv/versions/3.8.13/bin/python
+2026-06-19 11:53:50,592 [INFO] Pip version: 22.0.4
+2026-06-19 11:53:55,317 [INFO] .gitignore updated: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/.gitignore
+2026-06-19 11:53:55,319 [INFO] Created requirements project files in /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4
+2026-06-19 11:53:55,319 [INFO] Running command: /Users/meechtheballer99/.pyenv/versions/3.8.13/bin/python --version
+2026-06-19 11:53:55,336 [INFO] stdout:
+Python 3.8.13
+2026-06-19 11:54:09,333 [INFO] Running command: /Users/meechtheballer99/.pyenv/versions/3.8.13/bin/python -m venv /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/.venv
+2026-06-19 11:54:11,542 [INFO] Virtual environment created at /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/.venv
+2026-06-19 11:59:05,581 [INFO] Running command: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/.venv/bin/python -m pip install -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/requirements.txt
+2026-06-19 11:59:07,879 [INFO] stdout:
+Collecting requests
+  Downloading requests-2.32.4-py3-none-any.whl (64 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.8/64.8 KB 1.2 MB/s eta 0:00:00
+Collecting beautifulsoup4
+  Downloading beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.9/109.9 KB 2.4 MB/s eta 0:00:00
+Collecting certifi>=2017.4.17
+  Downloading certifi-2026.6.17-py3-none-any.whl (133 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.3/133.3 KB 1.8 MB/s eta 0:00:00
+Collecting charset_normalizer<4,>=2
+  Downloading charset_normalizer-3.4.7-cp38-cp38-macosx_10_9_universal2.whl (283 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 283.1/283.1 KB 2.4 MB/s eta 0:00:00
+Collecting idna<4,>=2.5
+  Downloading idna-3.15-py3-none-any.whl (72 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.3/72.3 KB 3.3 MB/s eta 0:00:00
+Collecting urllib3<3,>=1.21.1
+  Downloading urllib3-2.2.3-py3-none-any.whl (126 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.3/126.3 KB 3.3 MB/s eta 0:00:00
+Collecting typing-extensions>=4.0.0
+  Downloading typing_extensions-4.13.2-py3-none-any.whl (45 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.8/45.8 KB 2.6 MB/s eta 0:00:00
+Collecting soupsieve>=1.6.1
+  Downloading soupsieve-2.7-py3-none-any.whl (36 kB)
+Installing collected packages: urllib3, typing-extensions, soupsieve, idna, charset_normalizer, certifi, requests, beautifulsoup4
+Successfully installed beautifulsoup4-4.15.0 certifi-2026.6.17 charset_normalizer-3.4.7 idna-3.15 requests-2.32.4 soupsieve-2.7 typing-extensions-4.13.2 urllib3-2.2.3
+2026-06-19 11:59:07,880 [INFO] stderr:
+WARNING: You are using pip version 22.0.4; however, version 25.0.1 is available.
+You should consider upgrading via the '/Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v4_scaffohold-with-python-pip-version/generated_projects/my-test-project-v4/.venv/bin/python -m pip install --upgrade pip' command.
+2026-06-19 11:59:07,880 [INFO] Dependency installation complete.
+2026-06-19 11:59:37,090 [INFO] Wrote SETUP_NOTES_20260619_115907.md.
