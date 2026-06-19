@@ -1172,48 +1172,100 @@ If a Python version is not installed through Homebrew (or otherwise available on
 
 ---
 
-## Homebrew Python Versions and the Helper
+## Homebrew vs pyenv
 
-The helper can only select Python interpreters that already exist on your system.
+For most modern Python projects, Homebrew is the simplest way to install and manage Python versions on macOS Apple Silicon.
 
-For macOS Apple Silicon users, the recommended approach is:
+Examples:
+
+```bash
+brew install python@3.11
+brew install python@3.12
+brew install python@3.13
+```
+
+However, Homebrew focuses on maintained Python releases and may not provide every historical patch version.
+
+For example, if you specifically need:
 
 ```text
-Install Python version with Homebrew
-    ↓
-Verify installation
-    ↓
-Select interpreter in helper
-    ↓
-Create virtual environment
+Python 3.8.13
 ```
 
-For example:
+a version manager such as:
+
+```text
+pyenv
+```
+
+is often a better choice.
+
+Install pyenv:
 
 ```bash
-brew install python@3.12
+brew install pyenv
 ```
 
-Verify:
+Install a specific Python version:
 
 ```bash
-/opt/homebrew/bin/python3.12 --version
+pyenv install 3.8.13
 ```
 
-Then select:
+Verify installed versions:
+
+```bash
+pyenv versions
+```
+
+Example:
+
+```text
+* system
+  3.8.13
+  3.11.13
+  3.12.11
+  3.13.5
+```
+
+Locate the interpreter:
+
+```bash
+pyenv which python
+```
+
+or use the version directly:
+
+```text
+~/.pyenv/versions/3.8.13/bin/python
+```
+
+Create a virtual environment:
+
+```bash
+~/.pyenv/versions/3.8.13/bin/python -m venv .venv
+```
+
+The helper does not need special support for pyenv.
+
+Simply choose:
 
 ```text
 Python interpreter:
-    /opt/homebrew/bin/python3.12
+  3) Specific executable path
 ```
 
-The helper will create the virtual environment using:
+and provide the path to the desired Python executable.
 
-```bash
-/opt/homebrew/bin/python3.12 -m venv .venv
+As a general rule:
+
+```text
+Need Python 3.11, 3.12, or 3.13?
+    Use Homebrew.
+
+Need an exact version such as 3.8.13?
+    Use pyenv.
 ```
-
-and record that information in the generated setup notes.
 
 ---
 
@@ -1259,6 +1311,7 @@ Python interpreter:
   2) python3 from PATH
   3) Specific executable path
   4) Homebrew Python
+  5) pyenv-managed Python
 ```
 
 For example:
@@ -1274,6 +1327,18 @@ The helper will then create the virtual environment using:
 ```
 
 and record that information in the generated setup notes.
+
+Recommended workflow:
+
+```text
+Install Python version
+    ↓
+Select interpreter in helper
+    ↓
+Create virtual environment
+    ↓
+Install dependencies
+```
 
 ---
 
@@ -1351,11 +1416,25 @@ Minimum Python Version:
 
 Selected Interpreter:
     Python 3.11
+
+WARNING:
+The selected interpreter does not satisfy the project requirement.
+
+Continue anyway? [y/N]
 ```
 
-In that case, the helper explains the mismatch and asks whether you want to continue.
+This matters because:
 
-This matters because requires-python does not create or select Python for you. It only declares which Python versions the project supports. The actual Python version inside .venv/ comes from the interpreter used to create the virtual environment.
+```text
+requires-python
+```
+
+does not create or select Python for you.
+
+It only declares which Python versions the project supports.
+
+The actual Python version inside `.venv/` comes from the interpreter used to create the virtual environment.
+
 ---
 
 ## Recommended Practice
