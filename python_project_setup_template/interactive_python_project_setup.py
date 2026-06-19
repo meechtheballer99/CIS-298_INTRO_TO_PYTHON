@@ -9,7 +9,7 @@ Interactive helper for setting up a Python project with:
 - optional src/ package layout
 - .gitignore protection for virtual environments and Python cache files
 - robust timestamped logging
-- macOS Apple Silicon checks for Homebrew-managed Python
+- macOS Apple Silicon checks for Homebrew, Homebrew-managed Python, and PATH setup
 
 This script is intentionally educational. It pauses at important decision points
 so the user understands what is about to happen.
@@ -180,11 +180,15 @@ def ask_choice(prompt: str, choices: dict[str, str], default: str | None = None)
     """
     Ask the user to choose from numbered options.
 
-    choices example:
-        {
-            "1": "Continue",
-            "2": "Skip",
-        }
+    Example:
+        ask_choice(
+            "What do you want to do?",
+            choices={
+                "1": "Continue",
+                "2": "Skip",
+            },
+            default="1",
+        )
     """
     print(f"\n{prompt}")
 
@@ -303,7 +307,8 @@ def run_interactive_command(command: list[str], cwd: Path | None = None) -> int:
     """
     Run a command interactively so the user can see prompts/output.
 
-    This is used for commands like the Homebrew installer.
+    This is used for commands like the Homebrew installer or `brew install python`,
+    where showing the live output is more educational than capturing it silently.
     """
     logging.info("Running interactive command: %s", " ".join(command))
 
@@ -343,7 +348,12 @@ def get_expected_homebrew_bin_dir() -> Path:
 
 
 def find_homebrew_command() -> Path | None:
-    """Find Homebrew even if it is not currently on PATH."""
+    """
+    Find the Homebrew executable.
+
+    This checks PATH first. If brew is not on PATH, it also checks the standard
+    installation locations.
+    """
     brew_from_path = shutil.which("brew")
     if brew_from_path:
         return Path(brew_from_path)
@@ -423,6 +433,24 @@ def ensure_line_in_file(path: Path, line: str) -> bool:
     return True
 
 
+def shell_profile_has_homebrew_path(homebrew_bin: Path) -> bool:
+    """
+    Return True if ~/.zprofile contains the expected Homebrew PATH line.
+
+    This helps distinguish:
+
+    - PATH is correct for this running script
+    - future terminal sessions are configured correctly too
+    """
+    zprofile = Path.home() / ".zprofile"
+    line = f'export PATH="{homebrew_bin}:$PATH"'
+
+    if not zprofile.exists():
+        return False
+
+    return line in zprofile.read_text(encoding="utf-8").splitlines()
+
+
 def maybe_install_homebrew() -> Path | None:
     """Offer to install Homebrew if missing."""
     brew_command = find_homebrew_command()
@@ -479,7 +507,10 @@ def maybe_add_homebrew_to_shell_path(homebrew_bin: Path) -> None:
     """
     Offer to add Homebrew's bin directory to ~/.zprofile.
 
-    Also updates the current Python process PATH so this script can keep going.
+    This function is careful to distinguish two different ideas:
+
+    1. PATH for this currently running script process
+    2. PATH for future terminal sessions via ~/.zprofile
     """
     print("\nChecking whether Homebrew's bin directory is early on PATH.")
     print(f"Homebrew bin directory expected for this machine:\n  {homebrew_bin}")
@@ -487,17 +518,48 @@ def maybe_add_homebrew_to_shell_path(homebrew_bin: Path) -> None:
     current_python = shutil.which("python3")
     current_brew = shutil.which("brew")
 
-    print("\nCurrently resolved commands:")
+    print("\nCurrently resolved commands for this script run:")
     print(f"  brew:    {current_brew or 'not found on PATH'}")
     print(f"  python3: {current_python or 'not found on PATH'}")
 
     homebrew_before_usr_bin = path_contains_before(homebrew_bin, Path("/usr/bin"))
 
     if homebrew_before_usr_bin:
-        print("\nHomebrew already appears before /usr/bin on PATH.")
+        print("\nHomebrew appears before /usr/bin on PATH for this running script.")
+        print("Next, this script will verify which python3 is actually active.")
+
+        if not shell_profile_has_homebrew_path(homebrew_bin):
+            print("\nHowever, ~/.zprofile does not appear to contain the Homebrew PATH line.")
+            print("That means future terminal sessions may still use /usr/bin/python3 first.")
+            print("\nRecommended line:")
+            print(f'  export PATH="{homebrew_bin}:$PATH"')
+
+            should_add = ask_yes_no(
+                "Add the Homebrew PATH line to ~/.zprofile for future terminal sessions?",
+                default=True,
+            )
+
+            if should_add:
+                zprofile = Path.home() / ".zprofile"
+                line = f'export PATH="{homebrew_bin}:$PATH"'
+                changed = ensure_line_in_file(zprofile, line)
+
+                if changed:
+                    print(f"\nAdded PATH line to:\n  {zprofile}")
+                else:
+                    print(f"\nPATH line was already present in:\n  {zprofile}")
+
+                print("\nTo apply it in your current terminal after this script exits, run:")
+                print(f"  source {zprofile}")
+            else:
+                print("\nSkipping ~/.zprofile update.")
+        else:
+            print("\n~/.zprofile already contains the Homebrew PATH line.")
+            print("Future terminal sessions should also prefer Homebrew commands.")
+
         return
 
-    print("\nHomebrew does not appear before /usr/bin on PATH.")
+    print("\nHomebrew does not appear before /usr/bin on PATH for this running script.")
     print("That means macOS may find Apple's system Python before Homebrew Python.")
     print("\nRecommended PATH line for Apple Silicon macOS:")
     print(f'  export PATH="{homebrew_bin}:$PATH"')
@@ -593,7 +655,6 @@ def print_python_resolution() -> None:
         return
 
     version_result = run_command([selected_python, "--version"])
-
     version_text = version_result.stdout.strip() or version_result.stderr.strip()
 
     print("\nSelected python3:")
@@ -612,6 +673,7 @@ def macos_homebrew_python_assistant() -> None:
     - Offer to install Python with Homebrew.
     - Check whether Homebrew's bin directory appears before /usr/bin on PATH.
     - Offer to update ~/.zprofile and/or current process PATH.
+    - Clearly distinguish temporary PATH changes from permanent shell setup.
     """
     if not ENABLE_MACOS_HOMEBREW_PYTHON_HELPER:
         return
@@ -654,7 +716,6 @@ def macos_homebrew_python_assistant() -> None:
         return
 
     homebrew_bin = get_expected_homebrew_bin_dir()
-
     brew_command = maybe_install_homebrew()
 
     if not brew_command:
@@ -663,9 +724,15 @@ def macos_homebrew_python_assistant() -> None:
         pause()
         return
 
-    # Make sure Homebrew's bin is available to this running script if brew was
-    # found in a standard Homebrew location but not on PATH.
-    if brew_command.parent.exists():
+    # If brew exists in a standard location but was not on PATH when the script
+    # started, temporarily add it so the script can continue using brew.
+    #
+    # This is intentionally separate from updating ~/.zprofile.
+    # A temporary process PATH update helps this script run correctly now.
+    # Updating ~/.zprofile helps future terminal sessions behave correctly.
+    if brew_command.parent.exists() and str(brew_command.parent) not in get_path_entries():
+        print("\nHomebrew was found, but it is not currently on PATH for this script.")
+        print(f"Temporarily adding it for this script run:\n  {brew_command.parent}")
         prepend_to_current_process_path(brew_command.parent)
 
     maybe_add_homebrew_to_shell_path(homebrew_bin)
@@ -678,14 +745,20 @@ def macos_homebrew_python_assistant() -> None:
                 "Update PATH for this running script so it can use Homebrew Python?",
                 default=True,
             )
+
             if should_update_now:
                 prepend_to_current_process_path(homebrew_bin)
 
     print_python_resolution()
 
     selected_python = shutil.which("python3")
+    expected_homebrew_python = str(homebrew_bin / "python3")
 
-    if selected_python and selected_python.startswith("/usr/bin/"):
+    if selected_python == expected_homebrew_python:
+        print("\nGood: python3 resolves to Homebrew-managed Python:")
+        print(f"  {selected_python}")
+
+    elif selected_python and selected_python.startswith("/usr/bin/"):
         print("\nWARNING:")
         print("  python3 still resolves to Apple's system Python:")
         print(f"  {selected_python}")
@@ -700,8 +773,30 @@ def macos_homebrew_python_assistant() -> None:
             exit_script("Setup stopped before creating the virtual environment.")
 
     elif selected_python:
-        print("\nGood: python3 resolves to:")
+        print("\nNote:")
+        print("  python3 does not resolve to Apple's system Python.")
+        print("  It also does not resolve to the expected Homebrew Python path.")
+        print("  This may be fine if you use pyenv, asdf, conda, or another Python manager.")
+        print(f"\nCurrent python3:")
         print(f"  {selected_python}")
+
+        should_continue = ask_yes_no(
+            "Do you want to continue using this python3?",
+            default=True,
+        )
+
+        if not should_continue:
+            exit_script("Setup stopped before creating the virtual environment.")
+
+    else:
+        print("\nNo python3 could be found on PATH.")
+        should_continue = ask_yes_no(
+            "Do you want to continue anyway?",
+            default=False,
+        )
+
+        if not should_continue:
+            exit_script("Setup stopped before creating the virtual environment.")
 
     pause("macOS Python check complete. Press Enter to continue, or type 'exit' to quit...")
 
@@ -780,6 +875,7 @@ def create_virtual_environment() -> None:
         raise RuntimeError("Failed to create virtual environment. See log file for details.")
 
     logging.info("Virtual environment created.")
+    print(f"\nVirtual environment created at:\n  {VENV_DIR}")
 
 
 def ensure_gitignore() -> None:
