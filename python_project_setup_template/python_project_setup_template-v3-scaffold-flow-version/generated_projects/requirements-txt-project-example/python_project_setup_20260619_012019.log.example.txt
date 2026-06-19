@@ -1,0 +1,75 @@
+2026-06-19 01:20:19,309 [INFO] Starting interactive Python project setup.
+2026-06-19 01:20:19,309 [INFO] Project type: requirements
+2026-06-19 01:20:19,310 [INFO] Project name: requirements-txt-project-example
+2026-06-19 01:20:19,310 [INFO] Package name: requirements_txt_project_example
+2026-06-19 01:20:19,310 [INFO] Project root: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example
+2026-06-19 01:20:42,247 [INFO] .gitignore updated: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/.gitignore
+2026-06-19 01:20:42,253 [INFO] Created requirements project files in /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example
+2026-06-19 01:20:42,253 [INFO] Running command: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/.venv/bin/python3 --version
+2026-06-19 01:20:42,285 [INFO] stdout:
+Python 3.14.3
+2026-06-19 01:21:22,103 [INFO] Running command: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/.venv/bin/python3 -m venv /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/.venv
+2026-06-19 01:21:23,483 [INFO] Virtual environment created at /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/.venv
+2026-06-19 01:21:50,558 [INFO] Running command: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/.venv/bin/python -m pip install --upgrade pip
+2026-06-19 01:21:51,694 [INFO] stdout:
+Requirement already satisfied: pip in ./.venv/lib/python3.14/site-packages (26.0)
+Collecting pip
+  Using cached pip-26.1.2-py3-none-any.whl.metadata (4.6 kB)
+Using cached pip-26.1.2-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 26.0
+    Uninstalling pip-26.0:
+      Successfully uninstalled pip-26.0
+Successfully installed pip-26.1.2
+2026-06-19 01:21:51,694 [INFO] Running command: /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/.venv/bin/python -m pip install -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt
+2026-06-19 01:21:54,239 [INFO] stdout:
+Collecting requests (from -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 1))
+  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting beautifulsoup4 (from -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 2))
+  Using cached beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)
+Collecting pytest (from -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 3))
+  Downloading pytest-9.1.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting ruff (from -r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 4))
+  Downloading ruff-0.15.18-py3-none-macosx_11_0_arm64.whl.metadata (26 kB)
+Collecting charset_normalizer<4,>=2 (from requests->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 1))
+  Using cached charset_normalizer-3.4.7-cp314-cp314-macosx_10_15_universal2.whl.metadata (40 kB)
+Collecting idna<4,>=2.5 (from requests->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 1))
+  Using cached idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Collecting urllib3<3,>=1.26 (from requests->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 1))
+  Using cached urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting certifi>=2023.5.7 (from requests->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 1))
+  Using cached certifi-2026.6.17-py3-none-any.whl.metadata (2.5 kB)
+Collecting soupsieve>=1.6.1 (from beautifulsoup4->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 2))
+  Using cached soupsieve-2.8.4-py3-none-any.whl.metadata (4.6 kB)
+Collecting typing-extensions>=4.0.0 (from beautifulsoup4->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements.txt (line 2))
+  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting iniconfig>=1.0.1 (from pytest->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 3))
+  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting packaging>=22 (from pytest->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 3))
+  Downloading packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 3))
+  Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pygments>=2.7.2 (from pytest->-r /Users/meechtheballer99/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/CIS-298_INTRO_TO_PYTHON/python_project_setup_template/python_project_setup_template-v3-scaffold-flow-version/generated_projects/requirements-txt-project-example/requirements-dev.txt (line 3))
+  Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Using cached requests-2.34.2-py3-none-any.whl (73 kB)
+Using cached charset_normalizer-3.4.7-cp314-cp314-macosx_10_15_universal2.whl (309 kB)
+Using cached idna-3.18-py3-none-any.whl (65 kB)
+Using cached urllib3-2.7.0-py3-none-any.whl (131 kB)
+Using cached beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)
+Downloading pytest-9.1.0-py3-none-any.whl (386 kB)
+Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Downloading ruff-0.15.18-py3-none-macosx_11_0_arm64.whl (10.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.6/10.6 MB 93.6 MB/s  0:00:00
+Using cached certifi-2026.6.17-py3-none-any.whl (133 kB)
+Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Downloading packaging-26.2-py3-none-any.whl (100 kB)
+Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 68.3 MB/s  0:00:00
+Using cached soupsieve-2.8.4-py3-none-any.whl (37 kB)
+Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Installing collected packages: urllib3, typing-extensions, soupsieve, ruff, pygments, pluggy, packaging, iniconfig, idna, charset_normalizer, certifi, requests, pytest, beautifulsoup4
+
+Successfully installed beautifulsoup4-4.15.0 certifi-2026.6.17 charset_normalizer-3.4.7 idna-3.18 iniconfig-2.3.0 packaging-26.2 pluggy-1.6.0 pygments-2.20.0 pytest-9.1.0 requests-2.34.2 ruff-0.15.18 soupsieve-2.8.4 typing-extensions-4.15.0 urllib3-2.7.0
+2026-06-19 01:21:54,240 [INFO] Dependency installation complete.
+2026-06-19 01:21:59,485 [INFO] Wrote SETUP_NOTES_20260619_012154.md.

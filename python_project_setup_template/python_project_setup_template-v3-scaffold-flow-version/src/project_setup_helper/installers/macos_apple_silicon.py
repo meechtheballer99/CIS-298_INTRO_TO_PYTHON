@@ -259,8 +259,6 @@ def macos_homebrew_python_assistant() -> None:
     """Interactive helper for macOS Apple Silicon users."""
     if not ENABLE_MACOS_HOMEBREW_PYTHON_HELPER:
         return
-    if TARGET_OS != "macos_linux":
-        return
     if not is_macos():
         return
     if not is_apple_silicon():
