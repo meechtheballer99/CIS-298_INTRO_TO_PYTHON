@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "project-setup-helper"
+version = "0.2.0"
+description = "Educational interactive Python project scaffolding helper"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[project.scripts]
+project-setup-helper = "project_setup_helper.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
