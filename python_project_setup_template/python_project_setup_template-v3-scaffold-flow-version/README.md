@@ -198,10 +198,11 @@ python_project_setup_template/
 │   ├── test_config.py
 │   └── test_os_detect.py
 │
-├── examples/
-│   └── generated_project_example/
-│
 └── generated_projects/
+    ├── README.md # placeholder - see info in readme regarding this directory
+    ├── generated-project1    # will exist after running the helper
+    ├── generated-project2    # will exist after running the helper
+    └── generated-projectN... # will exist after running the helper
 ```
 
 ---
