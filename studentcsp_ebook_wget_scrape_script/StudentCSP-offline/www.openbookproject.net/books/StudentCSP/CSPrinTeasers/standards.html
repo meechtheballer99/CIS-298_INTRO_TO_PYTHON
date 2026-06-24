@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Standards &#8212; Runestone Interactive Overview</title>
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/tabbedstuff.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/codemirror.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/activecode.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/dragndrop.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/matrixeq.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/datafile.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/parsons.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/lib/prettify.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/clickable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/video.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/poll.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pytutor.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/modal-basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/webgldemo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/codemirror.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/webglinteractive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fitb.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/showEval.css" type="text/css" />
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/2.3.1/""/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/jquery-ui-1.10.3.custom.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/user-highlights.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/runestone-custom-sphinx-bootstrap.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/runestonebase.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/tabbedstuff.js"></script>
+    <script type="text/javascript" src="../_static/jquery.highlight.js"></script>
+    <script type="text/javascript" src="../_static/bookfuncs.js"></script>
+    <script type="text/javascript" src="../_static/codemirror.js"></script>
+    <script type="text/javascript" src="../_static/xml.js"></script>
+    <script type="text/javascript" src="../_static/css.js"></script>
+    <script type="text/javascript" src="../_static/htmlmixed.js"></script>
+    <script type="text/javascript" src="../_static/python.js"></script>
+    <script type="text/javascript" src="../_static/javascript.js"></script>
+    <script type="text/javascript" src="../_static/activecode.js"></script>
+    <script type="text/javascript" src="../_static/skulpt.min.js"></script>
+    <script type="text/javascript" src="../_static/skulpt-stdlib.js"></script>
+    <script type="text/javascript" src="../_static/clike.js"></script>
+    <script type="text/javascript" src="../_static/timed_activecode.js"></script>
+    <script type="text/javascript" src="../_static/dragndrop.js"></script>
+    <script type="text/javascript" src="../_static/timeddnd.js"></script>
+    <script type="text/javascript" src="../_static/matrixeq.js"></script>
+    <script type="text/javascript" src="../_static/shortanswer.js"></script>
+    <script type="text/javascript" src="../_static/timed_shortanswer.js"></script>
+    <script type="text/javascript" src="../_static/skulpt.min.js"></script>
+    <script type="text/javascript" src="../_static/skulpt-stdlib.js"></script>
+    <script type="text/javascript" src="../_static/datafile.js"></script>
+    <script type="text/javascript" src="../_static/lib/prettify.js"></script>
+    <script type="text/javascript" src="../_static/lib/hammer.min.js"></script>
+    <script type="text/javascript" src="../_static/parsons.js"></script>
+    <script type="text/javascript" src="../_static/timedparsons.js"></script>
+    <script type="text/javascript" src="../_static/clickable.js"></script>
+    <script type="text/javascript" src="../_static/timedclickable.js"></script>
+    <script type="text/javascript" src="../_static/poll.js"></script>
+    <script type="text/javascript" src="../_static/mchoice.js"></script>
+    <script type="text/javascript" src="../_static/timedmc.js"></script>
+    <script type="text/javascript" src="../_static/timed.js"></script>
+    <script type="text/javascript" src="../_static/d3.v2.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.ba-bbq.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.jsPlumb-1.3.10-all-min.js"></script>
+    <script type="text/javascript" src="../_static/pytutor.js"></script>
+    <script type="text/javascript" src="../_static/codelens.js"></script>
+    <script type="text/javascript" src="../_static/codemirror.js"></script>
+    <script type="text/javascript" src="../_static/xml.js"></script>
+    <script type="text/javascript" src="../_static/css.js"></script>
+    <script type="text/javascript" src="../_static/htmlmixed.js"></script>
+    <script type="text/javascript" src="../_static/javascript.js"></script>
+    <script type="text/javascript" src="../_static/webglinteractive.js"></script>
+    <script type="text/javascript" src="../_static/FileSaver.min.js"></script>
+    <script type="text/javascript" src="../_static/Blob.js"></script>
+    <script type="text/javascript" src="../_static/animationbase.js"></script>
+    <script type="text/javascript" src="../_static/fitb.js"></script>
+    <script type="text/javascript" src="../_static/timedfitb.js"></script>
+    <script type="text/javascript" src="../_static/showEval.js"></script>
+    <script type="text/javascript" src="../_static/reveal.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <script type="text/javascript" src="../_static/waypoints.min.js"></script>
+    <script type="text/javascript" src="../_static/rangy-core.js"></script>
+    <script type="text/javascript" src="../_static/rangy-textrange.js"></script>
+    <script type="text/javascript" src="../_static/rangy-cssclassapplier.js"></script>
+    <script type="text/javascript" src="../_static/user-highlights.js"></script>
+    <script type="text/javascript" src="../_static/jquery.idle-timer.js"></script>
+    <script type="text/javascript" src="../_static/processing-1.4.1.min.js"></script>
+    <script type="text/javascript" src="../_static/jquery.hotkey.js"></script>
+    <script type="text/javascript" src="../_static/jquery-migrate-1.2.1.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 1 - Concept Summary" href="ch1_summary.html" />
+    <link rel="prev" title="Compute with Images" href="computeImages.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<link rel="shortcut icon" href="https://www.openbookproject.net/studentcsp_remixed/static/favicon.ico" type="image/ico" />
+
+<script type="text/javascript">
+  eBookConfig = {};
+  eBookConfig.host = 'http://127.0.0.1:8000' ? 'http://127.0.0.1:8000' : 'http://127.0.0.1:8000';
+  eBookConfig.app = eBookConfig.host+'/studentcsp_remixed';
+  eBookConfig.ajaxURL = eBookConfig.app+'/ajax/';
+  eBookConfig.course = 'StudentCSP';
+  eBookConfig.logLevel = 10;
+  eBookConfig.loginRequired = false;
+  eBookConfig.build_info = "unknown";
+  eBookConfig.isLoggedIn = false;
+  eBookConfig.useRunestoneServices = false;
+  eBookConfig.python3 = true;
+  eBookConfig.basecourse = 'StudentCSP';
+  eBookConfig.runestone_version = '';
+</script>
+
+<div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&status=0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+  </head>
+  <body>
+
+
+<!-- Begin navbar -->
+<div id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+  <div class="container">
+
+    <div class="navbar-header">
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <button type='button' class='navbar-toggle' data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <div>
+        <a class="brand-logo" style='background: transparent url("../_static/img/logo_small.png") no-repeat 0px 0px;'>&nbsp; </a>
+        <a class="navbar-brand" href="https://www.openbookproject.net/books/StudentCSP/index.html">CSP</a>
+      </div>
+    </div>
+
+    <div class="navbar-collapse collapse navbar-ex1-collapse">
+
+      <ul class="nav navbar-nav navbar-right">
+
+        <li class="divider-vertical"></li>
+
+        <!-- social media dropdown -->
+        <li class="dropdown">
+          <a class="dropdown-toggle" href="standards.html#" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-share-alt" style="opacity: 0.9"></i>
+          </a>
+          <ul class="dropdown-menu social-menu">
+              <li>
+                <div>
+                  <b>Runestone in social media:</b>
+                </div>
+                <a href="https://twitter.com/iRunestone" class="twitter-follow-button" data-show-count="true">Follow @iRunestone</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                <div class="fb-like" data-href="https://www.facebook.com/RunestoneInteractive" data-send="false" data-layout="button_count" data-width="300" data-show-faces="false" data-font="arial"></div>
+              </li>
+
+              <li class="divider"></li>
+              <li>
+                <div>
+                  <b>Help support us:</b>
+                </div>
+                <div>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                  <input type="hidden" name="cmd" value="_s-xclick">
+                  <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHNwYJKoZIhvcNAQcEoIIHKDCCByQCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYAcrkqh1hn3lYqIpfXxNqe1T82EhXzCJGy1yMAmklpyZshyMkfDGe1Bhx+iwyGeoYRTTyphFmP+9M3NyO0+Q5XdHxgZPx/zYjjBxlZHgEV6jhE8bN2fHkkPf0VHfz0a0QQylQOPlKiOTZV7B37Jpk6yM47oVZ1tG/KNm0NkfmB76DELMAkGBSsOAwIaBQAwgbQGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQIi0GmFfOlcjuAgZBbYOo9UO+CpMQa+PYqwsUmUnJvXIImeMeNI3KVTUx5Cfk9gNMo3WzPeiB5IqZo9nRAQ0mf1qL2ecLeB5tidM+lgBUhOxfj3/FecpnVFa0263gp4g+PLw8jzhvVRdUon1K3SeO1Rzh23fIRKwnrD6btt73uwtj0sl3tGd8qz+6GIcwPDdRk9VcUffiBJT/ZagKgggOHMIIDgzCCAuygAwIBAgIBADANBgkqhkiG9w0BAQUFADCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wHhcNMDQwMjEzMTAxMzE1WhcNMzUwMjEzMTAxMzE1WjCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMFHTt38RMxLXJyO2SmS+Ndl72T7oKJ4u4uw+6awntALWh03PewmIJuzbALScsTS4sZoS1fKciBGoh11gIfHzylvkdNe/hJl66/RGqrj5rFb08sAABNTzDTiqqNpJeBsYs/c2aiGozptX2RlnBktH+SUNpAajW724Nv2Wvhif6sFAgMBAAGjge4wgeswHQYDVR0OBBYEFJaffLvGbxe9WT9S1wob7BDWZJRrMIG7BgNVHSMEgbMwgbCAFJaffLvGbxe9WT9S1wob7BDWZJRroYGUpIGRMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbYIBADAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAIFfOlaagFrl71+jq6OKidbWFSE+Q4FqROvdgIONth+8kSK//Y/4ihuE4Ymvzn5ceE3S/iBSQQMjyvb+s2TWbQYDwcp129OPIbD9epdr4tJOUNiSojw7BHwYRiPh58S1xGlFgHFXwrEBb3dgNbMUa+u4qectsMAXpVHnD9wIyfmHMYIBmjCCAZYCAQEwgZQwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tAgEAMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xMzExMDMxMzQxMzFaMCMGCSqGSIb3DQEJBDEWBBRDJF8w+zsMr7FSk+pwinB5f5D4rzANBgkqhkiG9w0BAQEFAASBgHw1LMHpkpaqHIvDGdFE0eG+2mZlmMnUeDCBhQlbc7QMzFQYKTV94NfaebBO4PmNdADe1rq4WidSRZZbE7CzkX9IGENYnBTWY0hb2l0lGdGrJdGeWyV3ekg9WVaFMMumrekds96h3Cx7dGz2kWDzIai2iEXE/qoE+xpkyXAYZNV3-----END PKCS7-----
+                  ">
+                  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                  </form>
+
+                </div>
+              </li>
+          </ul>
+        </li>
+        <!-- end social media dropdown -->
+
+        <li class="divider-vertical"></li>
+
+        <!-- search dropdown -->
+        <li class="dropdown">
+          <a class="dropdown-toggle" href="standards.html#" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-search" style='opacity:0.9;'></i>
+          </a>
+          <ul class='dropdown-menu'>
+            
+                <li><a href='https://www.openbookproject.net/books/StudentCSP/index.html'>Table of Contents</a></li>
+            
+            <li><a href='https://www.openbookproject.net/studentcsp_remixed/static/StudentCSP/genindex.html'>Book Index</a></li>
+            <li class="divider"></li>
+            <li id="scratch_ac_link"><a href="javascript:ACFactory.toggleScratchActivecode()">Scratch ActiveCode</a></li>
+            <li class="divider"></li>
+            <li style="width: 240px;">
+              <form class="navbar-search" style="margin:10px;" action="../search.html" method="get">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="q" placeholder="Search this book" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" style="margin:0;" type="submit">
+                      <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                  </span>
+                </div><!-- /input-group -->
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+            </li>
+          </ul>
+        </li>
+        <!-- end search dropdown -->
+
+        <li class="divider-vertical"></li>
+
+        
+        <li class="divider-vertical"></li>
+
+        <!-- help menu dropdown -->
+        <li class="dropdown">
+          <a class="dropdown-toggle" href="standards.html#" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-question-sign" style="opacity:0.9;"></i>
+          </a>
+          <ul class="dropdown-menu user-menu">
+            <li><a href='https://www.openbookproject.net/studentcsp_remixed/static/StudentCSP/navhelp.html'>Navigation Help</a></li>
+            <li><a href='https://www.openbookproject.net/studentcsp_remixed/static/overview/instructor.html'>Help for Instructors</a></li>
+            <li class="divider"></li>
+            <li><a href='http://runestoneinteractive.org'>About Runestone</a></li>
+            <li><a href='https://www.openbookproject.net/studentcsp_remixed/default/reportabug?course=StudentCSP&amp;page=standards'>Report A Problem</a></li>
+          </ul>
+        </li>
+        <!-- end help menu dropdown -->
+
+        <li class="divider-vertical"></li>
+
+      </ul>
+
+      <ul class="nav navbar-nav">
+        <li class="divider-vertical"></li>
+        <!--
+          <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"><ul>
+<li><a class="reference internal" href="#">Standards </a><ul>
+<li><a class="reference internal" href="#big-ideas">Big Ideas</a><ul>
+<li><a class="reference internal" href="#big-idea-1-creative-development">Big Idea 1: Creative Development</a></li>
+<li><a class="reference internal" href="#big-idea-2-data">Big Idea 2: Data</a></li>
+<li><a class="reference internal" href="#big-idea-3-algorithms-and-programming">Big Idea 3: Algorithms and Programming</a></li>
+<li><a class="reference internal" href="#big-idea-4-computer-systems-and-networks">Big Idea 4: Computer Systems and Networks</a></li>
+<li><a class="reference internal" href="#big-idea-5-impact-of-computing">Big Idea 5: Impact of Computing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#computational-thinking-practices-and-skills">Computational Thinking: Practices and Skills</a><ul>
+<li><a class="reference internal" href="#practice-1-computational-solution-design">Practice 1: Computational Solution Design</a></li>
+<li><a class="reference internal" href="#practice-2-algorithms-and-program-development">Practice 2: Algorithms and Program Development</a></li>
+<li><a class="reference internal" href="#practice-3-abstraction-in-program-development">Practice 3: Abstraction in Program Development</a></li>
+<li><a class="reference internal" href="#practice-4-code-analysis">Practice 4: Code Analysis</a></li>
+<li><a class="reference internal" href="#practice-5-computing-innovations">Practice 5: Computing Innovations</a></li>
+<li><a class="reference internal" href="#practice-6-responsible-computing">Practice 6: Responsible Computing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+          <li class="divider-vertical"></li>
+        
+        
+          
+  <li id="relations-prev" title="Previous Chapter - Compute with Images" data-toggle="tooltip">
+    <a href="computeImages.html" >
+      <i class='glyphicon glyphicon-backward' style='opacity:0.9;'></i>
+    </a>
+  </li>
+  
+  <li id="relations-next" title='Next Chapter - Chapter 1 - Concept Summary' data-toggle="tooltip" >
+    <a href="ch1_summary.html" >
+      <i class='glyphicon glyphicon-forward' style='opacity:0.9;'></i>
+    </a>
+  </li>
+  <li class="divider-vertical"></li>
+
+<script type="text/javascript">
+  opts = {'placement':'bottom',
+          'selector': '',
+          'delay': { show: 100, hide: 50}
+         };
+
+  $('#relations-prev').tooltip(opts);
+  $('#relations-next').tooltip(opts);
+</script>
+        -->
+        
+          <li></li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container" id="continue-reading"></div>
+
+<div class="container" id="main-content">
+  
+  <div class="section" id="standards">
+<h1>Standards <a class="footnote-reference" href="standards.html#f1" id="id1">[1]</a><a class="headerlink" href="standards.html#standards" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="big-ideas">
+<h2>Big Ideas<a class="headerlink" href="standards.html#big-ideas" title="Permalink to this headline">¶</a></h2>
+<p>This book will address the following big ideas from Computer Science:</p>
+<div class="section" id="big-idea-1-creative-development">
+<h3>Big Idea 1: Creative Development<a class="headerlink" href="standards.html#big-idea-1-creative-development" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>1.1 Collaboration</li>
+<li>1.2 Program Function and Purpose</li>
+<li>1.3 Program Design and Development</li>
+<li>1.4 Identifying and Correcting Errors</li>
+</ul>
+</div>
+<div class="section" id="big-idea-2-data">
+<h3>Big Idea 2: Data<a class="headerlink" href="standards.html#big-idea-2-data" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>2.1 Binary Numbers</li>
+<li>2.2 Data Compression</li>
+<li>2.3 Extracting Information from Data</li>
+<li>2.4 Using Programs with Data</li>
+</ul>
+</div>
+<div class="section" id="big-idea-3-algorithms-and-programming">
+<h3>Big Idea 3: Algorithms and Programming<a class="headerlink" href="standards.html#big-idea-3-algorithms-and-programming" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>3.1 Variables and Assignments</li>
+<li>3.2 Data Abstraction</li>
+<li>3.3 Mathematical Expressions</li>
+<li>3.4 Strings</li>
+<li>3.5 Boolean Expressions</li>
+<li>3.6 Conditionals</li>
+<li>3.7 Nested Conditionals</li>
+<li>3.8 Iteration</li>
+<li>3.9 Developing Algorithms</li>
+<li>3.10 Lists</li>
+<li>3.11 Binary Search</li>
+<li>3.12 Calling Functions (a.k.a. Procedures)</li>
+<li>3.13 Developing Functions (Procedures)</li>
+<li>3.14 Libraries</li>
+<li>3.15 Simulation</li>
+<li>3.16 Algorithmic Efficiency</li>
+<li>3.17 Undecidable Problems</li>
+</ul>
+</div>
+<div class="section" id="big-idea-4-computer-systems-and-networks">
+<h3>Big Idea 4: Computer Systems and Networks<a class="headerlink" href="standards.html#big-idea-4-computer-systems-and-networks" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>4.1 The Internet</li>
+<li>4.2 Fault Tolerance</li>
+<li>4.3 Parallel and Distributed Computing</li>
+</ul>
+</div>
+<div class="section" id="big-idea-5-impact-of-computing">
+<h3>Big Idea 5: Impact of Computing<a class="headerlink" href="standards.html#big-idea-5-impact-of-computing" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>5.1 Beneficial and Harmful Effects</li>
+<li>5.2 Digital Divide</li>
+<li>5.3 Computing Bias</li>
+<li>5.4 Crowdsourcing</li>
+<li>5.5 Legal and Ethical Concerns</li>
+<li>5.6 Safe Computing</li>
+</ul>
+</div>
+</div>
+<div class="section" id="computational-thinking-practices-and-skills">
+<h2>Computational Thinking: Practices and Skills<a class="headerlink" href="standards.html#computational-thinking-practices-and-skills" title="Permalink to this headline">¶</a></h2>
+<p>This book will introduce the following computational thinking practices and
+skills:</p>
+<div class="section" id="practice-1-computational-solution-design">
+<h3>Practice 1: Computational Solution Design<a class="headerlink" href="standards.html#practice-1-computational-solution-design" title="Permalink to this headline">¶</a></h3>
+<p>Design and evaluate computational solutions for a purpose.</p>
+<ul class="simple">
+<li>1.A Investigate the situation, context, or task.</li>
+<li>1.B Determine and design an appropriate method or approach to achieve the
+purpose.</li>
+<li>1.C Explain how collaboration affects the development of a solution.</li>
+<li>1.D Evaluate solution options.</li>
+</ul>
+</div>
+<div class="section" id="practice-2-algorithms-and-program-development">
+<h3>Practice 2: Algorithms and Program Development<a class="headerlink" href="standards.html#practice-2-algorithms-and-program-development" title="Permalink to this headline">¶</a></h3>
+<p>Develop and implement algorithms.</p>
+<ul class="simple">
+<li>2.A Represent algorithmic processes without using a programming language.</li>
+<li>2.B Implement and apply an algorithm.</li>
+</ul>
+</div>
+<div class="section" id="practice-3-abstraction-in-program-development">
+<h3>Practice 3: Abstraction in Program Development<a class="headerlink" href="standards.html#practice-3-abstraction-in-program-development" title="Permalink to this headline">¶</a></h3>
+<p>Develop programs that incorporate abstractions.</p>
+<ul class="simple">
+<li>3.A Generalize data sources through variables.</li>
+<li>3.B Use abstaction to manage complexity in a program.</li>
+<li>3.C Explain how abstraction manages complexity.</li>
+</ul>
+</div>
+<div class="section" id="practice-4-code-analysis">
+<h3>Practice 4: Code Analysis<a class="headerlink" href="standards.html#practice-4-code-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Evaluate and text algorithms and programs.</p>
+<ul class="simple">
+<li>4.A Explain how a code segment or program functions.</li>
+<li>4.B Determine the result of code segments.</li>
+<li>4.C Identify and correct errors in algorithms and programs, including
+error discovery through testing.</li>
+</ul>
+</div>
+<div class="section" id="practice-5-computing-innovations">
+<h3>Practice 5: Computing Innovations<a class="headerlink" href="standards.html#practice-5-computing-innovations" title="Permalink to this headline">¶</a></h3>
+<p>Investigate computing innovations.</p>
+<ul class="simple">
+<li>5.A Explain how computing systems work.</li>
+<li>5.B Explain how knowledge can be generated from data.</li>
+<li>5.C Describe the impact of a computing innovation.</li>
+<li>5.D Describe the impact of gathering data.</li>
+<li>5.E Evaluate the use of computing based on legal and ethical factors.</li>
+</ul>
+</div>
+<div class="section" id="practice-6-responsible-computing">
+<h3>Practice 6: Responsible Computing<a class="headerlink" href="standards.html#practice-6-responsible-computing" title="Permalink to this headline">¶</a></h3>
+<p>Contribute to an inclusive, safe, collaborative, and ethical computing culture.</p>
+<ul class="simple">
+<li>6.A Collaborate in the development of solutions.</li>
+<li>6.B Use safe and secure methods when using computing devices.</li>
+<li>6.C Acknowledge the intellectual property of others. <a class="footnote-reference" href="standards.html#f2" id="id2">[2]</a></li>
+</ul>
+<p>This chapter should have given you a sense for what we are going to be doing
+with a computer in this book.  Let’s get started in the next chapter by talking
+about what the computer can do and how you can control it.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="standards.html#id1">[1]</a></td><td>These standards were developed as part of the <a class="reference external" href="https://en.wikipedia.org/wiki/AP_Computer_Science_Principles">AP Computer Science
+Principles</a>
+curriculum.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="standards.html#id2">[2]</a></td><td>There are some who take issue with the very notion of “intellectual
+property” (see <a class="reference external" href="https://www.fsf.org/events/20071026nagoya">“Copyright vs. Community” and “Don’t Even Think
+“Intellectual Property”</a>), so
+we will discuss the current state of law regarding software copyright
+licenses and patents instead.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+  
+      
+  <li id="relations-prev" class="navLink" title='Previous Section - Compute with Images' data-toggle="tooltip">
+    <a href="computeImages.html" >
+      <i class='prevNav glyphicon glyphicon-chevron-left'></i>
+    </a>
+  </li>
+  <a class="navLinkBg" id="navLinkBgLeft"  href="computeImages.html" ></a>
+  
+  <li id="relations-next" class="navLink" title='Next Section - Chapter 1 - Concept Summary' data-toggle="tooltip" >
+    <a href="ch1_summary.html" >
+      <i id="relationsNextIcon" class='nextNav glyphicon glyphicon-chevron-right'></i>
+    </a>
+  </li>
+  <a class="navLinkBg navLink" id="navLinkBgRight" href="ch1_summary.html" >Next Section - Chapter 1 - Concept Summary</a>
+
+<script type="text/javascript">
+
+  $('#relations-prev').tooltip({'placement':'right', 'selector': '', 'delay': { show: 100, hide: 50}});
+  $('#relations-next').tooltip({'placement':'left', 'selector': '', 'delay': { show: 100, hide: 50}});
+  
+</script>
+  
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      
+      | <a href="standards.html#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2022 CS Learning 4 U group at Georgia Tech and Jeffrey Elkner.
+      Created using <a href="http://runestoneinteractive.org/">Runestone</a> .
+    </p>
+  </div>
+</footer>
+
+
+
+
+
+  </body>
+</html>
