@@ -827,7 +827,7 @@ You’ll need to find the original joke to understand the idiomatic meaning of t
 <a class="sourceLine" id="cb7-38" title="38"><span class="at">ht</span>()<span class="op">;</span></a></code></pre></div>
 When we run this program, we draw this image:
 <figure class="border">
-<img src="https://matt.curinga.com/think-js/figs/turtle-first.png" class="figure-img img-fluid" alt="2 colored lines and a circle drawn with turtle graphics">
+<img src="figs/turtle-first.png" class="figure-img img-fluid" alt="2 colored lines and a circle drawn with turtle graphics">
 <figcaption class="figure-caption border-top">
 The picture drawn by this program.<br> <strong><a href="https://repl.it/@mcuringa/turtle">Run and remix this code on repl.it</a></strong>
 </figcaption>
@@ -1110,7 +1110,7 @@ The picture drawn by this program.<br> <strong><a href="https://repl.it/@mcuring
 <p><em><strong>Tip:</strong> When reading or writing code, say to yourself “n is assigned 17” or “n gets the value 17”. Don’t say “n equals 17”.</em></p>
 <p>A common way to represent variables on paper is to write the name with an arrow pointing to the variable’s value. This kind of figure is called a <strong>state snapshot</strong> because it shows what state each of the variables is in at a particular instant in time. (Think of it as the variable’s state of mind). This diagram shows the result of executing the assignment statements:</p>
 <figure>
-<img src="https://matt.curinga.com/think-js/figs/state.png" alt="State snapshot" /><figcaption>State snapshot</figcaption>
+<img src="figs/state.png" alt="State snapshot" /><figcaption>State snapshot</figcaption>
 </figure>
 <p>If you ask the interpreter to evaluate a variable, it will produce the value that is currently linked to the variable:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" title="1">⠕ message</a>
@@ -1306,7 +1306,7 @@ As we’ve seen, concatenation means joining the two operands by linking them en
 <p>So far, we have looked at the elements of a program — variables, expressions, statements, and function calls — in isolation, without talking about how to combine them.</p>
 <p>One of the most useful features of programming languages is their ability to take small building blocks and <strong>compose</strong> them into larger chunks.</p>
 <p>For example, we know how to get the user to enter some input, we know how to convert the string we get into a number, we know how to write a complex expression, and we know how to print values. Let’s put these together in a small four-step program that asks the user to input a value for the radius of a circle, and then computes the area of the circle from the formula</p>
-<p><img src="https://matt.curinga.com/think-js/figs/circle_area.png" /></p>
+<p><img src="figs/circle_area.png" /></p>
 <p>Firstly, we’ll do the four steps one at a time:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">let</span> response <span class="op">=</span> <span class="va">window</span>.<span class="at">prompt</span>(<span class="st">&quot;What is your radius? &quot;</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb38-2" title="2"><span class="kw">let</span> r <span class="op">=</span> <span class="va">Number</span>.<span class="at">parseFloat</span>(response)<span class="op">;</span></a>
@@ -1350,7 +1350,7 @@ As we’ve seen, concatenation means joining the two operands by linking them en
 <li>Add parenthesis to the expression <code>6 * 1 - 2</code> to change its value from 4 to -6.</li>
 <li><p>Start the Javascript interpreter and enter <code>bruce + 4</code> at the prompt. This will give you an error: <code>ReferenceError: bruce is not defined</code></p>
 Assign a value to <code>bruce</code> so that <code>bruce + 4</code> evaluates to <code>10</code>.</li>
-<li><p>The formula for computing the final amount if one is earning compound interest is given on Wikipedia as <img class="d-block img-fluid" src="https://matt.curinga.com/think-js/figs/compoundInterest.png" alt="formula for compound interest"></p>
+<li><p>The formula for computing the final amount if one is earning compound interest is given on Wikipedia as <img class="d-block img-fluid" src="figs/compoundInterest.png" alt="formula for compound interest"></p>
 <p>Write a Javascript program that assigns the principal amount of $10000 to variable <code>P</code>, assign to <code>n</code> the value 12, and assign to <code>r</code> the interest rate of 8%. Set variable <code>t</code> to be the number of years the money will be compounded for. Calculate and print the final amount after <code>t</code> years.</p></li>
 <li><p>Evaluate the following numerical expressions in your head, then use the Javascript interpreter to check your results:</p>
 <ol>
@@ -1556,7 +1556,7 @@ Your program should output what the time will be on the clock when the alarm goe
 <p>Some functions return values. In the previous section we saw that <code>Math.abs</code> and <code>Math.max</code> return values. <code>calculateTip</code> does not return a value; it uses <code>console.log</code> to produce output on the screen for the user. We can use the return values from functions to compose more complex functions.</p>
 <p>A function that returns a value is called a <strong>fruitful function</strong> in this book. The opposite of a fruitful function is <strong>void function</strong> — one that is not executed for its resulting value, but is executed because it does something useful. (Languages like Java, C#, C and C++ use the term “void function”, other languages like Pascal call it a <strong>procedure</strong>.) Even though void functions are not executed for their resulting value, Javascript always wants to return something. So if the programmer doesn’t arrange to return a value, Javascript will automatically return the value <code>undefined</code>.</p>
 <p>How do we write our own fruitful function? Let’s look at the standard formula for compound interest as an example of a fruitful function:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/compoundInterest.png" /></p>
+<p><img src="figs/compoundInterest.png" /></p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb49-1" title="1"><span class="co">/*</span></a>
 <a class="sourceLine" id="cb49-2" title="2"><span class="co">Apply the compound interest formula to p</span></a>
 <a class="sourceLine" id="cb49-3" title="3"><span class="co">to produce the final amount.</span></a>
@@ -2065,7 +2065,7 @@ This process of rearrangement is called <strong>refactoring</strong> the code.</
 <a class="sourceLine" id="cb66-8" title="8"><span class="op">}</span></a></code></pre></div>
 <p>If it is true, then all the indented statements get executed. If not, then all the statements indented under the <code>else</code> clause get executed.</p>
 <figure>
-<img src="https://matt.curinga.com/think-js/figs/flowchart_if_else.png" alt="Flowchart of an if statement with an else clause" /><figcaption>Flowchart of an if statement with an else clause</figcaption>
+<img src="figs/flowchart_if_else.png" alt="Flowchart of an if statement with an else clause" /><figcaption>Flowchart of an if statement with an else clause</figcaption>
 </figure>
 <p>The syntax for an <code>if</code> statement looks like this:</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb67-1" title="1"><span class="cf">if</span> BOOLEAN EXPRESSION <span class="op">{</span></a>
@@ -2082,7 +2082,7 @@ This process of rearrangement is called <strong>refactoring</strong> the code.</
 <section id="omitting-the-else-clause" class="level2">
 <h2>Omitting the <code>else</code> clause</h2>
 <figure>
-<img src="https://matt.curinga.com/think-js/figs/flowchart_if_only.png" alt="Flowchart of an if statement with no else clause" /><figcaption>Flowchart of an if statement with no else clause</figcaption>
+<img src="figs/flowchart_if_only.png" alt="Flowchart of an if statement with no else clause" /><figcaption>Flowchart of an if statement with no else clause</figcaption>
 </figure>
 <p>Another form of the <code>if</code> statement is one in which the <code>else</code> clause is omitted entirely. In this case, when the condition evaluates to <code>true</code>, the statements are executed, otherwise the flow of execution continues to the statement after the <code>if</code>.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb68-1" title="1"><span class="cf">if</span> (x <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">{</span></a>
@@ -2107,7 +2107,7 @@ This process of rearrangement is called <strong>refactoring</strong> the code.</
 <a class="sourceLine" id="cb69-7" title="7"><span class="cf">else</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb69-8" title="8">  STATEMENTS_C</a>
 <a class="sourceLine" id="cb69-9" title="9"><span class="op">}</span></a></code></pre></div>
-<p><img src="https://matt.curinga.com/think-js/figs/flowchart_chained_conditional.png" /></p>
+<p><img src="figs/flowchart_chained_conditional.png" /></p>
 <p>Again, exactly one branch will be executed. There is no limit of the number of <code>else if</code> statements but only a single (and optional) final <code>else</code> statement is allowed and it must be the last branch in the statement:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb70-1" title="1"><span class="cf">if</span> (choice <span class="op">===</span> <span class="st">&quot;a&quot;</span>) <span class="op">{</span></a>
 <a class="sourceLine" id="cb70-2" title="2">  <span class="at">functionOne</span>()<span class="op">;</span></a>
@@ -2127,7 +2127,7 @@ This process of rearrangement is called <strong>refactoring</strong> the code.</
 <h2>Nested conditionals</h2>
 <p>One conditional can also be <strong>nested</strong> within another. (It is the same theme of composability, again!) We could have written the previous example as follows:</p>
 <figure>
-<img src="https://matt.curinga.com/think-js/figs/flowchart_nested_conditional.png" alt="Flowchart of this nested conditional" /><figcaption>Flowchart of this nested conditional</figcaption>
+<img src="figs/flowchart_nested_conditional.png" alt="Flowchart of this nested conditional" /><figcaption>Flowchart of this nested conditional</figcaption>
 </figure>
 <div class="sourceCode" id="cb71"><pre class="sourceCode numberSource javascript numberLines"><code class="sourceCode javascript"><a class="sourceLine" id="cb71-1" title="1"><span class="cf">if</span> (x <span class="op">&lt;</span> y) <span class="op">{</span></a>
 <a class="sourceLine" id="cb71-2" title="2">  STATEMENTS_A</a>
@@ -2529,7 +2529,7 @@ We think of our code as our creation, our work of art! We make it great.
 </ol>
 <p>We have already played around with the <code>for</code> loop with our turtle graphics when we were looking at the variables in a spiral. Let’s take a closer look at this function which contains a for loop.</p>
 <figure class="figure">
-<img src="https://matt.curinga.com/think-js/figs/turtle-spiral.png" class="figure-img img-fluid" alt="Square spiral created with turtle graphics code.">
+<img src="figs/turtle-spiral.png" class="figure-img img-fluid" alt="Square spiral created with turtle graphics code.">
 <figcaption class="figure-caption">
 Our <code>spiral</code> function (below) uses a <code>for</code> loop to draw this design. <a href="https://repl.it/@mcuringa/turtle-spiral">Try it and remix it here.</a>
 </figcaption>
@@ -3192,7 +3192,7 @@ See <a href="https://repl.it/@mcuringa/Newton-Sqare-Root">Newton Square Root rep
 <a class="sourceLine" id="cb141-6" title="6">⠕ <span class="va">console</span>.<span class="at">log</span>(<span class="va">s</span>.<span class="at">substring</span>(<span class="dv">15</span><span class="op">:</span><span class="dv">24</span>))<span class="op">;</span></a>
 <a class="sourceLine" id="cb141-7" title="7">Caribbean</a></code></pre></div>
 <p>The <code>substring(startIndex, endIndex)</code> method of a string, returns a new string without modifying the original string. The new string (i.e. the <em>substring</em>) starts at (and includes) the character at <code>startIndex</code> and ends at (but <em>excludes</em>) the character at <code>endIndex</code>. This behavior makes sense if you imagine the indices pointing <em>between</em> the characters, as in the following diagram:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/banana.png" /></p>
+<p><img src="figs/banana.png" /></p>
 <p>If you imagine this as a piece of paper, <code>substring(m, n)</code> copies out the part of the paper between the <code>n</code> and <code>m</code> positions. Provided <code>m</code> and <code>n</code> are both within the bounds of the string, your result will be of length (m-n).</p>
 <p>There are a few more tricks to <code>substring</code>. If you omit the second argument (<code>endIndex</code>), the function returns a substring from <code>startIndex</code> up to and including the last character in the string. If you provide an <code>endIndex</code> greater than <code>string.length</code>,</p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring">From the MDN documentation</a>, we learn the following additional rules and behaviors for <code>substring</code>.</p>
@@ -3672,7 +3672,7 @@ See <a href="https://repl.it/@mcuringa/Newton-Sqare-Root">Newton Square Root rep
 <a class="sourceLine" id="cb185-2" title="2"><span class="kw">let</span> b <span class="op">=</span> <span class="st">&quot;banana&quot;</span><span class="op">;</span></a></code></pre></div>
 <p>we know that <code>a</code> and <code>b</code> will refer to a string object with the letters <code>"banana"</code>. But we don’t know yet whether they point to the <em>same</em> string object.</p>
 <p>There are two possible ways the Javascript interpreter could arrange its memory:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/list1.png" /></p>
+<p><img src="figs/list1.png" /></p>
 <p>In one case, <code>a</code> and <code>b</code> refer to two different objects that have the same value. In the second case, they refer to the same object.</p>
 <p>When we use the equality operator on strings, tells us if they hold the same value:</p>
 <div class="sourceCode" id="cb186"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb186-1" title="1">⠕ a <span class="op">===</span> b</a>
@@ -3684,7 +3684,7 @@ See <a href="https://repl.it/@mcuringa/Newton-Sqare-Root">Newton Square Root rep
 <a class="sourceLine" id="cb187-3" title="3">⠕ a <span class="op">===</span> b</a>
 <a class="sourceLine" id="cb187-4" title="4"><span class="kw">=&gt;</span> <span class="kw">false</span></a></code></pre></div>
 <p>The state snapshot here looks like this:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/mult_references2.png" title="State snapshot for equal different lists" /></p>
+<p><img src="figs/mult_references2.png" title="State snapshot for equal different lists" /></p>
 <p><code>a</code> and <code>b</code> have the same value but do not refer to the same object.</p>
 </section>
 <section id="aliasing" class="level2">
@@ -3695,7 +3695,7 @@ See <a href="https://repl.it/@mcuringa/Newton-Sqare-Root">Newton Square Root rep
 <a class="sourceLine" id="cb188-3" title="3">⠕ a <span class="op">===</span> b</a>
 <a class="sourceLine" id="cb188-4" title="4"><span class="kw">=&gt;</span> <span class="kw">true</span></a></code></pre></div>
 <p>In this case, the state snapshot looks like this:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/mult_references3.png" title="State snapshot for multiple references (aliases) to a list" /></p>
+<p><img src="figs/mult_references3.png" title="State snapshot for multiple references (aliases) to a list" /></p>
 <p>Because the same array has two different names, <code>a</code> and <code>b</code>, we say that it is <strong>aliased</strong>. Changes made with one alias affect the other:</p>
 <div class="sourceCode" id="cb189"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb189-1" title="1">⠕ b[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">5</span></a>
 <a class="sourceLine" id="cb189-2" title="2">⠕ a</a>
@@ -3713,7 +3713,7 @@ See <a href="https://repl.it/@mcuringa/Newton-Sqare-Root">Newton Square Root rep
 <a class="sourceLine" id="cb190-5" title="5">⠕ a <span class="op">===</span> b</a>
 <a class="sourceLine" id="cb190-6" title="6"><span class="kw">=&gt;</span> <span class="kw">false</span></a></code></pre></div>
 <p>Calling <code>slice</code> always creates a new array. In this case the slice happens to consist of the whole array. So now the relationship is like this:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/mult_references2.png" title="State snapshot for equal different lists" /></p>
+<p><img src="figs/mult_references2.png" title="State snapshot for equal different lists" /></p>
 <p>Now we are free to make changes to <code>b</code> without worrying that we’ll inadvertently be changing <code>a</code>:</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb191-1" title="1">⠕ b[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">5</span></a>
 <a class="sourceLine" id="cb191-2" title="2">⠕ a</a>
@@ -3868,7 +3868,7 @@ The <code>split</code> method (which we’ve already seen) breaks a string into 
 <section id="matrices" class="level2">
 <h2>Matrices</h2>
 <p>Nested arrays are often used to represent matrices. For example, the matrix:</p>
-<p><img src="https://matt.curinga.com/think-js/figs/matrix2.png" /></p>
+<p><img src="figs/matrix2.png" /></p>
 <p>might be represented as:</p>
 <div class="sourceCode" id="cb209"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb209-1" title="1">⠕ <span class="kw">let</span> mx <span class="op">=</span> [[<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> [<span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span>]<span class="op">,</span> [<span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span>]]<span class="op">;</span></a></code></pre></div>
 <p><code>mx</code> is an array with three elements, where each element is a row of the matrix. We can select an entire row from the matrix in the usual way:</p>
@@ -4580,7 +4580,7 @@ The <code>split</code> method (which we’ve already seen) breaks a string into 
 <a class="sourceLine" id="cb239-21" title="21"><span class="va">jsgui</span>.<span class="at">add</span>(<span class="vs">`Some people like dogs. Dogs are loyal friends and</span></a>
 <a class="sourceLine" id="cb239-22" title="22"><span class="vs">companions, sad to see you leave and ecstatic when you get home.``);</span></a></code></pre></div>
 <figure class="figure border">
-<img src="https://matt.curinga.com/think-js/figs/cats1.png" class="figure-img img-fluid" alt="Screenshot of a web page with an image of a cat and a dog with some text.">
+<img src="figs/cats1.png" class="figure-img img-fluid" alt="Screenshot of a web page with an image of a cat and a dog with some text.">
 <figcaption class="figure-caption">
 <p>The web page produced by this code example.</p>
 <a href="https://repl.it/@mcuringa/JSGuiDemo">See the repl with this code in <code>cats1.js</code></a>
@@ -4602,7 +4602,7 @@ The <code>split</code> method (which we’ve already seen) breaks a string into 
 <a class="sourceLine" id="cb240-8" title="8"><span class="op">}</span></a>
 <a class="sourceLine" id="cb240-9" title="9"><span class="va">jsgui</span>.<span class="at">add</span>(<span class="va">jsgui</span>.<span class="at">dl</span>(pet))<span class="op">;</span></a></code></pre></div>
 <figure class="figure border">
-<img src="https://matt.curinga.com/think-js/figs/jsgui-dl.png" class="figure-img img-fluid" alt="Screenshot of a web page with a definition list with the keys on the left and terms on the right.">
+<img src="figs/jsgui-dl.png" class="figure-img img-fluid" alt="Screenshot of a web page with a definition list with the keys on the left and terms on the right.">
 <figcaption class="figure-caption">
 The keys are in a column on the left, right aligned and bold. The values are on the right.
 </figcaption>
@@ -4621,7 +4621,7 @@ The keys are in a column on the left, right aligned and bold. The values are on 
 <a class="sourceLine" id="cb241-11" title="11"><span class="va">jsgui</span>.<span class="at">add</span>(table)<span class="op">;</span></a></code></pre></div>
 <p>This example creates an array with 4 columns and 5 elements. Since the 0-th element contains the header data, <code>slice(1)</code> is used to exclude that row when <code>table()</code> is called, and the array at <code>animalsOnScreen[0]</code> is passed as the <code>header</code> argument.</p>
 <figure class="figure border">
-<img src="https://matt.curinga.com/think-js/figs/jsgui-table.png" class="figure-img img-fluid" alt="Screenshot of a web page with a data presented in a table.">
+<img src="figs/jsgui-table.png" class="figure-img img-fluid" alt="Screenshot of a web page with a data presented in a table.">
 <figcaption class="figure-caption">
 The <strong>double scripted</strong> array gets presented as a table, where each array element becomes a row, and each element of the sub-array becomes a column.
 </figcaption>
@@ -5323,7 +5323,7 @@ It is a very dynamic approach, but perhaps not one that encourages thinking in a
 </section>
 </section>
 
-<script src="https://matt.curinga.com/think-js/js/listings.js"></script>
+<script src="js/listings.js"></script>
 
 </body>
 </html>

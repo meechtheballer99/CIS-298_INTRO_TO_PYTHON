@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="build-cover.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="icon" href="../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/build-cover">
+<meta name="og:title" content="Coverage profiling support for integration tests - The Go Programming Language">
+<title>Coverage profiling support for integration tests - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="build-cover.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="build-cover.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="build-cover.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="build-cover.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="build-cover.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="build-cover.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="build-cover.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="build-cover.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="build-cover.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="build-cover.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+  <article class="Article Article--doc">
+
+    
+    <h1>Coverage profiling support for integration tests</h1>
+    <div class='markdown'>
+<p>Table of Contents:</p>
+<p><a href="build-cover.html#overview">Overview</a><br>
+<a href="build-cover.html#building">Building a binary for coverage profiling</a><br>
+<a href="build-cover.html#running">Running a coverage-instrumented binary</a><br>
+<a href="build-cover.html#working">Working with coverage data files</a><br>
+<a href="build-cover.html#FAQ">Frequently Asked Questions</a><br>
+<a href="build-cover.html#resources">Resources</a><br>
+<a href="build-cover.html#glossary">Glossary</a></p>
+<p>Beginning in Go 1.20, Go supports collection of coverage profiles from applications and from integration tests, larger and more complex tests for Go programs.</p>
+<h1 id="overview">Overview</h1>
+<p>Go provides easy-to-use support for collecting coverage profiles at the level of package unit tests via the &ldquo;<code>go test -coverprofile=... &lt;pkg_target&gt;</code>&rdquo; command.
+Starting with Go 1.20, users can now collect coverage profiles for larger <a href="build-cover.html#glos-integration-test">integration tests</a>: more heavy-weight, complex tests that perform multiple runs of a given application binary.</p>
+<p>For unit tests, collecting a coverage profile and generating a report requires two steps: a <code>go test -coverprofile=...</code> run, followed by an invocation of <code>go tool cover {-func,-html}</code> to generate a report.</p>
+<p>For integration tests, three steps are needed: a <a href="build-cover.html#building">build</a> step, a <a href="build-cover.html#running">run</a> step (which may involve multiple invocations of the binary from the build step), and finally a <a href="build-cover.html#reporting">reporting</a> step, as described below.</p>
+<h1 id="building">Building a binary for coverage profiling</h1>
+<p>To build an application for collecting coverage profiles, pass the <code>-cover</code> flag when invoking <code>go build</code> on your application binary target. See the section <a href="build-cover.html#packageselection">below</a> for a sample <code>go build -cover</code> invocation.
+The resulting binary can then be run using an environment variable setting to capture coverage profiles (see the next section on <a href="build-cover.html#running">running</a>).</p>
+<h2 id="packageselection">How packages are selected for instrumentation</h2>
+<p>During a given &ldquo;<code>go build -cover</code>&rdquo; invocation, the Go command will select packages in the main module for coverage profiling; other packages that feed into the build (dependencies listed in go.mod, or packages that are part of the Go standard library) will not be included by default.</p>
+<p>For example, here is a toy program containing a main package, a local main-module package <code>greetings</code> and a set of packages imported from outside the module, including (among others) <code>rsc.io/quote</code> and <code>fmt</code> (<a href="https://go.dev/play/p/VSQJN8xkkf-?v=gotip">link to full program</a>).</p>
+<pre><code>$ cat go.mod
+module mydomain.com
+
+go 1.20
+
+require rsc.io/quote v1.5.2
+
+require (
+    golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c // indirect
+    rsc.io/sampler v1.3.0 // indirect
+)
+
+$ cat myprogram.go
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;mydomain.com/greetings&quot;
+    &quot;rsc.io/quote&quot;
+)
+
+func main() {
+    fmt.Printf(&quot;I say %q and %q\n&quot;, quote.Hello(), greetings.Goodbye())
+}
+$ cat greetings/greetings.go
+package greetings
+
+func Goodbye() string {
+    return &quot;see ya&quot;
+}
+$ go build -cover -o myprogram.exe .
+$
+</code></pre>
+<p>If you build this program with the &ldquo;<code>-cover</code>&rdquo; command line flag and run it, exactly two packages will be included in the profile: <code>main</code> and <code>mydomain.com/greetings</code>; the other dependent packages will be excluded.</p>
+<p>Users who want to have more control over which packages are included for coverage can build with the &ldquo;<code>-coverpkg</code>&rdquo; flag. Example:</p>
+<pre><code>$ go build -cover -o myprogramMorePkgs.exe -coverpkg=io,mydomain.com,rsc.io/quote .
+$
+</code></pre>
+<p>In the build above, the main package from <code>mydomain.com</code> as well as the <code>rsc.io/quote</code> and <code>io</code> packages are selected for profiling; since  <code>mydomain.com/greetings</code> isn&rsquo;t specifically listed, it will be excluded from the profile, even though it resides in the main module.</p>
+<h1 id="running">Running a coverage-instrumented binary</h1>
+<p>Binaries built with &ldquo;<code>-cover</code>&rdquo; write out profile data files at the end of their execution to a directory specified via the environment variable <code>GOCOVERDIR</code>. Example:</p>
+<pre><code>$ go build -cover -o myprogram.exe myprogram.go
+$ mkdir somedata
+$ GOCOVERDIR=somedata ./myprogram.exe
+I say &quot;Hello, world.&quot; and &quot;see ya&quot;
+$ ls somedata
+covcounters.c6de772f99010ef5925877a7b05db4cc.2424989.1670252383678349347
+covmeta.c6de772f99010ef5925877a7b05db4cc
+$
+</code></pre>
+<p>Note the two files that were written to the directory <code>somedata</code>: these (binary) files contain the coverage results.  See the following section on <a href="build-cover.html#reporting">reporting</a> for more on how to produce human-readable results from these data files.</p>
+<p>If the <code>GOCOVERDIR</code> environment variable is not set, a coverage-instrumented binary will still execute correctly, but will issue a warning.
+Example:</p>
+<pre><code>$ ./myprogram.exe
+warning: GOCOVERDIR not set, no coverage data emitted
+I say &quot;Hello, world.&quot; and &quot;see ya&quot;
+$
+</code></pre>
+<h2 id="tests-involving-multiple-runs">Tests involving multiple runs</h2>
+<p>Integration tests can in many cases involve multiple program runs; when the program is built with &ldquo;<code>-cover</code>&rdquo;, each run will produce a new data file. Example</p>
+<pre><code>$ mkdir somedata2
+$ GOCOVERDIR=somedata2 ./myprogram.exe          // first run
+I say &quot;Hello, world.&quot; and &quot;see ya&quot;
+$ GOCOVERDIR=somedata2 ./myprogram.exe -flag    // second run
+I say &quot;Hello, world.&quot; and &quot;see ya&quot;
+$ ls somedata2
+covcounters.890814fca98ac3a4d41b9bd2a7ec9f7f.2456041.1670259309405583534
+covcounters.890814fca98ac3a4d41b9bd2a7ec9f7f.2456047.1670259309410891043
+covmeta.890814fca98ac3a4d41b9bd2a7ec9f7f
+$
+</code></pre>
+<p>Coverage data output files come in two flavors: meta-data files (containing the items that are invariant from run to run, such as source file names and function names), and counter data files (which record the parts of the program that executed).</p>
+<p>In the example above, the first run produced two files (counter and meta), whereas the second run generated only a counter data file: since meta-data doesn&rsquo;t change from run to run, it only needs to be written once.</p>
+<h1 id="working">Working with coverage data files</h1>
+<p>Go 1.20 introduces a new tool, &lsquo;<code>covdata</code>&rsquo;, that can be used to read and manipulate coverage data files from a <code>GOCOVERDIR</code> directory.</p>
+<p>Go&rsquo;s <code>covdata</code> tool runs in a variety of modes. The general form of a <code>covdata</code> tool invocation takes the form</p>
+<pre><code>$ go tool covdata &lt;mode&gt; -i=&lt;dir1,dir2,...&gt; ...flags...
+</code></pre>
+<p>where the &ldquo;<code>-i</code>&rdquo; flag provides a list of directories to read, where each directories is derived from an execution of a coverage-instrumented binary (via <code>GOCOVERDIR</code>).</p>
+<h2 id="reporting">Creating coverage profile reports</h2>
+<p>This section discusses how to use &ldquo;<code>go tool covdata</code>&rdquo; to produce human-readable reports from coverage data files.</p>
+<h3 id="reporting-percent-statements-covered">Reporting percent statements covered</h3>
+<p>To report a &ldquo;percent statements covered&rdquo; metric for each instrumented package, use the command &ldquo;<code>go tool covdata percent -i=&lt;directory&gt;</code>&rdquo;.
+Using the example from the <a href="build-cover.html#running">running</a> section above:</p>
+<pre><code>$ ls somedata
+covcounters.c6de772f99010ef5925877a7b05db4cc.2424989.1670252383678349347
+covmeta.c6de772f99010ef5925877a7b05db4cc
+$ go tool covdata percent -i=somedata
+    main    coverage: 100.0% of statements
+    mydomain.com/greetings  coverage: 100.0% of statements
+$
+</code></pre>
+<p>The &ldquo;statements covered&rdquo; percentages here correspond directly to those reported by <code>go test -cover</code>.</p>
+<h2 id="converting-to-legacy-text-format">Converting to legacy text format</h2>
+<p>You can convert binary coverage data files into the legacy textual format generated by &ldquo;<code>go test -coverprofile=&lt;outfile&gt;</code>&rdquo; using the covdata <code>textfmt</code> selector. The resulting text file can then be used with &ldquo;<code>go tool cover -func</code>&rdquo; or &ldquo;<code>go tool cover -html</code>&rdquo; to create additional reports. Example:</p>
+<pre><code>$ ls somedata
+covcounters.c6de772f99010ef5925877a7b05db4cc.2424989.1670252383678349347
+covmeta.c6de772f99010ef5925877a7b05db4cc
+$ go tool covdata textfmt -i=somedata -o profile.txt
+$ cat profile.txt
+mode: set
+mydomain.com/myprogram.go:10.13,12.2 1 1
+mydomain.com/greetings/greetings.go:3.23,5.2 1 1
+$ go tool cover -func=profile.txt
+mydomain.com/greetings/greetings.go:3:  Goodbye     100.0%
+mydomain.com/myprogram.go:10:       main        100.0%
+total:                  (statements)    100.0%
+$
+</code></pre>
+<h2 id="merging">Merging</h2>
+<p>The <code>merge</code> subcommand of &ldquo;<code>go tool covdata</code>&rdquo; can be used to merge together profiles from multiple data directories.</p>
+<p>For example, consider a program that runs on both macOS and on Windows.
+The author of this program might want to combine coverage profiles from separate
+runs on each operating system into a single profile corpus, so as to produce a
+cross-platform coverage summary.
+For example:</p>
+<pre><code>$ ls windows_datadir
+covcounters.f3833f80c91d8229544b25a855285890.1025623.1667481441036838252
+covcounters.f3833f80c91d8229544b25a855285890.1025628.1667481441042785007
+covmeta.f3833f80c91d8229544b25a855285890
+$ ls macos_datadir
+covcounters.b245ad845b5068d116a4e25033b429fb.1025358.1667481440551734165
+covcounters.b245ad845b5068d116a4e25033b429fb.1025364.1667481440557770197
+covmeta.b245ad845b5068d116a4e25033b429fb
+$ ls macos_datadir
+$ mkdir merged
+$ go tool covdata merge -i=windows_datadir,macos_datadir -o merged
+$
+</code></pre>
+<p>The merge operation above will combine the data from the specified input directories and write a new set of merged data files to the directory &ldquo;merged&rdquo;.</p>
+<h2 id="package-selection">Package selection</h2>
+<p>Most &ldquo;<code>go tool covdata</code>&rdquo; commands support a &ldquo;<code>-pkg</code>&rdquo; flag to perform package selection as part of the operation; the argument to &ldquo;<code>-pkg</code>&rdquo; takes the same form as that used by the Go command&rsquo;s &ldquo;<code>-coverpkg</code>&rdquo; flag.
+Example:</p>
+<pre><code>
+$ ls somedata
+covcounters.c6de772f99010ef5925877a7b05db4cc.2424989.1670252383678349347
+covmeta.c6de772f99010ef5925877a7b05db4cc
+$ go tool covdata percent -i=somedata -pkg=mydomain.com/greetings
+    mydomain.com/greetings  coverage: 100.0% of statements
+$ go tool covdata percent -i=somedata -pkg=nonexistentpackage
+$
+</code></pre>
+<p>The &ldquo;<code>-pkg</code>&rdquo; flag can be used to select the specific subset of packages of interest for a given report.</p>
+<h1 id="heading"></h1>
+<h2 id="FAQ">Frequently Asked Questions</h2>
+<ol>
+<li><a href="build-cover.html#gomodselect">How can I request coverage instrumentation for all imported packages mentioned in my <code>go.mod</code> file</a></li>
+<li><a href="build-cover.html#gopathmode">Can I use <code>go build -cover</code> in GOPATH/GO111MODULE=off mode?</a></li>
+<li><a href="build-cover.html#panicprof">If my program panics, will coverage data be written?</a></li>
+<li><a href="build-cover.html#mainpkg">Will <code>-coverpkg=main</code> select my main package for profiling?</a></li>
+</ol>
+<h4 id="gomodselect">How can I request coverage instrumentation for all imported packages mentioned in my <code>go.mod</code> file</h4>
+<p>By default, <code>go build -cover</code> will instrument all main module packages
+for coverage, but will not instrument imports outside the main module
+(e.g. standard library packages or imports listed in <code>go.mod</code>).
+One way to request instrumentation for all non-stdlib dependencies
+is to feed the output of <code>go list</code> into <code>-coverpkg</code>.
+Here is an example, again using
+the <a href="https://go.dev/play/p/VSQJN8xkkf-?v=gotip">example program</a> cited above:</p>
+<pre><code>$ go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}' -deps . | paste -sd &quot;,&quot; &gt; pkgs.txt
+$ go build -o myprogram.exe -coverpkg=`cat pkgs.txt` .
+$ mkdir somedata
+$ GOCOVERDIR=somedata ./myprogram.exe
+$ go tool covdata percent -i=somedata
+    golang.org/x/text/internal/tag  coverage: 78.4% of statements
+    golang.org/x/text/language  coverage: 35.5% of statements
+    mydomain.com    coverage: 100.0% of statements
+    mydomain.com/greetings  coverage: 100.0% of statements
+    rsc.io/quote    coverage: 25.0% of statements
+    rsc.io/sampler  coverage: 86.7% of statements
+$
+</code></pre>
+<h4 id="gopathmode">Can I use <code>go build -cover</code> in GO111MODULE=off mode?</h4>
+<p>Yes, <code>go build -cover</code> does work with <code>GO111MODULE=off</code>.
+When building a program in GO111MODULE=off mode, only the package specifically named as the target on the command line will be instrumented for profiling. Use the <code>-coverpkg</code> flag to include additional packages in the profile.</p>
+<h4 id="panicprof">If my program panics, will coverage data be written?</h4>
+<p>Programs built with <code>go build -cover</code> will only write out complete profile
+data at the end of execution if the program invokes <code>os.Exit()</code> or returns
+normally from <code>main.main</code>.
+If a program terminates in an unrecovered panic, or if the program hits a
+fatal exception (such as a segmentation violation, divide by zero, etc),
+profile data from statements executed during the run will be lost.</p>
+<h4 id="mainpkg">Will <code>-coverpkg=main</code> select my main package for profiling?</h4>
+<p>The <code>-coverpkg</code> flag accepts a list of import paths, not a list of package names. If you want to select your <code>main</code> package for coverage instrumention, please identify it by import path, not by name. Example (using <a href="https://go.dev/play/p/VSQJN8xkkf-?v=gotip">this example program</a>):</p>
+<pre><code>$ go list -m
+mydomain.com
+$ go build -coverpkg=main -o oops.exe .
+warning: no packages being built depend on matches for pattern main
+$ go build -coverpkg=mydomain.com -o myprogram.exe .
+$ mkdir somedata
+$ GOCOVERDIR=somedata ./myprogram.exe
+I say &quot;Hello, world.&quot; and &quot;see ya&quot;
+$ go tool covdata percent -i=somedata
+    mydomain.com    coverage: 100.0% of statements
+$
+</code></pre>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><strong>Blog post introducing unit test coverage in Go 1.2</strong>:
+<ul>
+<li>Coverage profiling for unit tests was introduced as part of the
+Go 1.2 release; see <a href="https://go.dev/blog/cover">this blog post</a> for details.</li>
+</ul>
+</li>
+<li><strong>Documentation</strong>:
+<ul>
+<li>The <a href="https://pkg.go.dev/cmd/go" rel="noreferrer" target="_blank"><code>cmd/go</code></a> package docs describe the
+build and test flags associated with coverage.</li>
+</ul>
+</li>
+<li><strong>Technical details</strong>:
+<ul>
+<li><a href="https://go.dev/design/51430-revamp-code-coverage">Design draft</a></li>
+<li><a href="https://go.dev/issue/51430">Proposal</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="glossary">Glossary</h2>
+<p><a id="glos-unit-test"></a>
+<strong>unit test:</strong> Tests within a <code>*_test.go</code> file associated with a specific Go package, utilizing Go&rsquo;s <code>testing</code> package.</p>
+<p><a id="glos-integration-test"></a>
+<strong>integration test:</strong> A more comprehensive, heavier weight test for a given application or binary. Integration tests typically involve building a program or set of programs, then performing a series of runs of the programs using multiple inputs and scenarios, under control of a test harness that may or may not be based on Go&rsquo;s <code>testing</code> package.</p>
+</div>
+
+
+    
+  </article>
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/carousels.js"></script>
+  <script src="../js/searchBox.js"></script>
+  <script src="../js/misc.js"></script>
+  <script src="../js/hats.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/godocs.js"></script>
+  <script async src="../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

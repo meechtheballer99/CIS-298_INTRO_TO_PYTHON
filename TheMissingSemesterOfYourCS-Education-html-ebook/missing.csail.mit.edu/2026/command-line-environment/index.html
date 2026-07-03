@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../static/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../static/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../static/assets/favicon-16x16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:url" content="https://missing.csail.mit.edu/2026/command-line-environment/">
+  <meta property="og:site_name" content="Missing Semester">
+
+  
+    
+    <meta name="description" content="Learn how command-line programs work, including input/output streams, environment variables, and remote machines with SSH.">
+    <meta name="twitter:description" content="Learn how command-line programs work, including input/output streams, environment variables, and remote machines with SSH.">
+    <meta property="og:description" content="Learn how command-line programs work, including input/output streams, environment variables, and remote machines with SSH.">
+  
+
+  
+  <meta name="twitter:title" content="Command-line Environment">
+  <meta property="og:title" content="Command-line Environment">
+
+  
+  <meta name="twitter:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec2.png">
+  <meta property="og:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec2.png">
+
+  <title>
+    
+      
+        Command-line Environment &middot; Missing Semester
+      
+    
+  </title>
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/syntax.css">
+  <script defer src="../../static/js/sidenotes.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7WVHD84D1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P7WVHD84D1');
+  </script>
+
+</head>
+
+
+  <body>
+
+    <div id="nav-bg">
+  <nav id="top-nav">
+    <a href="../../index.html" id="logo">./missing-semester</a>
+    <input type="checkbox" id="menu-icon">
+    <label class="menu-label" for="menu-icon"></label>
+    <div class="trigger">
+      <div class="trigger-child">
+        <span class="nav-link"><a href="../index.html">lectures</a></span>
+        <span class="nav-link"><a href="../../past/index.html">past</a></span>
+        <span class="nav-link"><a href="../../about/index.html">about</a></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+    <div id="content">
+    <h1 class="title">Command-line Environment</h1>
+
+
+
+  <div class="youtube-wrapper" style="padding-bottom: 56.25%;">
+    <iframe src="https://www.youtube.com/embed/ccBGsPedE9Q" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+
+<p>As we covered in the previous lecture, most shells are not a mere launcher to start up other programs,
+but in practice they provide an entire programming language full of common patterns and abstractions.
+However, unlike the majority of programming languages, in shell scripting everything is designed around running programs and getting them to communicate with each other simply and efficiently.</p>
+
+<p>In particular, shell scripting is tightly bound by <em>conventions</em>. For a command line interface (CLI) program to play nicely within the broader shell environment there are some common patterns that it needs to follow.
+We will now cover many of the concepts required to understand how command line programs work as well as ubiquitous conventions on how to use and configure them.</p>
+
+<h1 id="the-command-line-interface">The Command Line Interface</h1>
+
+<p>Writing a function in most programming languages looks something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def add(x: int, y: int) -&gt; int:
+    return x + y
+</code></pre></div></div>
+
+<p>Here we can explicitly see the inputs and the outputs of the program.
+In contrast, shell scripts can look quite different at first glance.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="k">if</span> <span class="o">[[</span> <span class="nt">-f</span> <span class="nv">$1</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Target file already exists"</span>
+    <span class="nb">exit </span>1
+<span class="k">else
+    if</span> <span class="nv">$DEBUG</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">grep</span> <span class="s1">'error'</span> - | <span class="nb">tee</span> <span class="nv">$1</span>
+    <span class="k">else
+        </span><span class="nb">grep</span> <span class="s1">'error'</span> - <span class="o">&gt;</span> <span class="nv">$1</span>
+    <span class="k">fi
+    </span><span class="nb">exit </span>0
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>To properly understand what is going in scripts like this one we first need to introduce a few concepts that appear often when shell programs communicate with each other or with the shell environment:</p>
+
+<ul>
+  <li>Arguments</li>
+  <li>Streams</li>
+  <li>Environment variables</li>
+  <li>Return codes</li>
+  <li>Signals</li>
+</ul>
+
+<h2 id="arguments">Arguments</h2>
+
+<p>Shell programs receive a list of arguments when they are executed.
+Arguments are plain strings in shell, and it is up to the program how to interpret them.
+For instance when we do <code class="language-plaintext highlighter-rouge">ls -l folder/</code>, we are executing the program <code class="language-plaintext highlighter-rouge">/bin/ls</code> with arguments <code class="language-plaintext highlighter-rouge">['-l', 'folder/']</code>.</p>
+
+<p>From within a shell script we access these via special shell syntax.
+To access the first argument we access the variable <code class="language-plaintext highlighter-rouge">$1</code>, second argument <code class="language-plaintext highlighter-rouge">$2</code> and so on and so forth until <code class="language-plaintext highlighter-rouge">$9</code>. To access all arguments as a list we use <code class="language-plaintext highlighter-rouge">$@</code> and to retrieve the number of arguments <code class="language-plaintext highlighter-rouge">$#</code>. Additionally we can also access the name of the program with <code class="language-plaintext highlighter-rouge">$0</code>.</p>
+
+<p>For most programs the arguments will consist of a mixture of <em>flags</em> and regular strings.
+Flags can be identified because they are preceded by a dash (<code class="language-plaintext highlighter-rouge">-</code>) or double-dash (<code class="language-plaintext highlighter-rouge">--</code>).
+Flags are usually optional and their role is to modify the behavior of the program.
+For example <code class="language-plaintext highlighter-rouge">ls -l</code> changes how <code class="language-plaintext highlighter-rouge">ls</code> formats its output.</p>
+
+<p>You will see double dash flags with long names like <code class="language-plaintext highlighter-rouge">--all</code>, and single dash flags like <code class="language-plaintext highlighter-rouge">-a</code>, which are most often followed by a single letter.
+The same option might be specified in both formats, <code class="language-plaintext highlighter-rouge">ls -a</code> and <code class="language-plaintext highlighter-rouge">ls --all</code> are equivalent.
+Single dash flags are often grouped, so <code class="language-plaintext highlighter-rouge">ls -l -a</code> and <code class="language-plaintext highlighter-rouge">ls -la</code> are also equivalent.
+The order of flags usually doesn’t matter either, <code class="language-plaintext highlighter-rouge">ls -la</code> and <code class="language-plaintext highlighter-rouge">ls -al</code> produce the same result.
+Some flags are quite prevalent and as you get more familiar with the shell environment you’ll intuitively reach for them, for example (<code class="language-plaintext highlighter-rouge">--help</code>, <code class="language-plaintext highlighter-rouge">--verbose</code>, <code class="language-plaintext highlighter-rouge">--version</code>).</p>
+
+<blockquote>
+  <p>Flags are a first good example of shell conventions. The shell language does not require that our program uses <code class="language-plaintext highlighter-rouge">-</code> or <code class="language-plaintext highlighter-rouge">--</code> in this particular way.
+Nothing prevents us from writing a program with syntax <code class="language-plaintext highlighter-rouge">myprogram +myoption myfile</code>, but it would lead to confusion since the expectation is that we use dashes.
+In practice, most programming languages provide CLI flag parsing libraries (e.g. <code class="language-plaintext highlighter-rouge">argparse</code> in python to parse arguments with the dash syntax).</p>
+</blockquote>
+
+<p>Another common convention in CLI programs is for programs to accept a variable number of arguments of the same type. When given arguments in this way the command performs the same operation on each one of them.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>src
+<span class="nb">mkdir </span>docs
+<span class="c"># is equivalent to</span>
+<span class="nb">mkdir </span>src docs
+</code></pre></div></div>
+
+<p>This syntax sugar might seem unnecessary at first, but it becomes really powerful when combined with <em>globbing</em>.
+Globbing or globs are special patterns that the shell will expand before calling the program.</p>
+
+<p>Say we wanted to delete all .py files in the current folder nonrecursively. From what we learned in the previous lecture we could achieve this by running</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="si">$(</span><span class="nb">ls</span> | <span class="nb">grep</span> <span class="nt">-P</span> <span class="s1">'\.py$'</span><span class="si">)</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">rm</span> <span class="s2">"</span><span class="nv">$file</span><span class="s2">"</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>But we can replace that with just <code class="language-plaintext highlighter-rouge">rm *.py</code>!</p>
+
+<p>When we type <code class="language-plaintext highlighter-rouge">rm *.py</code> into the terminal, the shell will not call the <code class="language-plaintext highlighter-rouge">/bin/rm</code> program with arguments <code class="language-plaintext highlighter-rouge">['*.py']</code>.
+Instead, the shell will search for files in the current folder matching the pattern <code class="language-plaintext highlighter-rouge">*.py</code> where <code class="language-plaintext highlighter-rouge">*</code> can match any string of zero or more characters of any type.
+So if our folder has <code class="language-plaintext highlighter-rouge">main.py</code> and <code class="language-plaintext highlighter-rouge">utils.py</code> then the <code class="language-plaintext highlighter-rouge">rm</code> program will receive arguments <code class="language-plaintext highlighter-rouge">['main.py', 'utils.py']</code>.</p>
+
+<p>The most common globs you will find are wildcards <code class="language-plaintext highlighter-rouge">*</code> (zero or more of anything), <code class="language-plaintext highlighter-rouge">?</code> (exactly one of anything) and curly braces.
+Curly braces <code class="language-plaintext highlighter-rouge">{}</code> expand a comma-separated list of patterns into multiple arguments.</p>
+
+<p>In practice, globs are best understood with motivating examples.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch </span>folder/<span class="o">{</span>a,b,c<span class="o">}</span>.py
+<span class="c"># Will expand to</span>
+<span class="nb">touch </span>folder/a.py folder/b.py folder/c.py
+
+convert image.<span class="o">{</span>png,jpg<span class="o">}</span>
+<span class="c"># Will expand to</span>
+convert image.png image.jpg
+
+<span class="nb">cp</span> /path/to/project/<span class="o">{</span>setup,build,deploy<span class="o">}</span>.sh /newpath
+<span class="c"># Will expand to</span>
+<span class="nb">cp</span> /path/to/project/setup.sh /path/to/project/build.sh /path/to/project/deploy.sh /newpath
+
+<span class="c"># Globbing techniques can also be combined</span>
+<span class="nb">mv</span> <span class="k">*</span><span class="o">{</span>.py,.sh<span class="o">}</span> folder
+<span class="c"># Will move all *.py and *.sh files</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Some shells (e.g. zsh) support even more advanced forms of globbing such as <code class="language-plaintext highlighter-rouge">**</code> that will expand to include recursive paths. So <code class="language-plaintext highlighter-rouge">rm **/*.py</code> will delete all .py files recursively.</p>
+</blockquote>
+
+<h2 id="streams">Streams</h2>
+
+<p>Whenever we execute a program pipeline like</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>myfile | <span class="nb">grep</span> <span class="nt">-P</span> <span class="s1">'\d+'</span> | <span class="nb">uniq</span> <span class="nt">-c</span>
+</code></pre></div></div>
+
+<p>we see that the <code class="language-plaintext highlighter-rouge">grep</code> program is communicating with both the <code class="language-plaintext highlighter-rouge">cat</code> and <code class="language-plaintext highlighter-rouge">uniq</code> programs.</p>
+
+<p>An important observation here is that all three programs are executing at once.
+Namely, the shell is not first calling cat, then grep, and then uniq.
+Instead, all three programs are being spawned and the shell is connecting the output of cat to the input of grep and the output of grep to the input of uniq.
+When using the pipe operator <code class="language-plaintext highlighter-rouge">|</code>, the shell operates on streams of data that flow from one program to the next in the chain.</p>
+
+<p>We can demonstrate this concurrency, all commands in a pipeline start immediately:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="o">(</span><span class="nb">sleep </span>15 <span class="o">&amp;&amp;</span> <span class="nb">cat </span>numbers.txt<span class="o">)</span> | <span class="nb">grep</span> <span class="nt">-P</span> <span class="s1">'^\d$'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span>  &amp;
+<span class="go">[1] 12345
+</span><span class="gp">$</span><span class="w"> </span>ps | <span class="nb">grep</span> <span class="nt">-P</span> <span class="s1">'(sleep|cat|grep|sort|uniq)'</span>
+<span class="go">  32930 pts/1    00:00:00 sleep
+  32931 pts/1    00:00:00 grep
+  32932 pts/1    00:00:00 sort
+  32933 pts/1    00:00:00 uniq
+  32948 pts/1    00:00:00 grep
+</span></code></pre></div></div>
+
+<p>We can see that all processes but <code class="language-plaintext highlighter-rouge">cat</code> are running right away. The shell spawns all processes and connects their streams before any of them finish. <code class="language-plaintext highlighter-rouge">cat</code> will only get started once sleep finishes, and the output of <code class="language-plaintext highlighter-rouge">cat</code> will be sent to grep and so on and so forth.</p>
+
+<p>Every program has an input stream, labeled stdin (for standard input). When piping, stdin is connected automatically. Within a script, many programs accept <code class="language-plaintext highlighter-rouge">-</code> as a filename to mean “read from stdin”:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># These are equivalent when data comes from a pipe</span>
+<span class="nb">echo</span> <span class="s2">"hello"</span> | <span class="nb">grep</span> <span class="s2">"hello"</span>
+<span class="nb">echo</span> <span class="s2">"hello"</span> | <span class="nb">grep</span> <span class="s2">"hello"</span> -
+</code></pre></div></div>
+
+<p>Similarly, every program has two output streams: stdout and stderr.
+The standard output is the one most commonly encountered and it is the one that is used for piping the output of the program to the next command in the pipeline.
+The standard error is an alternative stream that is intended for programs to report warnings and other types of issues, without that output getting parsed by the next command in the chain.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> /nonexistent
+<span class="go">ls: cannot access '/nonexistent': No such file or directory
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> /nonexistent | <span class="nb">grep</span> <span class="s2">"pattern"</span>
+<span class="go">ls: cannot access '/nonexistent': No such file or directory
+</span><span class="gp">#</span><span class="w"> </span>The error message still appears because stderr is not piped
+<span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> /nonexistent 2&gt;/dev/null
+<span class="gp">#</span><span class="w"> </span>No output - stderr was redirected to /dev/null
+</code></pre></div></div>
+
+<p>The shell provides syntax for redirecting these streams. Here are some illustrative examples.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Redirect stdout to a file (overwrite)</span>
+<span class="nb">echo</span> <span class="s2">"hello"</span> <span class="o">&gt;</span> output.txt
+
+<span class="c"># Redirect stdout to a file (append)</span>
+<span class="nb">echo</span> <span class="s2">"world"</span> <span class="o">&gt;&gt;</span> output.txt
+
+<span class="c"># Redirect stderr to a file</span>
+<span class="nb">ls </span>foobar 2&gt; errors.txt
+
+<span class="c"># Redirect both stdout and stderr to the same file</span>
+<span class="nb">ls </span>foobar &amp;&gt; all_output.txt
+
+<span class="c"># Redirect stdin from a file</span>
+<span class="nb">grep</span> <span class="s2">"pattern"</span> &lt; input.txt
+
+<span class="c"># Discard output by redirecting to /dev/null</span>
+cmd <span class="o">&gt;</span> /dev/null 2&gt;&amp;1
+</code></pre></div></div>
+
+<p>Another powerful tool that exemplifies the Unix philosophy is <a href="https://github.com/junegunn/fzf"><code class="language-plaintext highlighter-rouge">fzf</code></a>, a fuzzy finder. It reads lines from stdin and provides an interactive interface to filter and select:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> | fzf
+<span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> ~/.bash_history | fzf
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">fzf</code> can be integrated with many shell operations. We’ll see more uses of it when we discuss shell customization.</p>
+
+<h2 id="environment-variables">Environment variables</h2>
+
+<p>To assign variables in bash we use the syntax <code class="language-plaintext highlighter-rouge">foo=bar</code>, and then access the value of the variable with the <code class="language-plaintext highlighter-rouge">$foo</code> syntax.
+Note that <code class="language-plaintext highlighter-rouge">foo = bar</code> is invalid syntax as the shell will parse it as calling the program <code class="language-plaintext highlighter-rouge">foo</code> with arguments <code class="language-plaintext highlighter-rouge">['=', 'bar']</code>.
+In shell scripting the role of the space character is to perform argument splitting.
+This behavior can be confusing and tricky to get used to, so keep it in mind.</p>
+
+<p>Shell variables do not have types, they are all strings.
+Note that when writing string expressions in the shell single and double quotes are not interchangeable.
+Strings delimited with <code class="language-plaintext highlighter-rouge">'</code> are literal strings and will not expand variables, perform command substitution, or process escape sequences, whereas <code class="language-plaintext highlighter-rouge">"</code> delimited strings will.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">foo</span><span class="o">=</span>bar
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$foo</span><span class="s2">"</span>
+<span class="c"># prints bar</span>
+<span class="nb">echo</span> <span class="s1">'$foo'</span>
+<span class="c"># prints $foo</span>
+</code></pre></div></div>
+
+<p>To capture the output of a command into a variable we use <em>command substitution</em>.
+When we execute</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">files</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span><span class="si">)</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$files</span><span class="s2">"</span> | <span class="nb">grep </span>README
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$files</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">".py"</span>
+</code></pre></div></div>
+<p>the output (concretely the stdout) of ls is placed into the variable <code class="language-plaintext highlighter-rouge">$files</code> which we can access later.
+The content of the <code class="language-plaintext highlighter-rouge">$files</code> variable does include the newlines from the ls output, which is how programs like <code class="language-plaintext highlighter-rouge">grep</code> know to operate on each item independently.</p>
+
+<p>A lesser known similar feature is <em>process substitution</em>, <code class="language-plaintext highlighter-rouge">&lt;( CMD )</code> will execute <code class="language-plaintext highlighter-rouge">CMD</code> and place the output in a temporary file and substitute the <code class="language-plaintext highlighter-rouge">&lt;()</code> with that file’s name.
+This is useful when commands expect values to be passed by file instead of by STDIN.
+For example, <code class="language-plaintext highlighter-rouge">diff &lt;(ls src) &lt;(ls docs)</code> will show differences between files in dirs <code class="language-plaintext highlighter-rouge">src</code> and <code class="language-plaintext highlighter-rouge">docs</code>.</p>
+
+<p>Whenever a shell program calls another program it passes along a set of variables that are often referred to as <em>environment variables</em>.
+From within a shell we can find the current environment variables by running <code class="language-plaintext highlighter-rouge">printenv</code>.
+To pass an environment variable explicitly we can prepend a command with a variable assignment</p>
+
+<blockquote>
+  <p>Environment variables are conventionally written in ALL_CAPS (e.g., <code class="language-plaintext highlighter-rouge">HOME</code>, <code class="language-plaintext highlighter-rouge">PATH</code>, <code class="language-plaintext highlighter-rouge">DEBUG</code>). This is a convention, not a technical requirement, but following it helps distinguish environment variables from local shell variables which are typically lowercase.</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TZ</span><span class="o">=</span>Asia/Tokyo <span class="nb">date</span>  <span class="c"># prints the current time in Tokyo</span>
+<span class="nb">echo</span> <span class="nv">$TZ</span>  <span class="c"># this will be empty, since TZ was only set for the child command</span>
+</code></pre></div></div>
+
+<p>Alternatively, we can use the <code class="language-plaintext highlighter-rouge">export</code> built-in function that will modify our current environment and thus all child processes will inherit the variable:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">DEBUG</span><span class="o">=</span>1
+<span class="c"># All programs from this point onwards will have DEBUG=1 in their environment</span>
+bash <span class="nt">-c</span> <span class="s1">'echo $DEBUG'</span>
+<span class="c"># prints 1</span>
+</code></pre></div></div>
+
+<p>To delete a variable use the <code class="language-plaintext highlighter-rouge">unset</code> built-in command, e.g. <code class="language-plaintext highlighter-rouge">unset DEBUG</code>.</p>
+
+<blockquote>
+  <p>Environment variables are another shell convention. They can be used to modify the behavior of many programs implicitly rather than explicitly. For example, the shell sets the <code class="language-plaintext highlighter-rouge">$HOME</code> environment variable with the path of the home folder of the current user. Then programs can access this variable to get this information instead of requiring an explicit <code class="language-plaintext highlighter-rouge">--home /home/alice</code>. Another common example is <code class="language-plaintext highlighter-rouge">$TZ</code>, which many programs use to format dates and times according to the specified timezone.</p>
+</blockquote>
+
+<h2 id="return-codes">Return codes</h2>
+
+<p>As we saw earlier, the main output of a shell program is conveyed through the stdout/stderr streams and filesystem side effects.</p>
+
+<p>By default a shell script will return exit code zero.
+The convention is that zero means everything went well whereas nonzero means some issues were encountered.
+To return a nonzero exit code we have to use the <code class="language-plaintext highlighter-rouge">exit NUM</code> shell built-in.
+We can access the return code of the last command that was run by accessing the special variable <code class="language-plaintext highlighter-rouge">$?</code>.</p>
+
+<p>The shell has boolean operators <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> and <code class="language-plaintext highlighter-rouge">||</code> for performing AND and OR operations respectively.
+Unlike those encountered in regular programming languages, the ones in the shell operate on the return code of programs.
+Both of these are <a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation">short-circuiting</a> operators.
+This means that they can be used to conditionally run commands based on the success or failure of previous commands, where success is determined based on whether the return code is zero or not. Some examples:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># echo will only run if grep succeeds (finds a match)</span>
+<span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"pattern"</span> file.txt <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Pattern found"</span>
+
+<span class="c"># echo will only run if grep fails (no match)</span>
+<span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"pattern"</span> file.txt <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Pattern not found"</span>
+
+<span class="c"># true is a shell program that always succeeds</span>
+<span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"This will always print"</span>
+
+<span class="c"># and false is a shell program that always fails</span>
+<span class="nb">false</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"This will always print"</span>
+</code></pre></div></div>
+
+<p>The same principle applies to <code class="language-plaintext highlighter-rouge">if</code> and <code class="language-plaintext highlighter-rouge">while</code> statements, they both use return codes to make decisions:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if uses the return code of the condition command (0 = true, nonzero = false)</span>
+<span class="k">if </span><span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"pattern"</span> file.txt<span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Found"</span>
+<span class="k">fi</span>
+
+<span class="c"># while loops continue as long as the command returns 0</span>
+<span class="k">while </span><span class="nb">read </span>line<span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$line</span><span class="s2">"</span>
+<span class="k">done</span> &lt; file.txt
+</code></pre></div></div>
+
+<h2 id="signals">Signals</h2>
+
+<p>In some cases you will need to interrupt a program while it is executing, for instance if a command is taking too long to complete.
+The simplest way to interrupt a program is to press <code class="language-plaintext highlighter-rouge">Ctrl-C</code> and the command will probably stop.
+But how does this actually work and why does it sometimes fail to stop the process?</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">sleep </span>100
+<span class="go">^C
+</span><span class="gp">$</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>Note, here <code class="language-plaintext highlighter-rouge">^C</code> is how <code class="language-plaintext highlighter-rouge">Ctrl-C</code> is displayed when typed in the terminal.</p>
+</blockquote>
+
+<p>Under the hood, what happened here is the following:</p>
+
+<ol>
+  <li>We pressed <code class="language-plaintext highlighter-rouge">Ctrl-C</code></li>
+  <li>The shell identified the special combination of characters</li>
+  <li>The shell process sent a SIGINT signal to the <code class="language-plaintext highlighter-rouge">sleep</code> process</li>
+  <li>The signal interrupted the execution of the <code class="language-plaintext highlighter-rouge">sleep</code> process</li>
+</ol>
+
+<p>Signals are a special communication mechanism.
+When a process receives a signal it stops its execution, deals with the signal and potentially changes the flow of execution based on the information that the signal delivered. For this reason, signals are <em>software interrupts</em>.</p>
+
+<p>In our case, when typing <code class="language-plaintext highlighter-rouge">Ctrl-C</code> this prompts the shell to deliver a <code class="language-plaintext highlighter-rouge">SIGINT</code> signal to the process.
+Here’s a minimal example of a Python program that captures <code class="language-plaintext highlighter-rouge">SIGINT</code> and ignores it, no longer stopping. To kill this program we can now use the <code class="language-plaintext highlighter-rouge">SIGQUIT</code> signal instead, by typing <code class="language-plaintext highlighter-rouge">Ctrl-\</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">signal</span><span class="p">,</span> <span class="n">time</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">I got a SIGINT, but I am not stopping"</span><span class="p">)</span>
+
+<span class="n">signal</span><span class="p">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="p">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(.</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">{}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>Here’s what happens if we send <code class="language-plaintext highlighter-rouge">SIGINT</code> twice to this program, followed by <code class="language-plaintext highlighter-rouge">SIGQUIT</code>. Note that <code class="language-plaintext highlighter-rouge">^</code> is how <code class="language-plaintext highlighter-rouge">Ctrl</code> is displayed when typed in the terminal.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python sigint.py
+<span class="go">24^C
+I got a SIGINT, but I am not stopping
+26^C
+I got a SIGINT, but I am not stopping
+30^\[1]    39913 quit       python sigint.py
+</span></code></pre></div></div>
+
+<p>While <code class="language-plaintext highlighter-rouge">SIGINT</code> and <code class="language-plaintext highlighter-rouge">SIGQUIT</code> are both usually associated with terminal related requests, a more generic signal for asking a process to exit gracefully is the <code class="language-plaintext highlighter-rouge">SIGTERM</code> signal.
+To send this signal we can use the <a href="https://www.man7.org/linux/man-pages/man1/kill.1.html"><code class="language-plaintext highlighter-rouge">kill</code></a> command, with the syntax <code class="language-plaintext highlighter-rouge">kill -TERM &lt;PID&gt;</code>.</p>
+
+<p>Signals can do other things beyond killing a process. For instance, <code class="language-plaintext highlighter-rouge">SIGSTOP</code> pauses a process. In the terminal, typing <code class="language-plaintext highlighter-rouge">Ctrl-Z</code> will prompt the shell to send a <code class="language-plaintext highlighter-rouge">SIGTSTP</code> signal, short for Terminal Stop (i.e. the terminal’s version of <code class="language-plaintext highlighter-rouge">SIGSTOP</code>).</p>
+
+<p>We can then continue the paused job in the foreground or in the background using <a href="https://www.man7.org/linux/man-pages/man1/fg.1p.html"><code class="language-plaintext highlighter-rouge">fg</code></a> or <a href="https://man7.org/linux/man-pages/man1/bg.1p.html"><code class="language-plaintext highlighter-rouge">bg</code></a>, respectively.</p>
+
+<p>The <a href="https://www.man7.org/linux/man-pages/man1/jobs.1p.html"><code class="language-plaintext highlighter-rouge">jobs</code></a> command lists the unfinished jobs associated with the current terminal session.
+You can refer to those jobs using their pid (you can use <a href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code class="language-plaintext highlighter-rouge">pgrep</code></a> to find that out).
+More intuitively, you can also refer to a process using the percent symbol followed by its job number (displayed by <code class="language-plaintext highlighter-rouge">jobs</code>). To refer to the last backgrounded job you can use the <code class="language-plaintext highlighter-rouge">$!</code> special parameter.</p>
+
+<p>One more thing to know is that the <code class="language-plaintext highlighter-rouge">&amp;</code> suffix in a command will run the command in the background, giving you the prompt back, although it will still use the shell’s STDOUT which can be annoying (use shell redirections in that case). Equivalently, to background an already running program you can do <code class="language-plaintext highlighter-rouge">Ctrl-Z</code> followed by <code class="language-plaintext highlighter-rouge">bg</code>.</p>
+
+<p>Note that backgrounded processes are still children processes of your terminal and will die if you close the terminal (this will send yet another signal, <code class="language-plaintext highlighter-rouge">SIGHUP</code>).
+To prevent that from happening you can run the program with <a href="https://www.man7.org/linux/man-pages/man1/nohup.1.html"><code class="language-plaintext highlighter-rouge">nohup</code></a> (a wrapper to ignore <code class="language-plaintext highlighter-rouge">SIGHUP</code>), or use <code class="language-plaintext highlighter-rouge">disown</code> if the process has already been started.
+Alternatively, you can use a terminal multiplexer as we will see in the next section.</p>
+
+<p>Below is a sample session to showcase some of these concepts.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sleep 1000
+^Z
+[1]  + 18653 suspended  sleep 1000
+
+$ nohup sleep 2000 &amp;
+[2] 18745
+appending output to nohup.out
+
+$ jobs
+[1]  + suspended  sleep 1000
+[2]  - running    nohup sleep 2000
+
+$ kill -SIGHUP %1
+[1]  + 18653 hangup     sleep 1000
+
+$ kill -SIGHUP %2   # nohup protects from SIGHUP
+
+$ jobs
+[2]  + running    nohup sleep 2000
+
+$ kill %2
+[2]  + 18745 terminated  nohup sleep 2000
+</code></pre></div></div>
+
+<p>A special signal is <code class="language-plaintext highlighter-rouge">SIGKILL</code> since it cannot be captured by the process and it will always terminate it immediately. However, it can have bad side effects such as leaving orphaned children processes.</p>
+
+<p>You can learn more about these and other signals <a href="https://en.wikipedia.org/wiki/Signal_(IPC)">here</a> or typing <a href="https://www.man7.org/linux/man-pages/man7/signal.7.html"><code class="language-plaintext highlighter-rouge">man signal</code></a> or <code class="language-plaintext highlighter-rouge">kill -l</code>.</p>
+
+<p>Within shell scripts, you can use the <code class="language-plaintext highlighter-rouge">trap</code> built-in to execute commands when signals are received. This is useful for cleanup operations:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+cleanup<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">"Cleaning up temporary files..."</span>
+    <span class="nb">rm</span> <span class="nt">-f</span> /tmp/mytemp.<span class="k">*</span>
+<span class="o">}</span>
+<span class="nb">trap </span>cleanup EXIT  <span class="c"># Run cleanup when script exits</span>
+<span class="nb">trap </span>cleanup SIGINT SIGTERM  <span class="c"># Also on Ctrl-C or kill</span>
+</code></pre></div></div>
+
+<h1 id="remote-machines">Remote Machines</h1>
+
+<p>It has become more and more common for programmers to work with remote servers in their everyday work. The most common tool for the job here is SSH (Secure Shell) which will help us connect to a remote server and provide the now familiar shell interface. We connect to a server with a command like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh alice@server.mit.edu
+</code></pre></div></div>
+
+<p>Here we are trying to ssh as user <code class="language-plaintext highlighter-rouge">alice</code> in server <code class="language-plaintext highlighter-rouge">server.mit.edu</code>.</p>
+
+<p>An often overlooked feature of <code class="language-plaintext highlighter-rouge">ssh</code> is the ability to run commands non-interactively. <code class="language-plaintext highlighter-rouge">ssh</code> correctly handles sending the stdin and receiving the stdout of the command, so we can combine it with other commands</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># here ls runs in the remote, and wc runs locally</span>
+ssh alice@server <span class="nb">ls</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+
+<span class="c"># here both ls and wc run in the server</span>
+ssh alice@server <span class="s1">'ls | wc -l'</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>Try installing <a href="https://mosh.org/">Mosh</a> as a SSH replacement that can handle disconnections, entering/exiting sleep, changing networks and dealing with high latency links.</p>
+</blockquote>
+
+<p>For <code class="language-plaintext highlighter-rouge">ssh</code> to let us run commands in the remote server we need to prove that we are authorized to do so.
+We can do this via passwords or ssh keys.
+Key-based authentication utilizes public-key cryptography to prove to the server that the client owns the secret private key without revealing the key.
+Key based authentication is both more convenient and more secure, so you should prefer it.
+Note that the private key (often <code class="language-plaintext highlighter-rouge">~/.ssh/id_rsa</code> and more recently <code class="language-plaintext highlighter-rouge">~/.ssh/id_ed25519</code>) is effectively your password, so treat it like so and never share its contents.</p>
+
+<p>To generate a pair you can run <a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html"><code class="language-plaintext highlighter-rouge">ssh-keygen</code></a>.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-a</span> 100 <span class="nt">-t</span> ed25519 <span class="nt">-f</span> ~/.ssh/id_ed25519
+</code></pre></div></div>
+
+<p>If you have ever configured pushing to GitHub using SSH keys, then you have probably done the steps outlined <a href="https://help.github.com/articles/connecting-to-github-with-ssh/">here</a> and have a valid key pair already. To check if you have a passphrase and validate it you can run <code class="language-plaintext highlighter-rouge">ssh-keygen -y -f /path/to/key</code>.</p>
+
+<p>At the server side <code class="language-plaintext highlighter-rouge">ssh</code> will look into <code class="language-plaintext highlighter-rouge">.ssh/authorized_keys</code> to determine which clients it should let in. To copy a public key over you can use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> .ssh/id_ed25519.pub | ssh alice@remote <span class="s1">'cat &gt;&gt; ~/.ssh/authorized_keys'</span>
+
+<span class="c"># or more simply (if ssh-copy-id is available)</span>
+
+ssh-copy-id <span class="nt">-i</span> .ssh/id_ed25519 alice@remote
+</code></pre></div></div>
+
+<p>Beyond running commands, the connection that ssh establishes can be used to transfer files from and to the server securely. <a href="https://www.man7.org/linux/man-pages/man1/scp.1.html"><code class="language-plaintext highlighter-rouge">scp</code></a> is the most traditional tool and the syntax is <code class="language-plaintext highlighter-rouge">scp path/to/local_file remote_host:path/to/remote_file</code>. <a href="https://www.man7.org/linux/man-pages/man1/rsync.1.html"><code class="language-plaintext highlighter-rouge">rsync</code></a> improves upon <code class="language-plaintext highlighter-rouge">scp</code> by detecting identical files in local and remote, and preventing copying them again. It also provides more fine grained control over symlinks, permissions and has extra features like the <code class="language-plaintext highlighter-rouge">--partial</code> flag that can resume from a previously interrupted copy. <code class="language-plaintext highlighter-rouge">rsync</code> has a similar syntax to <code class="language-plaintext highlighter-rouge">scp</code>.</p>
+
+<p>SSH client configuration is located at <code class="language-plaintext highlighter-rouge">~/.ssh/config</code> and it lets us declare hosts and set default settings for them. This configuration file is not just read by <code class="language-plaintext highlighter-rouge">ssh</code> but also other programs like <code class="language-plaintext highlighter-rouge">scp</code>, <code class="language-plaintext highlighter-rouge">rsync</code>, <code class="language-plaintext highlighter-rouge">mosh</code>, &amp;c.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host vm
+    User alice
+    HostName 172.16.174.141
+    Port 2222
+    IdentityFile ~/.ssh/id_ed25519
+
+<span class="c"># Configs can also take wildcards</span>
+Host <span class="k">*</span>.mit.edu
+    User alice
+</code></pre></div></div>
+
+<h1 id="terminal-multiplexers">Terminal Multiplexers</h1>
+
+<p>When using the command line interface you will often want to run more than one thing at once.
+For instance, you might want to run your editor and your program side by side.
+Although this can be achieved by opening new terminal windows, using a terminal multiplexer is a more versatile solution.</p>
+
+<p>Terminal multiplexers like <a href="https://www.man7.org/linux/man-pages/man1/tmux.1.html"><code class="language-plaintext highlighter-rouge">tmux</code></a> allow you to multiplex terminal windows using panes and tabs so you can interact with multiple shell sessions in an efficient manner.
+Moreover, terminal multiplexers let you detach a current terminal session and reattach at some point later in time.
+Because of this, terminal multiplexers are really convenient when working with remote machines, as it avoids the need to use <code class="language-plaintext highlighter-rouge">nohup</code> and similar tricks.</p>
+
+<p>The most popular terminal multiplexer these days is <a href="https://www.man7.org/linux/man-pages/man1/tmux.1.html"><code class="language-plaintext highlighter-rouge">tmux</code></a>. <code class="language-plaintext highlighter-rouge">tmux</code> is highly configurable and by using the associated keybindings you can create multiple tabs and panes and quickly navigate through them.</p>
+
+<p><code class="language-plaintext highlighter-rouge">tmux</code> expects you to know its keybindings, and they all have the form <code class="language-plaintext highlighter-rouge">&lt;C-b&gt; x</code> where that means (1) press <code class="language-plaintext highlighter-rouge">Ctrl+b</code>, (2) release <code class="language-plaintext highlighter-rouge">Ctrl+b</code>, and then (3) press <code class="language-plaintext highlighter-rouge">x</code>. <code class="language-plaintext highlighter-rouge">tmux</code> has the following hierarchy of objects:</p>
+<ul>
+  <li><strong>Sessions</strong> - a session is an independent workspace with one or more windows
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">tmux</code> starts a new session.</li>
+      <li><code class="language-plaintext highlighter-rouge">tmux new -s NAME</code> starts it with that name.</li>
+      <li><code class="language-plaintext highlighter-rouge">tmux ls</code> lists the current sessions</li>
+      <li>Within <code class="language-plaintext highlighter-rouge">tmux</code> typing <code class="language-plaintext highlighter-rouge">&lt;C-b&gt; d</code>  detaches the current session</li>
+      <li><code class="language-plaintext highlighter-rouge">tmux a</code> attaches the last session. You can use <code class="language-plaintext highlighter-rouge">-t</code> flag to specify which</li>
+    </ul>
+  </li>
+  <li><strong>Windows</strong> - Equivalent to tabs in editors or browsers, they are visually separate parts of the same session
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; c</code> Creates a new window. To close it you can just terminate the shells doing <code class="language-plaintext highlighter-rouge">&lt;C-d&gt;</code></li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; N</code> Go to the <em>N</em> th window. Note they are numbered</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; p</code> Goes to the previous window</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; n</code> Goes to the next window</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; ,</code> Rename the current window</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; w</code> List current windows</li>
+    </ul>
+  </li>
+  <li><strong>Panes</strong> - Like vim splits, panes let you have multiple shells in the same visual display.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; "</code> Split the current pane horizontally</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; %</code> Split the current pane vertically</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; &lt;direction&gt;</code> Move to the pane in the specified <em>direction</em>. Direction here means arrow keys.</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; z</code> Toggle zoom for the current pane</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; [</code> Start scrollback. You can then press <code class="language-plaintext highlighter-rouge">&lt;space&gt;</code> to start a selection and <code class="language-plaintext highlighter-rouge">&lt;enter&gt;</code> to copy that selection.</li>
+      <li><code class="language-plaintext highlighter-rouge">&lt;C-b&gt; &lt;space&gt;</code> Cycle through pane arrangements.</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>To learn more about tmux, consider reading <a href="https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">this</a> quick tutorial and <a href="https://linuxcommand.org/lc3_adv_termmux.php">this</a> more detailed explanation.</p>
+</blockquote>
+
+<p>With tmux and SSH in your toolkit, you’ll want to make your environment feel like home on any machine. That’s where shell customization comes in.</p>
+
+<h1 id="customizing-the-shell">Customizing the Shell</h1>
+
+<p>A wide array of command line programs are configured using plain-text files known as <em>dotfiles</em>
+(because the file names begin with a <code class="language-plaintext highlighter-rouge">.</code>, e.g. <code class="language-plaintext highlighter-rouge">~/.vimrc</code>, so that they are
+hidden in the directory listing <code class="language-plaintext highlighter-rouge">ls</code> by default).</p>
+
+<blockquote>
+  <p>Dotfiles are yet another shell convention. The dot in the front is to “hide” them when listing (yes, another convention).</p>
+</blockquote>
+
+<p>Shells are one example of programs configured with such files. On startup, your shell will read many files to load its configuration.
+Depending on the shell and whether you are starting a login and/or interactive session, the entire process can be quite complex.
+<a href="https://web.archive.org/web/20260329133158/https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html">Here</a> is an excellent resource on the topic.</p>
+
+<p>For <code class="language-plaintext highlighter-rouge">bash</code>, editing your <code class="language-plaintext highlighter-rouge">.bashrc</code> or <code class="language-plaintext highlighter-rouge">.bash_profile</code> will work in most systems.
+Some other examples of tools that can be configured through dotfiles are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">bash</code> - <code class="language-plaintext highlighter-rouge">~/.bashrc</code>, <code class="language-plaintext highlighter-rouge">~/.bash_profile</code></li>
+  <li><code class="language-plaintext highlighter-rouge">git</code> - <code class="language-plaintext highlighter-rouge">~/.gitconfig</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vim</code> - <code class="language-plaintext highlighter-rouge">~/.vimrc</code> and the <code class="language-plaintext highlighter-rouge">~/.vim</code> folder</li>
+  <li><code class="language-plaintext highlighter-rouge">ssh</code> - <code class="language-plaintext highlighter-rouge">~/.ssh/config</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tmux</code> - <code class="language-plaintext highlighter-rouge">~/.tmux.conf</code></li>
+</ul>
+
+<p>A common configuration change is adding new locations for the shell to find programs. You will encounter this pattern when installing software:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PATH</span><span class="s2">:path/to/append"</span>
+</code></pre></div></div>
+
+<p>Here, we are telling the shell to set the value of the $PATH variable to its current value plus a new path, and have all children processes inherit this new value for PATH.
+This will allow children processes to find programs located under <code class="language-plaintext highlighter-rouge">path/to/append</code>.</p>
+
+<p>Customizing your shell often means installing new command-line tools. Package managers make this easy. They handle downloading, installing, and updating software. Different operating systems have different package managers: macOS uses <a href="https://brew.sh/">Homebrew</a>, Ubuntu/Debian use <code class="language-plaintext highlighter-rouge">apt</code>, Fedora uses <code class="language-plaintext highlighter-rouge">dnf</code>, and Arch uses <code class="language-plaintext highlighter-rouge">pacman</code>. We’ll cover package managers in more depth in the shipping code lecture.</p>
+
+<p>Here’s how to install two useful tools using Homebrew on macOS:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ripgrep: a faster grep with better defaults</span>
+brew <span class="nb">install </span>ripgrep
+
+<span class="c"># fd: a faster, user-friendly find</span>
+brew <span class="nb">install </span>fd
+</code></pre></div></div>
+
+<p>With these installed, you can use <code class="language-plaintext highlighter-rouge">rg</code> instead of <code class="language-plaintext highlighter-rouge">grep</code> and <code class="language-plaintext highlighter-rouge">fd</code> instead of <code class="language-plaintext highlighter-rouge">find</code>.</p>
+
+<blockquote>
+  <p><strong>Warning about <code class="language-plaintext highlighter-rouge">curl | bash</code></strong>: You’ll often see installation instructions like <code class="language-plaintext highlighter-rouge">curl -fsSL https://example.com/install.sh | bash</code>. This pattern downloads a script and immediately executes it, which is convenient but risky; you’re running code you haven’t inspected. A safer approach is to download first, review, then execute:</p>
+  <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-fsSL</span> https://example.com/install.sh <span class="nt">-o</span> install.sh
+less install.sh  <span class="c"># review the script</span>
+bash install.sh
+</code></pre></div>  </div>
+  <p>Some installers use a slightly safer variant: <code class="language-plaintext highlighter-rouge">/bin/bash -c "$(curl -fsSL https://url)"</code> which at least ensures bash interprets the script rather than your current shell.</p>
+</blockquote>
+
+<p>When you try to run a command that isn’t installed, your shell will show <code class="language-plaintext highlighter-rouge">command not found</code>. The website <a href="https://command-not-found.com">command-not-found.com</a> is a helpful resource you can use to search for any command to find out how to install it across different package managers and distributions.</p>
+
+<p>Another useful tool is <a href="https://tldr.sh/"><code class="language-plaintext highlighter-rouge">tldr</code></a>, which provides simplified, example-focused man pages. Instead of reading through lengthy documentation, you can quickly see common usage patterns:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>tldr fd
+<span class="go">  An alternative to find.
+  Aims to be faster and easier to use than find.
+
+  Recursively find files matching a pattern in the current directory:
+      fd "pattern"
+
+  Find files that begin with "foo":
+      fd "^foo"
+
+  Find files with a specific extension:
+      fd --extension txt
+</span></code></pre></div></div>
+
+<p>Sometimes you don’t need a whole new program, but rather just a shortcut for an existing command with specific flags. That’s where aliases come in.</p>
+
+<p>We can also create our own command aliases using the <code class="language-plaintext highlighter-rouge">alias</code> shell built-in.
+A shell alias is a short form for another command that your shell will replace automatically before evaluating the expression.
+For instance, an alias in bash has the following structure:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">alias_name</span><span class="o">=</span><span class="s2">"command_to_alias arg1 arg2"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note that there is no space around the equal sign <code class="language-plaintext highlighter-rouge">=</code>, because <a href="https://www.man7.org/linux/man-pages/man1/alias.1p.html"><code class="language-plaintext highlighter-rouge">alias</code></a> is a shell command that takes a single argument.</p>
+</blockquote>
+
+<p>Aliases have many convenient features:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Make shorthands for common flags</span>
+<span class="nb">alias </span><span class="nv">ll</span><span class="o">=</span><span class="s2">"ls -lh"</span>
+
+<span class="c"># Save a lot of typing for common commands</span>
+<span class="nb">alias </span><span class="nv">gs</span><span class="o">=</span><span class="s2">"git status"</span>
+<span class="nb">alias </span><span class="nv">gc</span><span class="o">=</span><span class="s2">"git commit"</span>
+
+<span class="c"># Save you from mistyping</span>
+<span class="nb">alias </span><span class="nv">sl</span><span class="o">=</span><span class="nb">ls</span>
+
+<span class="c"># Overwrite existing commands for better defaults</span>
+<span class="nb">alias mv</span><span class="o">=</span><span class="s2">"mv -i"</span>           <span class="c"># -i prompts before overwrite</span>
+<span class="nb">alias mkdir</span><span class="o">=</span><span class="s2">"mkdir -p"</span>     <span class="c"># -p make parent dirs as needed</span>
+<span class="nb">alias df</span><span class="o">=</span><span class="s2">"df -h"</span>           <span class="c"># -h prints human readable format</span>
+
+<span class="c"># Alias can be composed</span>
+<span class="nb">alias </span><span class="nv">la</span><span class="o">=</span><span class="s2">"ls -A"</span>
+<span class="nb">alias </span><span class="nv">lla</span><span class="o">=</span><span class="s2">"la -l"</span>
+
+<span class="c"># To ignore an alias run it prepended with \</span>
+<span class="se">\l</span>s
+<span class="c"># Or disable an alias altogether with unalias</span>
+<span class="nb">unalias </span>la
+
+<span class="c"># To get an alias definition just call it with alias</span>
+<span class="nb">alias </span>ll
+<span class="c"># Will print ll='ls -lh'</span>
+</code></pre></div></div>
+
+<p>Aliases have limitations: they cannot take arguments in the middle of a command. For more complex behavior, you should use shell functions instead.</p>
+
+<p>Most shells support <code class="language-plaintext highlighter-rouge">Ctrl-R</code> for reverse history search. Type <code class="language-plaintext highlighter-rouge">Ctrl-R</code> and start typing to search through previous commands. Earlier we introduced <code class="language-plaintext highlighter-rouge">fzf</code> as a fuzzy finder; with fzf’s shell integration configured, <code class="language-plaintext highlighter-rouge">Ctrl-R</code> becomes an interactive fuzzy search through your entire history, far more powerful than the default.</p>
+
+<p>How should you organize your dotfiles? They should be in their own folder,
+under version control, and <strong>symlinked</strong> into place using a script. This has
+the benefits of:</p>
+
+<ul>
+  <li><strong>Easy installation</strong>: if you log in to a new machine, applying your
+customizations will only take a minute.</li>
+  <li><strong>Portability</strong>: your tools will work the same way everywhere.</li>
+  <li><strong>Synchronization</strong>: you can update your dotfiles anywhere and keep them all
+in sync.</li>
+  <li><strong>Change tracking</strong>: you’re probably going to be maintaining your dotfiles
+for your entire programming career, and version history is nice to have for
+long-lived projects.</li>
+</ul>
+
+<p>What should you put in your dotfiles?
+You can learn about your tool’s settings by reading online documentation or
+<a href="https://en.wikipedia.org/wiki/Man_page">man pages</a>. Another great way is to
+search the internet for blog posts about specific programs, where authors will
+tell you about their preferred customizations. Yet another way to learn about
+customizations is to look through other people’s dotfiles: you can find tons of
+<a href="https://github.com/search?o=desc&amp;q=dotfiles&amp;s=stars&amp;type=Repositories">dotfiles
+repositories</a>
+on GitHub — see the most popular one
+<a href="https://github.com/mathiasbynens/dotfiles">here</a> (we advise you not to blindly
+copy configurations though).
+<a href="https://dotfiles.github.io/">Here</a> is another good resource on the topic.</p>
+
+<p>All of the class instructors have their dotfiles publicly accessible on GitHub: <a href="https://github.com/anishathalye/dotfiles">Anish</a>,
+<a href="https://github.com/jonhoo/configs">Jon</a>,
+<a href="https://github.com/jjgo/dotfiles">Jose</a>.</p>
+
+<p><strong>Frameworks and plugins</strong> can improve your shell as well. Some popular general frameworks are <a href="https://github.com/sorin-ionescu/prezto">prezto</a> or <a href="https://ohmyz.sh/">oh-my-zsh</a>, and smaller plugins that focus on specific features:</p>
+
+<ul>
+  <li><a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> - colors valid/invalid commands as you type</li>
+  <li><a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> - suggests commands from history as you type</li>
+  <li><a href="https://github.com/zsh-users/zsh-completions">zsh-completions</a> - additional completion definitions</li>
+  <li><a href="https://github.com/zsh-users/zsh-history-substring-search">zsh-history-substring-search</a> - fish-like history search</li>
+  <li><a href="https://github.com/romkatv/powerlevel10k">powerlevel10k</a> - fast, customizable prompt theme</li>
+</ul>
+
+<p>Shells like <a href="https://fishshell.com/">fish</a> include many of these features by default.</p>
+
+<blockquote>
+  <p>You don’t need a massive framework like oh-my-zsh to get these features. Installing individual plugins is often faster and gives you more control. Large frameworks can significantly slow down shell startup time, so consider installing only what you actually use.</p>
+</blockquote>
+
+<h1 id="ai-in-the-shell">AI in the Shell</h1>
+
+<p>There are many ways to incorporate AI tooling in the shell. Here are a few examples at different levels of integration:</p>
+
+<p><strong>Command generation</strong>: Tools like <a href="https://github.com/simonw/llm"><code class="language-plaintext highlighter-rouge">simonw/llm</code></a> can help generate shell commands from natural language descriptions:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>llm cmd <span class="s2">"find all python files modified in the last week"</span>
+<span class="go">find . -name "*.py" -mtime -7
+</span></code></pre></div></div>
+
+<p><strong>Pipeline integration</strong>: LLMs can be integrated into shell pipelines to process and transform data. They’re particularly useful when you need to extract information from inconsistent formats where regex would be painful:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>users.txt
+<span class="go">Contact: john.doe@example.com
+User 'alice_smith' logged in at 3pm
+Posted by: @bob_jones on Twitter
+Author: Jane Doe (jdoe)
+Message from mike_wilson yesterday
+Submitted by user: sarah.connor
+</span><span class="gp">$</span><span class="w"> </span><span class="nv">INSTRUCTIONS</span><span class="o">=</span><span class="s2">"Extract just the username from each line, one per line, nothing else"</span>
+<span class="gp">$</span><span class="w"> </span>llm <span class="s2">"</span><span class="nv">$INSTRUCTIONS</span><span class="s2">"</span> &lt; users.txt
+<span class="go">john.doe
+alice_smith
+bob_jones
+jdoe
+mike_wilson
+sarah.connor
+</span></code></pre></div></div>
+
+<p>Note how we use <code class="language-plaintext highlighter-rouge">"$INSTRUCTIONS"</code> (quoted) because the variable contains spaces, and <code class="language-plaintext highlighter-rouge">&lt; users.txt</code> to redirect the file’s content to stdin.</p>
+
+<p><strong>AI shells</strong>: Tools like <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> act as a meta-shell that accepts English commands and translates them into shell operations, file edits, and more complex multi-step tasks.</p>
+
+<h1 id="terminal-emulators">Terminal Emulators</h1>
+
+<p>Along with customizing your shell, it is worth spending some time figuring out your choice of <strong>terminal emulator</strong> and its settings.
+A terminal emulator is a GUI program that provides the text-based interface where your shell runs.
+There are many terminal emulators out there.</p>
+
+<p>Since you might be spending hundreds to thousands of hours in your terminal it pays off to look into its settings. Some of the aspects that you may want to modify in your terminal include:</p>
+
+<ul>
+  <li>Font choice</li>
+  <li>Color Scheme</li>
+  <li>Keyboard shortcuts</li>
+  <li>Tab/Pane support</li>
+  <li>Scrollback configuration</li>
+  <li>Performance (some newer terminals like <a href="https://github.com/alacritty/alacritty">Alacritty</a> or <a href="https://ghostty.org/">Ghostty</a> offer GPU acceleration).</li>
+</ul>
+
+<h1 id="exercises">Exercises</h1>
+
+<h2 id="arguments-and-globs">Arguments and Globs</h2>
+
+<ol>
+  <li>
+    <p>You might see commands like <code class="language-plaintext highlighter-rouge">cmd --flag -- --notaflag</code>. The <code class="language-plaintext highlighter-rouge">--</code> is a special argument that tells the program to stop parsing flags. Everything after <code class="language-plaintext highlighter-rouge">--</code> is treated as a positional argument. Why might this be useful? Try running <code class="language-plaintext highlighter-rouge">touch -- -myfile</code> and then removing it without <code class="language-plaintext highlighter-rouge">--</code>.</p>
+  </li>
+  <li>Read <a href="https://www.man7.org/linux/man-pages/man1/ls.1.html"><code class="language-plaintext highlighter-rouge">man ls</code></a> and write an <code class="language-plaintext highlighter-rouge">ls</code> command that lists files in the following manner:
+    <ul>
+      <li>Includes all files, including hidden files</li>
+      <li>Sizes are listed in human readable format (e.g. 454M instead of 454279954)</li>
+      <li>Files are ordered by recency</li>
+      <li>Output is colorized</li>
+    </ul>
+
+    <p>A sample output would look like this:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> -rw-r--r--   1 user group 1.1M Jan 14 09:53 baz
+ drwxr-xr-x   5 user group  160 Jan 14 09:53 .
+ -rw-r--r--   1 user group  514 Jan 14 06:42 bar
+ -rw-r--r--   1 user group 106M Jan 13 12:12 foo
+ drwx------+ 47 user group 1.5K Jan 12 18:08 ..
+</code></pre></div>    </div>
+  </li>
+  <li>Process substitution <code class="language-plaintext highlighter-rouge">&lt;(command)</code> lets you use a command’s output as if it were a file. Use <code class="language-plaintext highlighter-rouge">diff</code> with process substitution to compare the output of <code class="language-plaintext highlighter-rouge">printenv</code> and <code class="language-plaintext highlighter-rouge">export</code>. Why are they different? (Hint: try <code class="language-plaintext highlighter-rouge">diff &lt;(printenv | sort) &lt;(export | sort)</code>).</li>
+</ol>
+
+<h2 id="environment-variables-1">Environment Variables</h2>
+
+<ol>
+  <li>Write bash functions <code class="language-plaintext highlighter-rouge">marco</code> and <code class="language-plaintext highlighter-rouge">polo</code> that do the following: whenever you execute <code class="language-plaintext highlighter-rouge">marco</code> the current working directory should be saved in some manner, then when you execute <code class="language-plaintext highlighter-rouge">polo</code>, no matter what directory you are in, <code class="language-plaintext highlighter-rouge">polo</code> should <code class="language-plaintext highlighter-rouge">cd</code> you back to the directory where you executed <code class="language-plaintext highlighter-rouge">marco</code>. For ease of debugging you can write the code in a file <code class="language-plaintext highlighter-rouge">marco.sh</code> and (re)load the definitions to your shell by executing <code class="language-plaintext highlighter-rouge">source marco.sh</code>.</li>
+</ol>
+
+<h2 id="return-codes-1">Return Codes</h2>
+
+<ol>
+  <li>
+    <p>Say you have a command that fails rarely. In order to debug it you need to capture its output but it can be time consuming to get a failure run. Write a bash script that runs the following script until it fails and captures its standard output and error streams to files and prints everything at the end. Bonus points if you can also report how many runs it took for the script to fail.</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c">#!/usr/bin/env bash</span>
+
+ <span class="nv">n</span><span class="o">=</span><span class="k">$((</span> RANDOM <span class="o">%</span> <span class="m">100</span> <span class="k">))</span>
+
+ <span class="k">if</span> <span class="o">[[</span> <span class="nv">$n</span> <span class="nt">-eq</span> 42 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Something went wrong"</span>
+    <span class="o">&gt;</span>&amp;2 <span class="nb">echo</span> <span class="s2">"The error was using magic numbers"</span>
+    <span class="nb">exit </span>1
+ <span class="k">fi
+
+ </span><span class="nb">echo</span> <span class="s2">"Everything went according to plan"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="signals-and-job-control">Signals and Job Control</h2>
+
+<ol>
+  <li>
+    <p>Start a <code class="language-plaintext highlighter-rouge">sleep 10000</code> job in a terminal, background it with <code class="language-plaintext highlighter-rouge">Ctrl-Z</code> and continue its execution with <code class="language-plaintext highlighter-rouge">bg</code>. Now use <a href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code class="language-plaintext highlighter-rouge">pgrep</code></a> to find its pid and <a href="https://man7.org/linux/man-pages/man1/pgrep.1.html"><code class="language-plaintext highlighter-rouge">pkill</code></a> to kill it without ever typing the pid itself. (Hint: use the <code class="language-plaintext highlighter-rouge">-lf</code> flags).</p>
+  </li>
+  <li>
+    <p>Say you don’t want to start a process until another completes. How would you go about it? In this exercise, our limiting process will always be <code class="language-plaintext highlighter-rouge">sleep 60 &amp;</code>. One way to achieve this is to use the <a href="https://www.man7.org/linux/man-pages/man1/wait.1p.html"><code class="language-plaintext highlighter-rouge">wait</code></a> command. Try launching the sleep command and having an <code class="language-plaintext highlighter-rouge">ls</code> wait until the background process finishes.</p>
+
+    <p>However, this strategy will fail if we start in a different bash session, since <code class="language-plaintext highlighter-rouge">wait</code> only works for child processes. One feature we did not discuss in the notes is that the <code class="language-plaintext highlighter-rouge">kill</code> command’s exit status will be zero on success and nonzero otherwise. <code class="language-plaintext highlighter-rouge">kill -0</code> does not send a signal but will give a nonzero exit status if the process does not exist. Write a bash function called <code class="language-plaintext highlighter-rouge">pidwait</code> that takes a pid and waits until the given process completes. You should use <code class="language-plaintext highlighter-rouge">sleep</code> to avoid wasting CPU unnecessarily.</p>
+  </li>
+</ol>
+
+<h2 id="files-and-permissions">Files and Permissions</h2>
+
+<ol>
+  <li>(Advanced) Write a command or script to recursively find the most recently modified file in a directory. More generally, can you list all files by recency?</li>
+</ol>
+
+<h2 id="terminal-multiplexers-1">Terminal Multiplexers</h2>
+
+<ol>
+  <li>Follow this <code class="language-plaintext highlighter-rouge">tmux</code> <a href="https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">tutorial</a> and then learn how to do some basic customizations following <a href="https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/">these steps</a>.</li>
+</ol>
+
+<h2 id="aliases-and-dotfiles">Aliases and Dotfiles</h2>
+
+<ol>
+  <li>
+    <p>Create an alias <code class="language-plaintext highlighter-rouge">dc</code> that resolves to <code class="language-plaintext highlighter-rouge">cd</code> for when you type it wrong.</p>
+  </li>
+  <li>
+    <p>Run <code class="language-plaintext highlighter-rouge">history | awk '{$1="";print substr($0,2)}' | sort | uniq -c | sort -n | tail -n 10</code> to get your top 10 most used commands and consider writing shorter aliases for them. Note: this works for Bash; if you’re using ZSH, use <code class="language-plaintext highlighter-rouge">history 1</code> instead of just <code class="language-plaintext highlighter-rouge">history</code>.</p>
+  </li>
+  <li>
+    <p>Create a folder for your dotfiles and set up version control.</p>
+  </li>
+  <li>
+    <p>Add a configuration for at least one program, e.g. your shell, with some customization (to start off, it can be something as simple as customizing your shell prompt by setting <code class="language-plaintext highlighter-rouge">$PS1</code>).</p>
+  </li>
+  <li>
+    <p>Set up a method to install your dotfiles quickly (and without manual effort) on a new machine. This can be as simple as a shell script that calls <code class="language-plaintext highlighter-rouge">ln -s</code> for each file, or you could use a <a href="https://dotfiles.github.io/utilities/">specialized utility</a>.</p>
+  </li>
+  <li>
+    <p>Test your installation script on a fresh virtual machine.</p>
+  </li>
+  <li>
+    <p>Migrate all of your current tool configurations to your dotfiles repository.</p>
+  </li>
+  <li>
+    <p>Publish your dotfiles on GitHub.</p>
+  </li>
+</ol>
+
+<h2 id="remote-machines-ssh">Remote Machines (SSH)</h2>
+
+<p>Install a Linux virtual machine (or use an already existing one) for these exercises. If you are not familiar with virtual machines check out <a href="https://hibbard.eu/install-ubuntu-virtual-box/">this</a> tutorial for installing one.</p>
+
+<ol>
+  <li>
+    <p>Go to <code class="language-plaintext highlighter-rouge">~/.ssh/</code> and check if you have a pair of SSH keys there. If not, generate them with <code class="language-plaintext highlighter-rouge">ssh-keygen -a 100 -t ed25519</code>. It is recommended that you use a password and use <code class="language-plaintext highlighter-rouge">ssh-agent</code>, more info <a href="https://www.ssh.com/ssh/agent">here</a>.</p>
+  </li>
+  <li>
+    <p>Edit <code class="language-plaintext highlighter-rouge">.ssh/config</code> to have an entry as follows:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Host vm
+     User username_goes_here
+     HostName ip_goes_here
+     IdentityFile ~/.ssh/id_ed25519
+     LocalForward 9999 localhost:8888
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">ssh-copy-id vm</code> to copy your ssh key to the server.</p>
+  </li>
+  <li>
+    <p>Start a webserver in your VM by executing <code class="language-plaintext highlighter-rouge">python -m http.server 8888</code>. Access the VM webserver by navigating to <code class="language-plaintext highlighter-rouge">http://localhost:9999</code> in your machine.</p>
+  </li>
+  <li>
+    <p>Edit your SSH server config by doing <code class="language-plaintext highlighter-rouge">sudo vim /etc/ssh/sshd_config</code> and disable password authentication by editing the value of <code class="language-plaintext highlighter-rouge">PasswordAuthentication</code>. Disable root login by editing the value of <code class="language-plaintext highlighter-rouge">PermitRootLogin</code>. Restart the <code class="language-plaintext highlighter-rouge">ssh</code> service with <code class="language-plaintext highlighter-rouge">sudo service sshd restart</code>. Try sshing in again.</p>
+  </li>
+  <li>
+    <p>(Challenge) Install <a href="https://mosh.org/"><code class="language-plaintext highlighter-rouge">mosh</code></a> in the VM and establish a connection. Then disconnect the network adapter of the server/VM. Can mosh properly recover from it?</p>
+  </li>
+  <li>
+    <p>(Challenge) Look into what the <code class="language-plaintext highlighter-rouge">-N</code> and <code class="language-plaintext highlighter-rouge">-f</code> flags do in <code class="language-plaintext highlighter-rouge">ssh</code> and figure out a command to achieve background port forwarding.</p>
+  </li>
+</ol>
+
+
+<hr>
+
+<div class="small center">
+<p><a href="https://github.com/missing-semester/missing-semester/blob/master/_2026/command-line-environment.md">Edit this page</a>.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA</a>.</p>
+</div>
+
+    </div>
+
+  </body>
+
+</html>

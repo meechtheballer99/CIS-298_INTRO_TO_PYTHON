@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="telemetry.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="icon" href="../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/telemetry">
+<meta name="og:title" content="Go Telemetry - The Go Programming Language">
+<title>Go Telemetry - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="telemetry.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="telemetry.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="telemetry.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="telemetry.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="telemetry.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="telemetry.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="telemetry.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="telemetry.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="telemetry.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="telemetry.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+  <article class="Article Article--doc">
+
+    
+      
+<ol class="SiteBreadcrumb">
+  
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="index.html">
+  Documentation
+  </a>
+</li>
+<li class="BreadcrumbNav-li active">
+  <a class="BreadcrumbNav-link" href="telemetry.html">
+  Go Telemetry
+  </a>
+</li>
+</ol>
+    <h1>Go Telemetry</h1>
+    <div class='markdown'>
+<style>
+.DocInfo {
+  background-color: var(--color-background-info);
+  padding: 1.5rem 2rem 1.5rem 4rem;
+  border-left: 0.875rem solid var(--color-border);
+  position: relative;
+}
+.DocInfo:before {
+  content: "ⓘ";
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2rem;
+}
+</style>
+<p>Table of Contents:</p>
+<p><a href="telemetry.html#background">Background</a><br>
+<a href="telemetry.html#overview">Overview</a><br>
+<a href="telemetry.html#config">Configuration</a><br>
+<a href="telemetry.html#counters">Counters</a><br>
+<a href="telemetry.html#reports">Reporting and Uploading</a><br>
+<a href="telemetry.html#charts">Charts</a> <br>
+<a href="telemetry.html#proposals">Telemetry Proposals</a><br>
+<a href="telemetry.html#ide">IDE Prompting</a> <br>
+<a href="telemetry.html#faq">Frequently Asked Questions</a></p>
+<h2 id="background">Background</h2>
+<p>Go telemetry is a way for Go toolchain programs to collect data about their
+performance and usage. Here &ldquo;Go toolchain&rdquo; means developer tools maintained
+by the Go team, including the <code>go</code> command and supplemental tools such as the
+Go language server <a href="https://go.dev/pkg/golang.org/x/tools/gopls"><code>gopls</code></a> or Go security tool <a href="https://go.dev/pkg/golang.org/x/vuln/cmd/govulncheck"><code>govulncheck</code></a>. Go telemetry is
+only intended for use in programs maintained by the Go team and their selected
+dependencies like <a href="https://go.dev/pkg/github.com/go-delve/delve#section-readme">Delve</a>.</p>
+<p>By default, telemetry data is kept only on the local computer, but users may
+opt in to uploading an approved subset of telemetry data to <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a>.
+Uploaded data helps the Go team improve the Go language and its tools,
+by helping us understand usage and breakages.</p>
+<p>The word &ldquo;telemetry&rdquo; has acquired negative connotations in the world of open
+source software, in many cases deservedly so. Yet measuring the user experience
+is an important element of modern software engineering, and data sources such
+as GitHub issues or annual surveys are coarse and lagging indicators,
+insufficient for the types of questions the Go team needs to be able to answer.
+Go telemetry is designed to help programs in the toolchain collect useful data
+about their reliability, performance, and usage, while maintaining the
+transparency and privacy that users expect from the Go project. To learn more
+about the design process and motivation for telemetry, please see the
+<a href="https://research.swtch.com/telemetry" rel="noreferrer" target="_blank">telemetry blog posts</a>.
+To learn more about telemetry and privacy, please see the
+<a href="https://telemetry.go.dev/privacy" rel="noreferrer" target="_blank">telemetry privacy policy</a>.</p>
+<p>This page explains how Go telemetry works, in some detail. For quick answers to
+frequently asked questions, see the <a href="telemetry.html#faq">FAQ</a>.</p>
+<div class="DocInfo">
+Using Go 1.23 or later, to <strong>opt in</strong> to uploading telemetry data
+to the Go team, run:
+<pre>
+go telemetry on
+</pre>
+To completely disable telemetry, including local collection, run:
+<pre>
+go telemetry off
+</pre>
+To revert to the default mode of local-only telemetry, run:
+<pre>
+go telemetry local
+</pre>
+Prior to Go 1.23, this can also be done with the
+<code>golang.org/x/telemetry/cmd/gotelemetry</code> command. See <a
+href="telemetry.html#config">Configuration</a> for more details.
+</div>
+<h2 id="overview">Overview</h2>
+<p>Go telemetry uses three core data types:</p>
+<ul>
+<li><a href="telemetry.html#counters"><em>Counters</em></a> are lightweight counts of named events, instrumented
+in the toolchain program. If collection is enabled (the <a href="telemetry.html#config">mode</a>
+is <strong>local</strong> or <strong>on</strong>), counters are written to a memory-mapped file in the
+local file system.</li>
+<li><a href="telemetry.html#reports"><em>Reports</em></a> are aggregated summaries of counters for a given week.
+If uploading is enabled (the <a href="telemetry.html#config">mode</a> is <strong>on</strong>), reports for
+<a href="telemetry.html#proposals">approved counters</a> are uploaded to <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a>, where
+they are publicly accessible.</li>
+<li><a href="telemetry.html#charts"><em>Charts</em></a> summarize uploaded reports for all users.
+Charts can be viewed at <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a>.</li>
+</ul>
+<p>All local Go telemetry data and configuration is stored in the directory
+<code><a href="https://go.dev/pkg/os#UserConfigDir">os.UserConfigDir()</a>/go/telemetry</code>
+directory. Below, we&rsquo;ll refer to this directory as <code>&lt;gotelemetry&gt;</code>.</p>
+<p>The diagram below illustrates this data flow.</p>
+<div class="image">
+  <center>
+    <img max-width="800px" src="telemetry/dataflow.png" />
+  </center>
+</div>
+<p>In the rest of this document, we&rsquo;ll explore the components of this diagram. But
+first, let&rsquo;s learn more about the configuration that controls it.</p>
+<h2 id="config">Configuration</h2>
+<p>The behavior of Go telemetry is controlled by a single value: the telemetry
+<em>mode</em>. The possible values for <code>mode</code> are <code>local</code> (the default), <code>on</code>, or
+<code>off</code>:</p>
+<ul>
+<li>When <code>mode</code> is <code>local</code>, telemetry data is collected and stored on the local
+computer, but never uploaded to remote servers.</li>
+<li>When <code>mode</code> is <code>on</code>, data is collected, and may be uploaded depending on
+<a href="telemetry.html#uploads">sampling</a>.</li>
+<li>When <code>mode</code> is <code>off</code>, data is neither collected nor uploaded.</li>
+</ul>
+<p>With Go 1.23 or later, the following commands interact with the telemetry mode:</p>
+<ul>
+<li><code>go telemetry</code>: see the current mode.</li>
+<li><code>go telemetry on</code>: set the mode to <code>on</code>.</li>
+<li><code>go telemetry off</code>: set the mode to <code>off</code>.</li>
+<li><code>go telemetry local</code>: set the mode to <code>local</code>.</li>
+</ul>
+<p>Information about telemetry configuration is also available via read-only Go
+environment variables:</p>
+<ul>
+<li><code>go env GOTELEMETRY</code> reports the telemetry mode.</li>
+<li><code>go env GOTELEMETRYDIR</code> reports the directory holding telemetry configuration
+and data.</li>
+</ul>
+<p>The <a href="https://go.dev/pkg/golang.org/x/telemetry/cmd/gotelemetry"><code>gotelemetry</code></a> command can
+also be used to configure the telemetry mode, as well as to inspect local
+telemetry data. Use this command to install it:</p>
+<pre><code>go install golang.org/x/telemetry/cmd/gotelemetry@latest
+</code></pre>
+<p>For the complete usage information of the <code>gotelemetry</code> command line tool,
+see its <a href="https://go.dev/pkg/golang.org/x/telemetry/cmd/gotelemetry">package documentation</a>.</p>
+<h2 id="counters">Counters</h2>
+<p>As mentioned above, Go telemetry is instrumented via <em>counters</em>. Counters come
+in two variants: basic counters and stack counters.</p>
+<h3 id="basic-counters">Basic counters</h3>
+<p>A <em>basic counter</em> is an incrementable value with a name that describes the
+event that it counts. For example, the <code>gopls/client:vscode</code> counter records
+the number of times a <code>gopls</code> session is initiated by VS Code. Alongside this
+counter we may have <code>gopls/client:neovim</code>, <code>gopls/client:eglot</code>, and so on, to
+record sessions with different editors or language clients. If you used
+multiple editors throughout the week, you might record the following counter
+data:</p>
+<pre><code>gopls/client:vscode 8
+gopls/client:neovim 5
+gopls/client:eglot  2
+</code></pre>
+<p>When counters are related in this way, we sometimes refer to the part before
+the <code>:</code> the <em>chart name</em> (<code>gopls/client</code> in this case), and the part after <code>:</code>
+as the <em>bucket name</em> (<code>vscode</code>). We&rsquo;ll see why this matters when we discuss
+<a href="telemetry.html#charts">charts</a>.</p>
+<p>Basic counters can also represent a <em>histogram</em>. For example, the <code>gopls/completion/latency:&lt;50ms</code> counter records the number
+of times an autocompletion takes less than 50ms.</p>
+<pre>
+gopls/completion/latency:&lt;10ms
+gopls/completion/latency:&lt;50ms
+gopls/completion/latency:&lt;100ms
+...
+</pre>
+<p>This pattern for recording histogram data is a convention: there&rsquo;s nothing
+special about the <code>&lt;50ms</code> bucket name. These types of
+counters are commonly used to measure performance.</p>
+<h3 id="stack-counters">Stack counters</h3>
+<p>A <em>stack counter</em> is a counter that also records the current call stack of the
+Go toolchain program when the count is incremented. For example, the
+<code>crash/crash</code> stack counter records the call stack when a toolchain program
+crashes:</p>
+<pre><code>crash/crash
+golang.org/x/tools/gopls/internal/golang.hoverBuiltin:+22
+golang.org/x/tools/gopls/internal/golang.Hover:+94
+golang.org/x/tools/gopls/internal/server.Hover:+42
+...
+</code></pre>
+<p>Stack counters typically measure events where program invariants are violated.
+The most common example of this is a crash, but another example is the
+<code>gopls/bug</code> stack counter, which counts unusual situations identified in
+advance by the programmer, such as a recovered panic or an error that &ldquo;can&rsquo;t
+happen&rdquo;. Stack counters include only the names and line numbers of functions
+within Go toolchain programs. They don&rsquo;t include any information about user
+inputs, such as the names or contents of a user&rsquo;s source code.</p>
+<p>Stack counters can help track down rare or tricky bugs that don&rsquo;t get reported
+by other means. Since introducing the <code>gopls/bug</code> counter, we&rsquo;ve found
+<a href="https://github.com/golang/go/issues?q=label%3Agopls%2Ftelemetry-wins" rel="noreferrer" target="_blank">dozens of instances</a>
+of &ldquo;unreachable&rdquo; code that was reached in practice, and tracking down these
+exceptions has led to the discovery (and fix) of many user-visible bugs that
+were either not obvious to the user or too difficult to report. Especially with
+prerelease testing, stack counters can help us improve the product more
+efficiently than we could without automation.</p>
+<h3 id="counter-files">Counter files</h3>
+<p>All counter data is written to the <code>&lt;gotelemetry&gt;/local</code> directory, in
+files named according to the following schema:</p>
+<pre><code>[program name]@[program version]-[go version]-[GOOS]-[GOARCH]-[date].v1.count
+</code></pre>
+<ul>
+<li>The <strong>program name</strong> is the basename of the program&rsquo;s package path, as reported
+by <a href="https://go.dev/pkg/runtime/debug#BuildInfo">debug.BuildInfo</a>.</li>
+<li>The <strong>program version</strong> and <strong>go version</strong> are also reported by <a href="https://go.dev/pkg/runtime/debug#BuildInfo">debug.BuildInfo</a>.</li>
+<li>The <strong>GOOS</strong> and <strong>GOARCH</strong> values are reported by
+<a href="https://go.dev/pkg/runtime#GOOS"><code>runtime.GOOS</code></a> and
+<a href="https://go.dev/pkg/runtime#GOARCH"><code>runtime.GOARCH</code></a>.</li>
+<li>The <strong>date</strong> is the date the counter file was created, in <code>YYYY-MM-DD</code> format.</li>
+</ul>
+<p>These files are memory mapped into each running instance of the instrumented
+programs. The use of a memory-mapped file means that even if the program
+immediately crashes, or several copies of instrumented tools are running
+simultaneously, the counters are recorded safely.</p>
+<h2 id="reports">Reporting and uploading</h2>
+<p>Approximately once a week, counter data gets aggregated into reports named
+<code>&lt;date&gt;.json</code> in the <code>&lt;gotelemetry&gt;/local</code> directory. These reports sum all of
+counts for the previous week, grouped by the same program identifiers used for
+the counter file (program name, program version, go version, GOOS, and GOARCH).</p>
+<p>Local reports can be viewed as charts with the
+<a href="https://go.dev/pkg/golang.org/x/telemetry/cmd/gotelemetry"><code>gotelemetry view</code></a> command.
+Here&rsquo;s an example summary of the <code>gopls/completion/latency</code> counter:</p>
+<div class="image">
+  <center>
+    <img max-width="800px" src="telemetry/gopls-latency.png" />
+  </center>
+</div>
+<h3 id="uploads">Uploading</h3>
+<p>If telemetry uploading is enabled, the weekly reporting process will also
+generate reports containing the subset of counters present in the
+<a href="https://telemetry.go.dev/config" rel="noreferrer" target="_blank">upload config</a>. These counters must be
+approved by the public review process described in the next section. After it
+has been successfully uploaded, a copy of the uploaded reports are stored in
+the <code>&lt;gotelemetry&gt;/upload</code> directory.</p>
+<p>Once enough users opt in to uploading telemetry data, the upload process will
+randomly skip uploading for a fraction of reports, to reduce collection amounts
+and increase privacy while maintaining statistical significance.</p>
+<h2 id="charts">Charts</h2>
+<p>In addition to accepting uploads, the <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a> website makes uploaded
+data publicly available. Each day, uploaded reports are processed into two
+outputs, which are available on the <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a> homepage.</p>
+<ul>
+<li><em>merged</em> reports merged counters from all uploads received on the given day.</li>
+<li><em>charts</em> plot uploaded data as specified in the [chart config], which was
+produced as part of the proposal process. Recall from the discussion of
+<a href="telemetry.html#counters">counters</a> that counter names such as <code>foo:bar</code> are decomposed
+into the chart name <code>foo</code> and bucket name <code>bar</code>. Each chart aggregates
+counters with the same chart name into the corresponding buckets.</li>
+</ul>
+<p>Charts are specified in the format of the <a href="https://go.dev/pkg/golang.org/x/telemetry/internal/chartconfig">chartconfig</a> package. For example,
+here&rsquo;s the chart config for the <code>gopls/client</code> chart.</p>
+<pre><code>title: Editor Distribution
+counter: gopls/client:{vscode,vscodium,vscode-insiders,code-server,eglot,govim,neovim,coc.nvim,sublimetext,other}
+description: measure editor distribution for gopls users.
+type: partition
+issue: https://go.dev/issue/61038
+issue: https://go.dev/issue/62214 # add vscode-insiders
+program: golang.org/x/tools/gopls
+version: v0.13.0 # temporarily back-version to demonstrate config generation.
+</code></pre>
+<p>This configuration describes the chart to be produced, enumerates the set of
+counters to be aggregated, and specifies the program versions to which the
+chart applies. Additionally, the <a href="telemetry.html#proposals">proposal process</a> requires that
+an accepted proposal be associated with the chart. Here&rsquo;s the chart resulting
+from that config:</p>
+<div class="image">
+  <center>
+    <img src="telemetry/gopls-clients.png" />
+  </center>
+</div>
+<h2 id="proposals">The telemetry proposal process</h2>
+<p>Changes to the upload configuration or set of charts on <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a> must
+go through the <em>telemetry proposal process</em>, which is intended to ensure
+transparency around changes to the telemetry configuration.</p>
+<p>Notably, there is actually no distinction between upload configuration and
+chart configuration in this process. Upload configuration is itself expressed
+in terms of the aggregations that we want to render on telemetry.go.dev, based
+on the principle that we should only collect data that we want to <em>see</em>.</p>
+<p>The proposal process is as follows:</p>
+<ol>
+<li>The proposer creates a CL modifying <a href="https://go.googlesource.com/telemetry/+/refs/heads/master/internal/chartconfig/config.txt" rel="noreferrer" target="_blank">config.txt</a> of the <a href="https://go.dev/pkg/golang.org/x/telemetry/internal/chartconfig">chartconfig</a>
+package to contain the desired new counter aggregations.</li>
+<li>The proposer files a <a href="https://go.dev/issue/new?assignees=&amp;labels=Telemetry-Proposal&amp;projects=golang%2F29&amp;template=12-telemetry.yml&amp;title=x%2Ftelemetry%2Fconfig%3A+proposal+title">proposal</a> to merge this CL.</li>
+<li>Once discussion on the issue resolves, the proposal is approved or declined
+by a member of the Go team.</li>
+<li>An automatic process regenerates the upload config to allow uploading of the
+counters required for the new chart. This process will also regularly add
+new versions of the relevant programs to the upload config as they are
+released.</li>
+</ol>
+<p>In order to be approved, new charts can&rsquo;t carry sensitive user information,
+and additionally must be both useful and feasible. In order to be useful,
+charts must serve a specific purpose, with actionable outcomes. In order to be
+feasible, it must be possible to reliably collect the requisite data, and the
+resulting measurements must be statistically significant. To demonstrate
+feasibility, the proposer may be asked to instrument the target program with
+counters and collect them locally first.</p>
+<p>The full set of such proposals is available at the
+<a href="https://github.com/orgs/golang/projects/29" rel="noreferrer" target="_blank">proposal project</a> on GitHub.</p>
+<h2 id="ide">IDE Prompting</h2>
+<p>For telemetry to answer the types of questions we want to ask of it, the set of
+users opting in to uploading need not be large&ndash;approximately 16,000
+participants would allow for statistically significant measurements at the
+desired level of granularity. However, there is still a cost to assembling this
+healthy sample: we need to ask a large number of Go developers if they want to
+opt in.</p>
+<p>Furthermore, even if a large number of users choose to opt in <em>now</em> (perhaps
+after reading a Go blog post), those users may be skewed toward experienced Go
+developers, and over time that initial sample will grow even more skewed.
+Also, as people replace their computers, they must actively choose to opt in
+again. In the telemetry blog post series, this is referred to as the
+<a href="https://research.swtch.com/telemetry-opt-in#campaign" rel="noreferrer" target="_blank">&ldquo;campaign cost&rdquo;</a> of
+the opt-in model.</p>
+<p>To help keep the sample of participating users fresh, the Go language server
+<a href="https://go.dev/pkg/golang.org/x/tools/gopls"><code>gopls</code></a> supports a prompt that asks users to opt in to Go telemetry.
+Here&rsquo;s what that looks like from VS Code:</p>
+<div class="image">
+  <center>
+    <img width="600px" src="telemetry/prompt.png" />
+  </center>
+</div>
+<p>If users choose &ldquo;Yes&rdquo;, their telemetry <a href="telemetry.html#config">mode</a> will be set to <code>on</code>,
+just as if they had run
+<a href="https://go.dev/pkg/golang.org/x/telemetry/cmd/gotelemetry"><code>gotelemetry on</code></a>. In this way,
+opting in is as easy as possible, and we can continually reach a large and
+stratified sample of Go developers.</p>
+<h2 id="faq">Frequently Asked Question</h2>
+<p><strong>Q: How do I enable or disable Go telemetry?</strong></p>
+<p>A: Use the <code>gotelemetry</code> command, which can be installed with <code>go install golang.org/x/telemetry/cmd/gotelemetry@latest</code>. Run <code>gotelemetry off</code> to
+disable everything, even local collection. Run <code>gotelemetry on</code> to enable
+everything, including uploading approved counters to <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a>. See
+the <a href="telemetry.html#config">Configuration</a> section for more info.</p>
+<p><strong>Q: Where does local data get stored?</strong></p>
+<p>A: In the <code><a href="https://go.dev/pkg/os#UserConfigDir">os.UserConfigDir()</a>/go/telemetry</code> directory.</p>
+<p><strong>Q: How often does data get uploaded, if I opt in?</strong></p>
+<p>A: Approximately once a week.</p>
+<p><strong>Q: What data gets uploaded, if I opt in?</strong></p>
+<p>A: Only counters that are listed in the
+<a href="https://telemetry.go.dev/config" rel="noreferrer" target="_blank">upload config</a> may be uploaded.
+This is generated from the [chart config], which may be more readable.</p>
+<p><strong>Q: How do counters get added to the upload config?</strong></p>
+<p>A: Through the <a href="telemetry.html#proposals">public proposal process</a>.</p>
+<p><strong>Q: Where can I see telemetry data that has been uploaded?</strong></p>
+<p>A: Uploaded data is available as charts or merged summaries at <a href="https://telemetry.go.dev" rel="noreferrer" target="_blank">telemetry.go.dev</a>.</p>
+<p><strong>Q: Where is the source code for Go telemetry?</strong></p>
+<p>A: At <a href="https://go.dev/pkg/golang.org/x/telemetry">golang.org/x/telemetry</a>.</p>
+</div>
+
+
+    
+  </article>
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/carousels.js"></script>
+  <script src="../js/searchBox.js"></script>
+  <script src="../js/misc.js"></script>
+  <script src="../js/hats.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/godocs.js"></script>
+  <script async src="../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

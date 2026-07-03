@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../static/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../static/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../static/assets/favicon-16x16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:url" content="https://missing.csail.mit.edu/2026/code-quality/">
+  <meta property="og:site_name" content="Missing Semester">
+
+  
+    
+    <meta name="description" content="Learn about formatting, linting, testing, continuous integration, and more.">
+    <meta name="twitter:description" content="Learn about formatting, linting, testing, continuous integration, and more.">
+    <meta property="og:description" content="Learn about formatting, linting, testing, continuous integration, and more.">
+  
+
+  
+  <meta name="twitter:title" content="Code Quality">
+  <meta property="og:title" content="Code Quality">
+
+  
+  <meta name="twitter:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec9.png">
+  <meta property="og:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec9.png">
+
+  <title>
+    
+      
+        Code Quality &middot; Missing Semester
+      
+    
+  </title>
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/syntax.css">
+  <script defer src="../../static/js/sidenotes.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7WVHD84D1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P7WVHD84D1');
+  </script>
+
+</head>
+
+
+  <body>
+
+    <div id="nav-bg">
+  <nav id="top-nav">
+    <a href="../../index.html" id="logo">./missing-semester</a>
+    <input type="checkbox" id="menu-icon">
+    <label class="menu-label" for="menu-icon"></label>
+    <div class="trigger">
+      <div class="trigger-child">
+        <span class="nav-link"><a href="../index.html">lectures</a></span>
+        <span class="nav-link"><a href="../../past/index.html">past</a></span>
+        <span class="nav-link"><a href="../../about/index.html">about</a></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+    <div id="content">
+    <h1 class="title">Code Quality</h1>
+
+
+
+  <div class="youtube-wrapper" style="padding-bottom: 56.25%;">
+    <iframe src="https://www.youtube.com/embed/XBiLUNx84CQ" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+
+<p>There are a variety of tools and techniques that support developers in writing high-quality code. In this lecture, we’ll cover:</p>
+
+<ul>
+  <li><a href="index.html#formatting">Formatting</a></li>
+  <li><a href="index.html#linting">Linting</a></li>
+  <li><a href="index.html#testing">Testing</a></li>
+  <li><a href="index.html#pre-commit-hooks">Pre-commit hooks</a></li>
+  <li><a href="index.html#continuous-integration">Continuous integration</a></li>
+  <li><a href="index.html#command-runners">Command runners</a></li>
+</ul>
+
+<p>As a bonus topic, we’ll also cover <a href="index.html#regular-expressions">regular expressions</a>, a cross-cutting topic that has applications in code quality (e.g., for running a subset of tests that match a pattern) as well as other domains like IDEs (e.g., for search and replace).</p>
+
+<p>Many of these tools will be language-specific (e.g., the <a href="https://docs.astral.sh/ruff/">Ruff</a> linter/formatter for Python). In some cases, tools will support multiple languages (e.g., the <a href="https://prettier.io/">Prettier</a> code formatter). The concepts, however, are near universal — you can find code formatters, linters, testing libraries, and so on for any programming language.</p>
+
+<h1 id="formatting">Formatting</h1>
+
+<p>Code auto-formatters automatically prettify surface syntax. This way, you can focus on the more deep and challenging problems, while the auto-formatting tool handles mundane details such as consistency of <code class="language-plaintext highlighter-rouge">'</code> versus <code class="language-plaintext highlighter-rouge">"</code> syntax for strings, having spaces surrounding binary operators (<code class="language-plaintext highlighter-rouge">x + y</code> instead of <code class="language-plaintext highlighter-rouge">x+y</code>), having <code class="language-plaintext highlighter-rouge">import</code> statements in sorted order, and avoiding over-length lines. One major benefit of code formatters is that they standardize code style across all developers working on a codebase.</p>
+
+<p>Some tools such as Prettier are <a href="https://prettier.io/docs/configuration">highly configurable</a>; you should check in the configuration file into <a href="../version-control/index.html">version control</a> for your project. Other tools, such as <a href="https://github.com/psf/black">Black</a> and <a href="https://pkg.go.dev/cmd/gofmt">gofmt</a> have limited or no configurability, to reduce <a href="https://en.wikipedia.org/wiki/Law_of_triviality">bikeshedding</a>.</p>
+
+<p>You can set up <a href="../development-environment/index.html#code-intelligence-and-language-servers">IDE integration</a> with your code formatter, so that your code will be auto-formatted as you type or when you save a file. You can also add an <a href="https://editorconfig.org/">EditorConfig</a> file to your project, which communicates to your IDE certain project-level settings like indent size for each file type.</p>
+
+<h1 id="linting">Linting</h1>
+
+<p>Linters run static analysis (analyze your code without running it) to find antipatterns and potential issues in your code. These tools go deeper than autoformatters, looking beyond surface syntax. The depth of analysis varies by tool.</p>
+
+<p>Linters come equipped with lists of <em>rules</em>, with presets that can be configured on a project-level basis. Some linter rules produce false positives, so you can disable them on a per-file or per-line basis.</p>
+
+<p>Good linters will have built-in help or documentation that explains each linter rule — what the rule is looking for, why it’s bad, and what’s a better alternative for the code pattern. For example, see the documentation for the <a href="https://docs.astral.sh/ruff/rules/collapsible-if/">SIM102</a> rule in <a href="https://docs.astral.sh/ruff/">Ruff</a> which catches unnecessarily nested <code class="language-plaintext highlighter-rouge">if</code> statements in Python code.</p>
+
+<p>Some linters can not only flag issues but also automatically fix certain issues for you.</p>
+
+<p>Aside from language-specific linters, another tool that might come in handy is <a href="https://github.com/semgrep/semgrep">semgrep</a>, a “semantic grep” tool that works at the AST level (rather than character level, like grep) and supports many languages. You can use semgrep to easily write custom linter rules for your projects. For example, if you wanted to prevent the dangerous <code class="language-plaintext highlighter-rouge">subprocess.Popen(..., shell=True)</code> in Python, you could find that code pattern with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>semgrep <span class="nt">-l</span> python <span class="nt">-e</span> <span class="s2">"subprocess.Popen(..., shell=True, ...)"</span>
+</code></pre></div></div>
+
+<h1 id="testing">Testing</h1>
+
+<p>Software testing is a standard technique to increase your confidence in the correctness of your code. You write code, and then you write code that exercises the code you wrote and raises an error if the code doesn’t work as expected.</p>
+
+<p>You can write tests for chunks of code at different levels of granularity: <em>unit tests</em> for individual functions, <em>integration tests</em> for interaction between modules or services, and <em>functional tests</em> for end-to-end scenarios. You can do <em>test-driven development</em>, where you write tests before you write any implementation code. When you find bugs in your code, you can write <em>regression tests</em>, so you’ll catch if the functionality ever breaks in the future. You can write <em>property-based tests</em>, pioneered in <a href="https://hackage.haskell.org/package/QuickCheck">QuickCheck</a> in Haskell, and implemented in many libraries, like <a href="https://hypothesis.readthedocs.io/">Hypothesis</a> for Python. Which approach to testing is right depends on your project; likely, you will adopt some combination.</p>
+
+<p>If your program has external dependencies like a database or web API, it may be helpful to <em>mock</em> those dependencies in your tests, rather than have your code interact with third-party dependencies at test time.</p>
+
+<h2 id="code-coverage">Code coverage</h2>
+
+<p>Code coverage is a metric by which you can measure how good your tests are. Code coverage looks at which lines of your code are executed when your tests are run, so you can ensure you are covering all code paths. Code coverage tools can show you line-by-line coverage to guide you in writing tests. Services such as <a href="https://app.codecov.io">Codecov</a> provide web interfaces for tracking and viewing code coverage over the history of a project.</p>
+
+<p>Like any metric, code coverage is not perfect; don’t over-index on coverage, focus on writing high-quality tests.</p>
+
+<h1 id="pre-commit-hooks">Pre-commit hooks</h1>
+
+<p>Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">hooks</a>, made easier by the <a href="https://pre-commit.com/">pre-commit</a> framework, automatically run user-specified code prior to every Git commit. Projects commonly use pre-commit hooks to run formatters and linters, and sometimes tests, automatically before every commit, to ensure that committed code matches the project code style and is free of certain issues.</p>
+
+<h1 id="continuous-integration">Continuous integration</h1>
+
+<p>Continuous integration (CI) services like <a href="https://github.com/features/actions">GitHub Actions</a> can run scripts for you every time you push code (or on every pull request, or on a schedule). Developers commonly use CI services to run code quality tools including formatters, linters, and tests. For compiled languages, you can ensure code compiles; for statically typed languages, you can make sure it type checks. Running CI every push of new commits can catch errors introduced into the main version of the code; running on pull requests can catch issues with contributor submissions; running on a schedule can catch issues with external dependencies (e.g., a developer accidentally releases a breaking change as <a href="../shipping-code/index.html#releases--versioning">semver-compatible</a>).</p>
+
+<p>Because CI scripts run separately from developer machines, you can easily run long-running jobs there. This can be leveraged, for example, to run a <em>matrix</em> of tests across different operating systems and programming language versions to ensure that the software works properly across all of them.</p>
+
+<p>Generally, the script running in CI will not directly make changes to your code: it will run tools in “check-only” mode rather than “fix” mode, so for example, the auto-formatter will raise an error when the code is not compliant with the format.</p>
+
+<p>Repositories often include <a href="https://docs.github.com/en/actions/how-tos/monitor-workflows/add-a-status-badge">status badges</a> in their README, showing CI status and other information such as code coverage. For example, below is Missing Semester’s current build status.</p>
+
+<p><a href="https://github.com/missing-semester/missing-semester/actions/workflows/build.yml"><img src="https://github.com/missing-semester/missing-semester/actions/workflows/build.yml/badge.svg" alt="Build Status" /></a> <a href="https://github.com/missing-semester/missing-semester/actions/workflows/links.yml"><img src="https://github.com/missing-semester/missing-semester/actions/workflows/links.yml/badge.svg" alt="Links Status" /></a></p>
+
+<blockquote>
+  <p>Our <a href="https://github.com/missing-semester/missing-semester/blob/master/.github/workflows/links.yml">links checker</a>, which uses the <a href="https://github.com/anishathalye/proof-html">proof-html</a> GitHub Action is often failing, usually due to issues with third-party websites. Still, it has helped us catch and fix many broken links (sometimes due to typos, most of the time due to websites moving around content without adding redirects or websites disappearing).</p>
+</blockquote>
+
+<p>A good way to learn the particulars of CI services, formatters, linters, and testing libraries is by example. Find high-quality open-source projects on GitHub—the more similar to your project in programming language, domain, size and scope, and so on, the better—and study their <code class="language-plaintext highlighter-rouge">pyproject.toml</code>, <code class="language-plaintext highlighter-rouge">.github/workflows/</code>, <code class="language-plaintext highlighter-rouge">DEVELOPMENT.md</code>, and other relevant files.</p>
+
+<h2 id="continuous-deployment">Continuous deployment</h2>
+
+<p>Continuous deployment makes use of CI infrastructure to actually <em>deploy</em> changes. For example, the Missing Semester repository uses continuous deployment to GitHub pages so that whenever we <code class="language-plaintext highlighter-rouge">git push</code> updated lecture notes, the site is automatically built and deployed. You can build other types of <a href="../shipping-code/index.html">artifacts</a> in CI, such as binaries for applications or Docker images for services.</p>
+
+<h1 id="command-runners">Command runners</h1>
+
+<p>Command runners like <a href="https://github.com/casey/just">just</a> simplify the task of running commands in the context of a project. As you build up code quality infrastructure for your project, you don’t want to make your developers memorize commands like <code class="language-plaintext highlighter-rouge">uv run ruff check --fix</code>. With a command runner, this can turn into <code class="language-plaintext highlighter-rouge">just lint</code>, and you can have analogous invocations like <code class="language-plaintext highlighter-rouge">just format</code>, <code class="language-plaintext highlighter-rouge">just typecheck</code>, etc., for all the different tools a developer might want to run for your project.</p>
+
+<p>Some language-specific project or package managers have built-in support for such functionality, which means you don’t need to use a language-agnostic tool like <code class="language-plaintext highlighter-rouge">just</code>. For example, the <code class="language-plaintext highlighter-rouge">scripts</code> section of a <code class="language-plaintext highlighter-rouge">package.json</code> for <a href="https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager">npm</a> (Node.js) and the <code class="language-plaintext highlighter-rouge">tool.hatch.envs.*.scripts</code> sections of a <code class="language-plaintext highlighter-rouge">pyproject.toml</code> for <a href="https://hatch.pypa.io/">Hatch</a> (Python) support this functionality.</p>
+
+<h1 id="regular-expressions">Regular expressions</h1>
+
+<p><em>Regular expressions</em>, commonly abbreviated as “regex”, is a language used to represent sets of strings. Regex patterns are commonly used for pattern matching in various contexts such as command-line tools and IDEs. For example, <a href="https://github.com/ggreer/the_silver_searcher">ag</a> supports regex patterns for codebase-wide search (e.g., <code class="language-plaintext highlighter-rouge">ag "import .* as .*"</code> will find all renamed imports in Python), and <a href="https://pkg.go.dev/cmd/go#hdr-Test_packages">go test</a> supports a <code class="language-plaintext highlighter-rouge">-run [regexp]</code> option for selecting a subset of tests. Furthermore, programming languages have built-in support or third-party libraries for regular expression matching, so you can use regexes for functionality such as pattern matching, validation, and parsing.</p>
+
+<p>To help build intuition, below are some examples of regex patterns. In this lecture, we use <a href="https://docs.python.org/3/library/re.html">Python regex syntax</a>. There are many flavors of regex, with slight variation between them, especially in the more sophisticated functionality. You can use an online regex tester like <a href="https://regex101.com/">regex101</a> to develop and debug regular expressions.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">abc</code> — matches the literal “abc”.</li>
+  <li><code class="language-plaintext highlighter-rouge">missing|semester</code> — matches the string “missing” or the string “semester”.</li>
+  <li><code class="language-plaintext highlighter-rouge">\d{4}-\d{2}-\d{2}</code> — matches dates in YYYY-MM-DD format, such as “2026-01-14”. Beyond ensuring that the string consists of four digits, a dash, two digits, a dash, and two digits, this does not validate the date, so “2026-01-99” matches this regex pattern too.</li>
+  <li><code class="language-plaintext highlighter-rouge">.+@.+</code> — matches email addresses, strings that contain some text, then an “@”, and then some more text. This does only the most basic validation and matches strings like “nonsense@@@email”. A regex that matches email addresses with no false positives or negatives <a href="https://pdw.ex-parrot.com/Mail-RFC822-Address.html">exists</a> but is impractical.</li>
+</ul>
+
+<h2 id="regex-syntax">Regex syntax</h2>
+
+<p>You can find a comprehensive guide to regex syntax in <a href="https://docs.python.org/3/library/re.html#regular-expression-syntax">this documentation</a> (or one of many other resources available online). Here are some of the basic building blocks:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">abc</code> matches the literal string, when the characters have no special meaning (in this example, “abc”)</li>
+  <li><code class="language-plaintext highlighter-rouge">.</code> matches any single character</li>
+  <li><code class="language-plaintext highlighter-rouge">[abc]</code> matches a single character contained in the brackets (in this example, “a”, “b”, or “c”)</li>
+  <li><code class="language-plaintext highlighter-rouge">[^abc]</code> matches a single character except those contained in the brackets (e.g., “d”)</li>
+  <li><code class="language-plaintext highlighter-rouge">[a-f]</code> matches a single character contained in the range indicated in the brackets (e.g., “c”, but not “q”)</li>
+  <li><code class="language-plaintext highlighter-rouge">a|b</code> matches either pattern (e.g., “a” or “b”)</li>
+  <li><code class="language-plaintext highlighter-rouge">\d</code> matches any digit character (e.g., “3”)</li>
+  <li><code class="language-plaintext highlighter-rouge">\w</code> matches any word character (e.g., “x”)</li>
+  <li><code class="language-plaintext highlighter-rouge">\b</code> matches any word <em>boundary</em> (e.g., in the string “missing semester”, matches just before the “m”, just after the “g”, just before the “s”, and just after the “r”)</li>
+  <li><code class="language-plaintext highlighter-rouge">(...)</code> matches the group of a pattern</li>
+  <li><code class="language-plaintext highlighter-rouge">...?</code> matches zero or one of a pattern, such as <code class="language-plaintext highlighter-rouge">words?</code> to match “word” or “words”</li>
+  <li><code class="language-plaintext highlighter-rouge">...*</code> matches any number of a pattern, such as <code class="language-plaintext highlighter-rouge">.*</code> to match any number of any character</li>
+  <li><code class="language-plaintext highlighter-rouge">...+</code> matches one or more of a pattern, such as <code class="language-plaintext highlighter-rouge">\d+</code> to match any non-zero number of digits</li>
+  <li><code class="language-plaintext highlighter-rouge">...{N}</code> matches exactly N of a pattern, such as <code class="language-plaintext highlighter-rouge">\d{4}</code> for 4 digits</li>
+  <li><code class="language-plaintext highlighter-rouge">\.</code> matches a literal “.”</li>
+  <li><code class="language-plaintext highlighter-rouge">\\</code> matches a literal “\”</li>
+  <li><code class="language-plaintext highlighter-rouge">^</code> matches the start of the line</li>
+  <li><code class="language-plaintext highlighter-rouge">$</code> matches the end of the line</li>
+</ul>
+
+<h2 id="capture-groups-and-references">Capture groups and references</h2>
+
+<p>If you use regex groups <code class="language-plaintext highlighter-rouge">(...)</code>, you can refer to sub-parts of the match for extraction or search-and-replace purposes. For example, to extract just the month from a YYYY-MM-DD style date, you can use the following Python code:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s">"\d{4}-(\d{2})-\d{2}"</span><span class="p">,</span> <span class="s">"2026-01-14"</span><span class="p">).</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="s">'01'</span>
+</code></pre></div></div>
+
+<p>In your text editor, you can use reference capture groups in replace patterns. The syntax might vary between IDEs. For example, in VS Code, you can use variables like <code class="language-plaintext highlighter-rouge">$1</code>, <code class="language-plaintext highlighter-rouge">$2</code>, etc., and in Vim, you can use <code class="language-plaintext highlighter-rouge">\1</code>, <code class="language-plaintext highlighter-rouge">\2</code>, etc., to reference groups.</p>
+
+<h2 id="limitations">Limitations</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Regular_language">Regular languages</a> are powerful but limited; there are classes of strings that cannot be expressed as a standard regex (e.g., it is <a href="https://en.wikipedia.org/wiki/Pumping_lemma_for_regular_languages">not possible</a> to write a regular expression that matches the set of strings {a^n b^n | n ≥ 0}, the set of strings of a number of “a”s followed by the same number of “b”s; more practically, languages like HTML are not regular languages). In practice, modern regex engines support features like lookahead and backreferences that extend support beyond regular languages, and they are practically extremely useful, but it is important to know that they are still limited in their expressive power. For more sophisticated languages, you might need to reach for a more capable type of parser (for one example, see <a href="https://github.com/pyparsing/pyparsing">pyparsing</a>, a <a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">PEG</a> parser).</p>
+
+<h2 id="learning-regex">Learning regex</h2>
+
+<p>We recommend learning the fundamentals (what we have covered in this lecture), and then looking at regex references as you need them, rather than memorizing the entirety of the language.</p>
+
+<p>Conversational AI tools can be effective at helping you generating regex patterns. For example, try prompting your favorite LLM with the following query:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Write a Python-style regex pattern that matches the requested path from log lines from Nginx. Here is an example log line:
+
+169.254.1.1 - - [09/Jan/2026:21:28:51 +0000] "GET /feed.xml HTTP/2.0" 200 2995 "-" "python-requests/2.32.3"
+</code></pre></div></div>
+
+<h1 id="exercises">Exercises</h1>
+
+<ol>
+  <li>Configure a formatter, linter, and pre-commit hooks for a project you’re working on. If you have lots of errors: autoformatting should take care of the format errors. For the linter errors, try using an <a href="../agentic-coding/index.html">AI agent</a> to fix all the linter errors. Make sure the AI agent can run the linter and observe the results, so that it can run in an iterative loop to fix all the issues. Check the results carefully to ensure the AI doesn’t break your code!</li>
+  <li>Learn a testing library for a language you know and write a unit test for a project you’re working on. Run a code coverage tool, generate an HTML-formatted coverage report, and observe the results. Can you find the lines that are covered? Your code coverage will likely be very low. Try manually writing some tests to improve it. Try using an <a href="../agentic-coding/index.html">AI agent</a> to improve coverage; make sure the coding agent can run tests with coverage and produce a line-by-line coverage report, so it knows where to focus. Are the AI-generated tests actually good?</li>
+  <li>Set up continuous integration to run on every push for a project you’re working on. Have CI run formatting, linting, and tests. Break your code on purpose (e.g., introduce a linter violation), and ensure that CI catches it.</li>
+  <li>Try writing a <a href="index.html#regular-expressions">regex pattern</a> and use the <code class="language-plaintext highlighter-rouge">grep</code> <a href="../course-shell/index.html">command-line tool</a> to find occurrences of <code class="language-plaintext highlighter-rouge">subprocess.Popen(..., shell=True)</code> in your code. Now, try to “break” the regex pattern. Does <a href="index.html#linting">semgrep</a> still successfully match the dangerous code that trips up your grep invocation?</li>
+  <li>Practice regex search-and-replace in your IDE or text editor by replacing the <code class="language-plaintext highlighter-rouge">-</code> <a href="https://spec.commonmark.org/0.31.2/#bullet-list-marker">Markdown bullet markers</a> with <code class="language-plaintext highlighter-rouge">*</code> bullet markers in <a href="https://raw.githubusercontent.com/missing-semester/missing-semester/refs/heads/master/_2026/code-quality.md">these lecture notes</a>. Note that just replacing all the “-“ characters in the file would be incorrect, as there are many uses of that character that are not bullet markers.</li>
+  <li>Write a regex to capture from JSON structures of the form <code class="language-plaintext highlighter-rouge">{"name": "Alyssa P. Hacker", "college": "MIT"}</code> the name (e.g., <code class="language-plaintext highlighter-rouge">Alyssa P. Hacker</code>, in this example). Hint: in your first attempt, you might end up writing a regex that extracts <code class="language-plaintext highlighter-rouge">Alyssa P. Hacker", "college": "MIT</code>; read about greedy quantifiers in the <a href="https://docs.python.org/3/library/re.html">Python regex docs</a> to figure out how to fix it.
+    <ol>
+      <li>Make the regex pattern work even in situations where the name has a <code class="language-plaintext highlighter-rouge">"</code> character in it (double quotes can be escaped in JSON with <code class="language-plaintext highlighter-rouge">\"</code>).</li>
+      <li>We do <strong>not</strong> recommend using regular expressions for sophisticated parsing problems in practice. Figure out how to use your programming language’s JSON parser for this task. Write a command-line program that takes as input, on stdin, a JSON structure of the form described above, and output, on stdout, the name. You should only need a couple lines of code to do this. In Python, you can do it easily in one line of code beyond <code class="language-plaintext highlighter-rouge">import json</code>.</li>
+    </ol>
+  </li>
+</ol>
+
+
+<hr>
+
+<div class="small center">
+<p><a href="https://github.com/missing-semester/missing-semester/blob/master/_2026/code-quality.md">Edit this page</a>.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA</a>.</p>
+</div>
+
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="godebug.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="icon" href="../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/godebug">
+<meta name="og:title" content="Go, Backwards Compatibility, and GODEBUG - The Go Programming Language">
+<title>Go, Backwards Compatibility, and GODEBUG - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="godebug.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="godebug.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="godebug.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="godebug.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="godebug.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="godebug.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="godebug.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="godebug.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="godebug.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="godebug.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+  <article class="Article Article--doc">
+
+    
+    <h1>Go, Backwards Compatibility, and GODEBUG</h1>
+    <div class='markdown'>
+<!--
+This document is kept in the Go repo, not x/website,
+because it documents the full list of known GODEBUG settings,
+which are tied to a specific release.
+-->
+<h2 id="intro">Introduction</h2>
+<p>Go&rsquo;s emphasis on backwards compatibility is one of its key strengths.
+There are, however, times when we cannot maintain complete compatibility.
+If code depends on buggy (including insecure) behavior,
+then fixing the bug will break that code.
+New features can also have similar impacts:
+enabling the HTTP/2 use by the HTTP client broke programs
+connecting to servers with buggy HTTP/2 implementations.
+These kinds of changes are unavoidable and
+<a href="go1compat.html">permitted by the Go 1 compatibility rules</a>.
+Even so, Go provides a mechanism called GODEBUG to
+reduce the impact such changes have on Go developers
+using newer toolchains to compile old code.</p>
+<p>A GODEBUG setting is a <code>key=value</code> pair
+that controls the execution of certain parts of a Go program.
+The environment variable <code>GODEBUG</code>
+can hold a comma-separated list of these settings.
+For example, if a Go program is running in an environment that contains</p>
+<pre><code>GODEBUG=http2client=0,http2server=0
+</code></pre>
+<p>then that Go program will disable the use of HTTP/2 by default in both
+the HTTP client and the HTTP server.
+Unrecognized settings in the <code>GODEBUG</code> environment variable are ignored.
+It is also possible to set the default <code>GODEBUG</code> for a given program
+(discussed below).</p>
+<p>When preparing any change that is permitted by Go 1 compatibility
+but may nonetheless break some existing programs,
+we first engineer the change to keep as many existing programs working as possible.
+For the remaining programs,
+we define a new GODEBUG setting that
+allows individual programs to opt back in to the old behavior.
+A GODEBUG setting may not be added if doing so is infeasible,
+but that should be extremely rare.</p>
+<p>GODEBUG settings added for compatibility will be maintained
+for a minimum of two years (four Go releases).
+Some, such as <code>http2client</code> and <code>http2server</code>,
+will be maintained much longer, even indefinitely.</p>
+<p>When possible, each GODEBUG setting has an associated
+<a href="https://go.dev/pkg/runtime/metrics/">runtime/metrics</a> counter
+named <code>/godebug/non-default-behavior/&lt;name&gt;:events</code>
+that counts the number of times a particular program&rsquo;s
+behavior has changed based on a non-default value
+for that setting.
+For example, when <code>GODEBUG=http2client=0</code> is set,
+<code>/godebug/non-default-behavior/http2client:events</code>
+counts the number of HTTP transports that the program
+has configured without HTTP/2 support.</p>
+<h2 id="default">Default GODEBUG Values</h2>
+<p>When a GODEBUG setting is not listed in the environment variable,
+its value is derived from three sources:
+the defaults for the Go toolchain used to build the program,
+amended to match the Go version listed in <code>go.mod</code>,
+and then overridden by explicit <code>//go:debug</code> lines in the program.</p>
+<p>The <a href="godebug.html#history">GODEBUG History</a> gives the exact defaults for each Go toolchain version.
+For example, Go 1.21 introduces the <code>panicnil</code> setting,
+controlling whether <code>panic(nil)</code> is allowed;
+it defaults to <code>panicnil=0</code>, making <code>panic(nil)</code> a run-time error.
+Using <code>panicnil=1</code> restores the behavior of Go 1.20 and earlier.</p>
+<p>When compiling a work module or workspace that declares
+an older Go version, the Go toolchain amends its defaults
+to match that older Go version as closely as possible.
+For example, when a Go 1.21 toolchain compiles a program,
+if the work module&rsquo;s <code>go.mod</code> or the workspace&rsquo;s <code>go.work</code>
+says <code>go</code> <code>1.20</code>, then the program defaults to <code>panicnil=1</code>,
+matching Go 1.20 instead of Go 1.21.</p>
+<p>Because this method of setting GODEBUG defaults was introduced only in Go 1.21,
+programs listing versions of Go earlier than Go 1.20 are configured to match Go 1.20,
+not the older version.</p>
+<p>To override these defaults, starting in Go 1.23, the work module&rsquo;s <code>go.mod</code>
+or the workspace&rsquo;s <code>go.work</code> can list one or more <code>godebug</code> lines:</p>
+<pre><code>godebug (
+    default=go1.21
+    panicnil=1
+    asynctimerchan=0
+)
+</code></pre>
+<p>The special key <code>default</code> indicates a Go version to take unspecified
+settings from. This allows setting the GODEBUG defaults separately
+from the Go language version in the module.
+In this example, the program is asking for Go 1.21 semantics and
+then asking for the old pre-Go 1.21 <code>panic(nil)</code> behavior and the
+new Go 1.23 <code>asynctimerchan=0</code> behavior.</p>
+<p>Only the work module&rsquo;s <code>go.mod</code> is consulted for <code>godebug</code> directives.
+Any directives in required dependency modules are ignored.
+It is an error to list a <code>godebug</code> with an unrecognized setting.
+(Toolchains older than Go 1.23 reject all <code>godebug</code> lines, since they do not
+understand <code>godebug</code> at all.) When a workspace is in use, <code>godebug</code>
+directives in <code>go.mod</code> files are ignored, and <code>go.work</code> will be consulted
+for <code>godebug</code> directives instead.</p>
+<p>The defaults from the <code>go</code> and <code>godebug</code> lines apply to all main
+packages that are built. For more fine-grained control,
+starting in Go 1.21, a main package&rsquo;s source files
+can include one or more <code>//go:debug</code> directives at the top of the file
+(preceding the <code>package</code> statement).
+The <code>godebug</code> lines in the previous example would be written:</p>
+<pre><code>//go:debug default=go1.21
+//go:debug panicnil=1
+//go:debug asynctimerchan=0
+</code></pre>
+<p>Starting in Go 1.21, the Go toolchain treats a <code>//go:debug</code> directive
+with an unrecognized GODEBUG setting as an invalid program.
+Programs with more than one <code>//go:debug</code> line for a given setting
+are also treated as invalid.
+(Older toolchains ignore <code>//go:debug</code> directives entirely.)</p>
+<p>The defaults that will be compiled into a main package
+are reported by the command:</p>
+<pre><code>go list -f '{{.DefaultGODEBUG}}' my/main/package
+</code></pre>
+<p>Only differences from the base Go toolchain defaults are reported.</p>
+<p>When testing a package, <code>//go:debug</code> lines in the <code>*_test.go</code>
+files are treated as directives for the test&rsquo;s main package.
+In any other context, <code>//go:debug</code> lines are ignored by the toolchain;
+<code>go</code> <code>vet</code> reports such lines as misplaced.</p>
+<h2 id="history">GODEBUG History</h2>
+<p>This section documents the GODEBUG settings introduced and removed in each major Go release
+for compatibility reasons.
+Packages or programs may define additional settings for internal debugging purposes;
+for example,
+see the <a href="https://go.dev/pkg/runtime#hdr-Environment_Variables">runtime documentation</a>
+and the <a href="https://go.dev/cmd/go#hdr-Build_and_test_caching">go command documentation</a>.</p>
+<h3 id="go-126">Go 1.26</h3>
+<p>Go 1.26.1 added a new <code>htmlmetacontenturlescape</code> setting that controls whether
+html/template will escape URLs in the <code>url=</code> portion of the content attribute of
+HTML meta tags. The default <code>htmlmetacontentescape=1</code> will cause URLs to be
+escaped. Setting <code>htmlmetacontentescape=0</code> disables this behavior.</p>
+<p>Go 1.26 added a new <code>httpcookiemaxnum</code> setting that controls the maximum number
+of cookies that net/http will accept when parsing HTTP headers. If the number of
+cookie in a header exceeds the number set in <code>httpcookiemaxnum</code>, cookie parsing
+will fail early. The default value is <code>httpcookiemaxnum=3000</code>. Setting
+<code>httpcookiemaxnum=0</code> will allow the cookie parsing to accept an indefinite
+number of cookies. To avoid denial of service attacks, this setting and default
+was backported to Go 1.25.2 and Go 1.24.8.</p>
+<p>Go 1.26 added a new <code>urlmaxqueryparams</code> setting that controls the maximum number
+of query parameters that net/url will accept when parsing a URL-encoded query string.
+If the number of parameters exceeds the number set in <code>urlmaxqueryparams</code>,
+parsing will fail early. The default value is <code>urlmaxqueryparams=10000</code>.
+Setting <code>urlmaxqueryparams=0</code> disables the limit. To avoid denial of service
+attacks, this setting and default was backported to Go 1.25.6 and Go 1.24.12.</p>
+<p>Go 1.26 added a new <code>urlstrictcolons</code> setting that controls whether <code>net/url.Parse</code>
+allows malformed hostnames containing colons outside of a bracketed IPv6 address.
+The default <code>urlstrictcolons=1</code> rejects URLs such as <code>http://localhost:1:2</code> or <code>http://::1/</code>.
+Colons are permitted as part of a bracketed IPv6 address, such as <code>http://[::1]/</code>.</p>
+<p>Go 1.26 enabled two additional post-quantum key exchange mechanisms:
+SecP256r1MLKEM768 and SecP384r1MLKEM1024. The default can be reverted using the
+<a href="https://go.dev/pkg/crypto/tls/#Config.CurvePreferences"><code>tlssecpmlkem</code> setting</a>.</p>
+<p>Go 1.26 added a new <code>tracebacklabels</code> setting that controls the inclusion of
+goroutine labels set through the the <code>runtime/pprof</code> package. Setting <code>tracebacklabels=1</code>
+includes these key/value pairs in the goroutine status header of runtime
+tracebacks and debug=2 runtime/pprof stack dumps. This format may change in the future.
+(see go.dev/issue/76349)</p>
+<p>Go 1.26 added a new <code>cryptocustomrand</code> setting that controls whether most crypto/&hellip;
+APIs ignore the random <code>io.Reader</code> parameter. For Go 1.26, it defaults
+to <code>cryptocustomrand=0</code>, ignoring the random parameters. Using <code>cryptocustomrand=1</code>
+reverts to the pre-Go 1.26 behavior.</p>
+<h3 id="go-125">Go 1.25</h3>
+<p>Go 1.25 added a new <code>decoratemappings</code> setting that controls whether the Go
+runtime annotates OS anonymous memory mappings with context about their
+purpose. These annotations appear in /proc/self/maps and /proc/self/smaps as
+&ldquo;[anon: Go: &hellip;]&rdquo;. This setting is only used on Linux. For Go 1.25, it defaults
+to <code>decoratemappings=1</code>, enabling annotations. Using <code>decoratemappings=0</code>
+reverts to the pre-Go 1.25 behavior. This setting is fixed at program startup
+time, and can&rsquo;t be modified by changing the <code>GODEBUG</code> environment variable
+after the program starts.</p>
+<p>Go 1.25 added a new <code>embedfollowsymlinks</code> setting that controls whether the
+Go command will follow symlinks to regular files embedding files.
+The default value <code>embedfollowsymlinks=0</code> does not allow following
+symlinks. <code>embedfollowsymlinks=1</code> will allow following symlinks.</p>
+<p>Go 1.25 added a new <code>containermaxprocs</code> setting that controls whether the Go
+runtime will consider cgroup CPU limits when setting the default GOMAXPROCS.
+The default value <code>containermaxprocs=1</code> will use cgroup limits in addition to
+the total logical CPU count and CPU affinity. <code>containermaxprocs=0</code> will
+disable consideration of cgroup limits. This setting only affects Linux.</p>
+<p>Go 1.25 added a new <code>updatemaxprocs</code> setting that controls whether the Go
+runtime will periodically update GOMAXPROCS for new CPU affinity or cgroup
+limits. The default value <code>updatemaxprocs=1</code> will enable periodic updates.
+<code>updatemaxprocs=0</code> will disable periodic updates.</p>
+<p>Go 1.25 disabled SHA-1 signature algorithms in TLS 1.2 according to RFC 9155.
+The default can be reverted using the <code>tlssha1=1</code> setting.</p>
+<p>Go 1.25 switched to SHA-256 to fill in missing SubjectKeyId in
+crypto/x509.CreateCertificate. The setting <code>x509sha256skid=0</code> reverts to SHA-1.</p>
+<p>Go 1.25 corrected the semantics of contention reports for runtime-internal locks,
+and so removed the <a href="https://go.dev/pkg/runtime#hdr-Environment_Variables"><code>runtimecontentionstacks</code> setting</a>.</p>
+<p>Go 1.25 (starting with Go 1.25 RC 2) disabled build information stamping when
+multiple VCS are detected due to concerns around VCS injection attacks. This
+behavior and setting was backported to Go 1.24.5 and Go 1.23.11. This behavior
+can be renabled with the setting <code>allowmultiplevcs=1</code>.</p>
+<h3 id="go-124">Go 1.24</h3>
+<p>Go 1.24 added a new <code>fips140</code> setting that controls whether the Go
+Cryptographic Module operates in FIPS 140-3 mode.
+The possible values are:</p>
+<ul>
+<li>&ldquo;off&rdquo;: no special support for FIPS 140-3 mode. This is the default.</li>
+<li>&ldquo;on&rdquo;: the Go Cryptographic Module operates in FIPS 140-3 mode.</li>
+<li>&ldquo;only&rdquo;: like &ldquo;on&rdquo;, but cryptographic algorithms not approved by
+FIPS 140-3 return an error or panic.
+For more information, see <a href="security/fips140.html">FIPS 140-3 Compliance</a>.
+This setting is fixed at program startup time, and can&rsquo;t be modified
+by changing the <code>GODEBUG</code> environment variable after the program starts.</li>
+</ul>
+<p>Go 1.24 changed the global <a href="https://go.dev/pkg/math/rand/#Seed"><code>math/rand.Seed</code></a> to be a
+no-op. This behavior is controlled by the <code>randseednop</code> setting.
+For Go 1.24 it defaults to <code>randseednop=1</code>.
+Using <code>randseednop=0</code> reverts to the pre-Go 1.24 behavior.</p>
+<p>Go 1.24 added new values for the <code>multipathtcp</code> setting.
+The possible values for <code>multipathtcp</code> are now:</p>
+<ul>
+<li>&ldquo;0&rdquo;: disable MPTCP on dialers and listeners by default</li>
+<li>&ldquo;1&rdquo;: enable MPTCP on dialers and listeners by default</li>
+<li>&ldquo;2&rdquo;: enable MPTCP on listeners only by default</li>
+<li>&ldquo;3&rdquo;: enable MPTCP on dialers only by default</li>
+</ul>
+<p>For Go 1.24, it now defaults to multipathtcp=&ldquo;2&rdquo;, thus
+enabled by default on listeners. Using multipathtcp=&ldquo;0&rdquo; reverts to the
+pre-Go 1.24 behavior.</p>
+<p>Go 1.24 changed the behavior of <code>go test -json</code> to emit build errors as JSON
+instead of text.
+These new JSON events are distinguished by new <code>Action</code> values,
+but can still cause problems with CI systems that aren&rsquo;t robust to these events.
+This behavior can be controlled with the <code>gotestjsonbuildtext</code> setting.
+Using <code>gotestjsonbuildtext=1</code> restores the 1.23 behavior.
+This setting will be removed in a future release, Go 1.28 at the earliest.</p>
+<p>Go 1.24 changed <a href="https://go.dev/pkg/crypto/rsa"><code>crypto/rsa</code></a> to require RSA keys to be at
+least 1024 bits. This behavior can be controlled with the <code>rsa1024min</code> setting.
+Using <code>rsa1024min=0</code> restores the Go 1.23 behavior.</p>
+<p>Go 1.24 introduced a mechanism for enabling platform specific Data Independent
+Timing (DIT) modes in the <a href="https://go.dev/pkg/crypto/subtle"><code>crypto/subtle</code></a> package. This
+mode can be enabled for an entire program with the <code>dataindependenttiming</code> setting.
+For Go 1.24 it defaults to <code>dataindependenttiming=0</code>. There is no change in default
+behavior from Go 1.23 when <code>dataindependenttiming</code> is unset.
+Using <code>dataindependenttiming=1</code> enables the DIT mode for the entire Go program.
+When enabled, DIT will be enabled when calling into C from Go. When enabled,
+calling into Go code from C will enable DIT, and disable it before returning to
+C if it was not enabled when Go code was entered.
+This currently only affects arm64 programs. For all other platforms it is a no-op.</p>
+<p>Go 1.24 removed the <code>x509sha1</code> setting.  <code>crypto/x509</code> no longer supports verifying
+signatures on certificates that use SHA-1 based signature algorithms.</p>
+<p>Go 1.24 changes the default value of the <a href="https://go.dev/pkg/crypto/x509/#CreateCertificate"><code>x509usepolicies</code>
+setting.</a> from <code>0</code> to <code>1</code>. When marshalling
+certificates, policies are now taken from the
+<a href="https://go.dev/pkg/crypto/x509/#Certificate.Policies"><code>Certificate.Policies</code></a> field rather
+than the
+<a href="https://go.dev/pkg/crypto/x509/#Certificate.PolicyIdentifiers"><code>Certificate.PolicyIdentifiers</code></a>
+field by default.</p>
+<p>Go 1.24 enabled the post-quantum key exchange mechanism
+X25519MLKEM768 by default. The default can be reverted using the
+<a href="https://go.dev/pkg/crypto/tls/#Config.CurvePreferences"><code>tlsmlkem</code> setting</a>.
+This can be useful when dealing with buggy TLS servers that do not handle large records correctly,
+causing a timeout during the handshake (see <a href="https://tldr.fail/" rel="noreferrer" target="_blank">TLS post-quantum TL;DR fail</a>).
+Go 1.24 also removed X25519Kyber768Draft00 and the Go 1.23 <code>tlskyber</code> setting.</p>
+<p>Go 1.24 made <a href="https://go.dev/pkg/crypto/x509/#ParsePKCS1PrivateKey"><code>ParsePKCS1PrivateKey</code></a>
+use and validate the CRT parameters in the encoded private key. This behavior
+can be controlled with the <code>x509rsacrt</code> setting. Using <code>x509rsacrt=0</code> restores
+the Go 1.23 behavior.</p>
+<h3 id="go-123">Go 1.23</h3>
+<p>Go 1.23 changed the channels created by package time to be unbuffered
+(synchronous), which makes correct use of the <a href="https://go.dev/pkg/time/#Timer.Stop"><code>Timer.Stop</code></a>
+and <a href="https://go.dev/pkg/time/#Timer.Reset"><code>Timer.Reset</code></a> method results much easier.
+The <a href="https://go.dev/pkg/time/#NewTimer"><code>asynctimerchan</code> setting</a> disables this change.
+There are no runtime metrics for this change,
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.23 changed the mode bits reported by <a href="https://go.dev/pkg/os#Lstat"><code>os.Lstat</code></a> and <a href="https://go.dev/pkg/os#Stat"><code>os.Stat</code></a>
+for reparse points, which can be controlled with the <code>winsymlink</code> setting.
+As of Go 1.23 (<code>winsymlink=1</code>), mount points no longer have <a href="https://go.dev/pkg/os#ModeSymlink"><code>os.ModeSymlink</code></a>
+set, and reparse points that are not symlinks, Unix sockets, or dedup files now
+always have <a href="https://go.dev/pkg/os#ModeIrregular"><code>os.ModeIrregular</code></a> set. As a result of these changes,
+<a href="https://go.dev/pkg/path/filepath#EvalSymlinks"><code>filepath.EvalSymlinks</code></a> no longer evaluates
+mount points, which was a source of many inconsistencies and bugs.
+At previous versions (<code>winsymlink=0</code>), mount points are treated as symlinks,
+and other reparse points with non-default <a href="https://go.dev/pkg/os#ModeType"><code>os.ModeType</code></a> bits
+(such as <a href="https://go.dev/pkg/os#ModeDir"><code>os.ModeDir</code></a>) do not have the <code>ModeIrregular</code> bit set.</p>
+<p>Go 1.23 changed <a href="https://go.dev/pkg/os#Readlink"><code>os.Readlink</code></a> and <a href="https://go.dev/pkg/path/filepath#EvalSymlinks"><code>filepath.EvalSymlinks</code></a>
+to avoid trying to normalize volumes to drive letters, which was not always even possible.
+This behavior is controlled by the <code>winreadlinkvolume</code> setting.
+For Go 1.23, it defaults to <code>winreadlinkvolume=1</code>.
+Previous versions default to <code>winreadlinkvolume=0</code>.</p>
+<p>Go 1.23 enabled the experimental post-quantum key exchange mechanism
+X25519Kyber768Draft00 by default. The default can be reverted using the
+<a href="https://go.dev/pkg/crypto/tls/#Config.CurvePreferences"><code>tlskyber</code> setting</a>.
+This can be useful when dealing with buggy TLS servers that do not handle large records correctly,
+causing a timeout during the handshake (see <a href="https://tldr.fail/" rel="noreferrer" target="_blank">TLS post-quantum TL;DR fail</a>).</p>
+<p>Go 1.23 changed the behavior of
+<a href="https://go.dev/pkg/crypto/x509/#ParseCertificate">crypto/x509.ParseCertificate</a> to reject
+serial numbers that are negative. This change can be reverted with
+the <a href="https://go.dev/pkg/crypto/x509/#ParseCertificate"><code>x509negativeserial</code> setting</a>.</p>
+<p>Go 1.23 re-enabled support in html/template for ECMAScript 6 template literals by default.
+The <a href="https://go.dev/pkg/html/template#hdr-Security_Model"><code>jstmpllitinterp</code> setting</a> no longer has
+any effect.</p>
+<p>Go 1.23 changed the default TLS cipher suites used by clients and servers when
+not explicitly configured, removing 3DES cipher suites. The default can be reverted
+using the <a href="https://go.dev/pkg/crypto/tls/#Config.CipherSuites"><code>tls3des</code> setting</a>.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.23 changed the behavior of <a href="https://go.dev/pkg/crypto/tls#X509KeyPair"><code>tls.X509KeyPair</code></a>
+and <a href="https://go.dev/pkg/crypto/tls#LoadX509KeyPair"><code>tls.LoadX509KeyPair</code></a> to populate the
+Leaf field of the returned <a href="https://go.dev/pkg/crypto/tls#Certificate"><code>tls.Certificate</code></a>.
+This behavior is controlled by the <code>x509keypairleaf</code> setting. For Go 1.23, it
+defaults to <code>x509keypairleaf=1</code>. Previous versions default to
+<code>x509keypairleaf=0</code>.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.23 changed
+<a href="https://go.dev/pkg/net/http#ServeContent"><code>net/http.ServeContent</code></a>,
+<a href="https://go.dev/pkg/net/http#ServeFile"><code>net/http.ServeFile</code></a>, and
+<a href="https://go.dev/pkg/net/http#ServeFS"><code>net/http.ServeFS</code></a> to
+remove Cache-Control, Content-Encoding, Etag, and Last-Modified headers
+when serving an error. This behavior is controlled by
+the <a href="https://go.dev/pkg/net/http#ServeContent"><code>httpservecontentkeepheaders</code> setting</a>.
+Using <code>httpservecontentkeepheaders=1</code> restores the pre-Go 1.23 behavior.</p>
+<h3 id="go-122">Go 1.22</h3>
+<p>Go 1.22 adds a configurable limit to control the maximum acceptable RSA key size
+that can be used in TLS handshakes, controlled by the <a href="https://go.dev/pkg/crypto/tls#Conn.Handshake"><code>tlsmaxrsasize</code> setting</a>.
+The default is tlsmaxrsasize=8192, limiting RSA to 8192-bit keys. To avoid
+denial of service attacks, this setting and default was backported to Go
+1.19.13, Go 1.20.8, and Go 1.21.1.</p>
+<p>Go 1.22 made it an error for a request or response read by a net/http
+client or server to have an empty Content-Length header.
+This behavior is controlled by the <code>httplaxcontentlength</code> setting.</p>
+<p>Go 1.22 changed the behavior of ServeMux to accept extended
+patterns and unescape both patterns and request paths by segment.
+This behavior can be controlled by the
+<a href="https://go.dev/pkg/net/http/#ServeMux"><code>httpmuxgo121</code> setting</a>.</p>
+<p>Go 1.22 added the <a href="https://go.dev/pkg/go/types#Alias">Alias type</a> to <a href="https://go.dev/pkg/go/types">go/types</a>
+for the explicit representation of <a href="go_spec.html#Type_declarations">type aliases</a>.
+Whether the type checker produces <code>Alias</code> types or not is controlled by the
+<a href="https://go.dev/pkg/go/types#Alias"><code>gotypesalias</code> setting</a>.
+For Go 1.22 it defaults to <code>gotypesalias=0</code>.
+For Go 1.23, <code>gotypesalias=1</code> will become the default.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.22 changed the default minimum TLS version supported by both servers
+and clients to TLS 1.2. The default can be reverted to TLS 1.0 using the
+<a href="https://go.dev/pkg/crypto/tls/#Config"><code>tls10server</code> setting</a>.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.22 changed the default TLS cipher suites used by clients and servers when
+not explicitly configured, removing the cipher suites which used RSA based key
+exchange. The default can be reverted using the <a href="https://go.dev/pkg/crypto/tls/#Config"><code>tlsrsakex</code> setting</a>.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.22 disabled
+<a href="https://go.dev/pkg/crypto/tls/#ConnectionState.ExportKeyingMaterial"><code>ConnectionState.ExportKeyingMaterial</code></a>
+when the connection supports neither TLS 1.3 nor Extended Master Secret
+(implemented in Go 1.21). It can be reenabled with the <a href="https://go.dev/pkg/crypto/tls/#ConnectionState.ExportKeyingMaterial"><code>tlsunsafeekm</code>
+setting</a>.
+This setting will be removed in Go 1.27.</p>
+<p>Go 1.22 changed how the runtime interacts with transparent huge pages on Linux.
+In particular, a common default Linux kernel configuration can result in
+significant memory overheads, and Go 1.22 no longer works around this default.
+To work around this issue without adjusting kernel settings, transparent huge
+pages can be disabled for Go memory with the
+<a href="https://go.dev/pkg/runtime#hdr-Environment_Variables"><code>disablethp</code> setting</a>.
+This behavior was backported to Go 1.21.1, but the setting is only available
+starting with Go 1.21.6.
+This setting may be removed in a future release, and users impacted by this issue
+should adjust their Linux configuration according to the recommendations in the
+<a href="gc-guide.html#Linux_transparent_huge_pages">GC guide</a>, or switch to a Linux
+distribution that disables transparent huge pages altogether.</p>
+<p>Go 1.22 added contention on runtime-internal locks to the <a href="https://go.dev/pkg/runtime/pprof#Profile"><code>mutex</code>
+profile</a>. Contention on these locks is always
+reported at <code>runtime._LostContendedRuntimeLock</code>. Complete stack traces of
+runtime locks can be enabled with the <a href="https://go.dev/pkg/runtime#hdr-Environment_Variables"><code>runtimecontentionstacks</code>
+setting</a>. These stack traces have
+non-standard semantics, see setting documentation for details.</p>
+<p>Go 1.22 added a new <a href="https://go.dev/pkg/crypto/x509/#Certificate"><code>crypto/x509.Certificate</code></a>
+field, <a href="https://go.dev/pkg/crypto/x509/#Certificate.Policies"><code>Policies</code></a>, which supports
+certificate policy OIDs with components larger than 31 bits. By default this
+field is only used during parsing, when it is populated with policy OIDs, but
+not used during marshaling. It can be used to marshal these larger OIDs, instead
+of the existing PolicyIdentifiers field, by using the
+<a href="https://go.dev/pkg/crypto/x509/#CreateCertificate"><code>x509usepolicies</code> setting</a>.</p>
+<h3 id="go-121">Go 1.21</h3>
+<p>Go 1.21 made it a run-time error to call <code>panic</code> with a nil interface value,
+controlled by the <a href="https://go.dev/pkg/builtin/#panic"><code>panicnil</code> setting</a>.</p>
+<p>Go 1.21 made it an error for html/template actions to appear inside of an ECMAScript 6
+template literal, controlled by the
+<a href="https://go.dev/pkg/html/template#hdr-Security_Model"><code>jstmpllitinterp</code> setting</a>.
+This behavior was backported to Go 1.19.8+ and Go 1.20.3+.</p>
+<p>Go 1.21 introduced a limit on the maximum number of MIME headers and multipart
+forms, controlled by the
+<a href="https://go.dev/pkg/mime/multipart#hdr-Limits"><code>multipartmaxheaders</code> and <code>multipartmaxparts</code> settings</a>
+respectively.
+This behavior was backported to Go 1.19.8+ and Go 1.20.3+.</p>
+<p>Go 1.21 adds the support of Multipath TCP but it is only used if the application
+explicitly asked for it. This behavior can be controlled by the
+<a href="https://go.dev/pkg/net#Dialer.SetMultipathTCP"><code>multipathtcp</code> setting</a>.</p>
+<p>There is no plan to remove any of these settings.</p>
+<h3 id="go-120">Go 1.20</h3>
+<p>Go 1.20 introduced support for rejecting insecure paths in tar and zip archives,
+controlled by the <a href="https://go.dev/pkg/archive/tar/#Reader.Next"><code>tarinsecurepath</code> setting</a>
+and the <a href="https://go.dev/pkg/archive/zip/#NewReader"><code>zipinsecurepath</code> setting</a>.
+These default to <code>tarinsecurepath=1</code> and <code>zipinsecurepath=1</code>,
+preserving the behavior of earlier versions of Go.
+A future version of Go may change the defaults to
+<code>tarinsecurepath=0</code> and <code>zipinsecurepath=0</code>.</p>
+<p>Go 1.20 introduced automatic seeding of the
+<a href="https://go.dev/pkg/math/rand"><code>math/rand</code></a> global random number generator,
+controlled by the <a href="https://go.dev/pkg/math/rand/#Seed"><code>randautoseed</code> setting</a>.</p>
+<p>Go 1.20 introduced the concept of fallback roots for use during certificate verification,
+controlled by the <a href="https://go.dev/pkg/crypto/x509/#SetFallbackRoots"><code>x509usefallbackroots</code> setting</a>.</p>
+<p>Go 1.20 removed the preinstalled <code>.a</code> files for the standard library
+from the Go distribution.
+Installations now build and cache the standard library like
+packages in other modules.
+The <a href="https://go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies"><code>installgoroot</code> setting</a>
+restores the installation and use of preinstalled <code>.a</code> files.</p>
+<p>There is no plan to remove any of these settings.</p>
+<h3 id="go-119">Go 1.19</h3>
+<p>Go 1.19 made it an error for path lookups to resolve to binaries in the current directory,
+controlled by the <a href="https://go.dev/pkg/os/exec#hdr-Executables_in_the_current_directory"><code>execerrdot</code> setting</a>.
+There is no plan to remove this setting.</p>
+<p>Go 1.19 started sending EDNS0 additional headers on DNS requests.
+This can reportedly break the DNS server provided on some routers,
+such as CenturyLink Zyxel C3000Z.
+This can be changed by the <a href="https://go.dev/pkg/net#hdr-Name_Resolution"><code>netedns0</code> setting</a>.
+This setting is available in Go 1.21.12, Go 1.22.5, Go 1.23, and later.
+There is no plan to remove this setting.</p>
+<h3 id="go-118">Go 1.18</h3>
+<p>Go 1.18 removed support for SHA1 in most X.509 certificates,
+controlled by the <a href="https://go.dev/pkg/crypto/x509#InsecureAlgorithmError"><code>x509sha1</code> setting</a>.
+This setting was removed in Go 1.24.</p>
+<h3 id="go-110">Go 1.10</h3>
+<p>Go 1.10 changed how build caching worked and added test caching, along
+with the <a href="https://go.dev/cmd/go/#hdr-Build_and_test_caching"><code>gocacheverify</code>, <code>gocachehash</code>, and <code>gocachetest</code> settings</a>.
+There is no plan to remove these settings.</p>
+<h3 id="go-16">Go 1.6</h3>
+<p>Go 1.6 introduced transparent support for HTTP/2,
+controlled by the <a href="https://go.dev/pkg/net/http/#hdr-HTTP_2"><code>http2client</code>, <code>http2server</code>, and <code>http2debug</code> settings</a>.
+There is no plan to remove these settings.</p>
+<h3 id="go-15">Go 1.5</h3>
+<p>Go 1.5 introduced a pure Go DNS resolver,
+controlled by the <a href="https://go.dev/pkg/net/#hdr-Name_Resolution"><code>netdns</code> setting</a>.
+There is no plan to remove this setting.</p>
+</div>
+
+
+    
+  </article>
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/carousels.js"></script>
+  <script src="../js/searchBox.js"></script>
+  <script src="../js/misc.js"></script>
+  <script src="../js/hats.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/godocs.js"></script>
+  <script async src="../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

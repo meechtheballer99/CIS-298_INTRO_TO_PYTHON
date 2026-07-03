@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="fuzz.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../../css/styles.css">
+<link rel="icon" href="../../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/tutorial/fuzz">
+<meta name="og:title" content="Tutorial: Getting started with fuzzing - The Go Programming Language">
+<title>Tutorial: Getting started with fuzzing - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="fuzz.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="fuzz.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="fuzz.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="fuzz.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="fuzz.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="fuzz.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="fuzz.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="fuzz.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="fuzz.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="fuzz.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+
+
+<article class="Doc Article">
+
+
+
+  
+<ol class="SiteBreadcrumb">
+  
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="../index.html">
+  Documentation
+  </a>
+</li>
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="index.html">
+  Tutorials
+  </a>
+</li>
+<li class="BreadcrumbNav-li active">
+  <a class="BreadcrumbNav-link" href="fuzz.html">
+  Tutorial: Getting started with fuzzing
+  </a>
+</li>
+</ol>
+
+
+
+<h1>Tutorial: Getting started with fuzzing</h1>
+
+
+
+
+
+
+
+
+<div class='markdown'>
+<p>This tutorial introduces the basics of fuzzing in Go. With fuzzing, random data
+is run against your test in an attempt to find vulnerabilities or crash-causing
+inputs. Some examples of vulnerabilities that can be found by fuzzing are SQL
+injection, buffer overflow, denial of service and cross-site scripting attacks.</p>
+<p>In this tutorial, you&rsquo;ll write a fuzz test for a simple function, run the go
+command, and debug and fix issues in the code.</p>
+<p>For help with terminology throughout this tutorial, see the <a href="https://go.dev/security/fuzz/#glossary">Go Fuzzing
+glossary</a>.</p>
+<p>You&rsquo;ll progress through the following sections:</p>
+<ol>
+<li><a href="fuzz.html#create_folder">Create a folder for your code.</a></li>
+<li><a href="fuzz.html#code_to_test">Add code to test.</a></li>
+<li><a href="fuzz.html#unit_test">Add a unit test.</a></li>
+<li><a href="fuzz.html#fuzz_test">Add a fuzz test.</a></li>
+<li><a href="fuzz.html#fix_invalid_string_error">Fix two bugs.</a></li>
+<li><a href="fuzz.html#conclusion">Explore additional resources.</a></li>
+</ol>
+<p><strong>Note:</strong> For other tutorials, see <a href="index.html">Tutorials</a>.</p>
+<p><strong>Note:</strong> Go fuzzing currently supports a subset of built-in types, listed in
+the <a href="https://go.dev/security/fuzz/#requirements">Go Fuzzing docs</a>, with support for more built-in
+types to be added in the future.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>An installation of Go 1.18 or later.</strong> For installation instructions, see
+<a href="../install.html">Installing Go</a>.</li>
+<li><strong>A tool to edit your code.</strong> Any text editor you have will work fine.</li>
+<li><strong>A command terminal.</strong> Go works well using any terminal on Linux and Mac, and
+on PowerShell or cmd in Windows.</li>
+<li><strong>An environment that supports fuzzing.</strong> Go fuzzing with coverage
+instrumentation is only available on AMD64 and ARM64 architectures currently.</li>
+</ul>
+<h2 id="create_folder">Create a folder for your code</h2>
+<p>To begin, create a folder for the code you’ll write.</p>
+<ol>
+<li>
+<p>Open a command prompt and change to your home directory.</p>
+<p>On Linux or Mac:</p>
+<pre><code>$ cd
+</code></pre>
+<p>On Windows:</p>
+<pre><code>C:\&gt; cd %HOMEPATH%
+</code></pre>
+<p>The rest of the tutorial will show a $ as the prompt. The commands you use
+will work on Windows too.</p>
+</li>
+<li>
+<p>From the command prompt, create a directory for your code called fuzz.</p>
+<pre><code>$ mkdir fuzz
+$ cd fuzz
+</code></pre>
+</li>
+<li>
+<p>Create a module to hold your code.</p>
+<p>Run the <code>go mod init</code> command, giving it your new code’s module path.</p>
+<pre><code>$ go mod init example/fuzz
+go: creating new go.mod: module example/fuzz
+</code></pre>
+<p><strong>Note:</strong> For production code, you’d specify a module path that’s more
+specific to your own needs. For more, be sure to see <a href="../modules/managing-dependencies.html">Managing
+dependencies</a>.</p>
+</li>
+</ol>
+<p>Next, you&rsquo;ll add some simple code to reverse a string, which we’ll fuzz later.</p>
+<h2 id="code_to_test">Add code to test</h2>
+<p>In this step, you’ll add a function to reverse a string.</p>
+<h3 id="write-the-code">Write the code</h3>
+<ol>
+<li>
+<p>Using your text editor, create a file called main.go in the fuzz directory.</p>
+</li>
+<li>
+<p>Into main.go, at the top of the file, paste the following package
+declaration.</p>
+<pre><code>package main
+</code></pre>
+<p>A standalone program (as opposed to a library) is always in package <code>main</code>.</p>
+</li>
+<li>
+<p>Beneath the package declaration, paste the following function declaration.</p>
+<pre><code>func Reverse(s string) string {
+    b := []byte(s)
+    for i, j := 0, len(b)-1; i &lt; len(b)/2; i, j = i+1, j-1 {
+        b[i], b[j] = b[j], b[i]
+    }
+    return string(b)
+}
+</code></pre>
+<p>This function will accept a <code>string</code>, loop over it a <code>byte</code> at a time, and
+return the reversed string at the end.</p>
+<p><em>Note:</em> This code is based on the <code>stringutil.Reverse</code> function within
+golang.org/x/example.</p>
+</li>
+<li>
+<p>At the top of main.go, beneath the package declaration, paste the following
+<code>main</code> function to initialize a string, reverse it, print the output, and
+repeat.</p>
+<pre><code>func main() {
+    input := &quot;The quick brown fox jumped over the lazy dog&quot;
+    rev := Reverse(input)
+    doubleRev := Reverse(rev)
+    fmt.Printf(&quot;original: %q\n&quot;, input)
+    fmt.Printf(&quot;reversed: %q\n&quot;, rev)
+    fmt.Printf(&quot;reversed again: %q\n&quot;, doubleRev)
+}
+</code></pre>
+<p>This function will run a few <code>Reverse</code> operations, then print the output to
+the command line. This can be helpful for seeing the code in action, and
+potentially for debugging.</p>
+</li>
+<li>
+<p>The <code>main</code> function uses the fmt package, so you will need to import it.</p>
+<p>The first lines of code should look like this:</p>
+<pre><code>package main
+
+import &quot;fmt&quot;
+</code></pre>
+</li>
+</ol>
+<h3 id="run-the-code">Run the code</h3>
+<p>From the command line in the directory containing main.go, run the code.</p>
+<pre><code>$ go run .
+original: &quot;The quick brown fox jumped over the lazy dog&quot;
+reversed: &quot;god yzal eht revo depmuj xof nworb kciuq ehT&quot;
+reversed again: &quot;The quick brown fox jumped over the lazy dog&quot;
+</code></pre>
+<p>You can see the original string, the result of reversing it, then the result of
+reversing it again, which is equivalent to the original.</p>
+<p>Now that the code is running, it’s time to test it.</p>
+<h2 id="unit_test">Add a unit test</h2>
+<p>In this step, you will write a basic unit test for the <code>Reverse</code> function.</p>
+<h3 id="write-the-code-1">Write the code</h3>
+<ol>
+<li>
+<p>Using your text editor, create a file called reverse_test.go in the fuzz
+directory.</p>
+</li>
+<li>
+<p>Paste the following code into reverse_test.go.</p>
+<pre><code>package main
+
+import (
+    &quot;testing&quot;
+)
+
+func TestReverse(t *testing.T) {
+    testcases := []struct {
+        in, want string
+    }{
+        {&quot;Hello, world&quot;, &quot;dlrow ,olleH&quot;},
+        {&quot; &quot;, &quot; &quot;},
+        {&quot;!12345&quot;, &quot;54321!&quot;},
+    }
+    for _, tc := range testcases {
+        rev := Reverse(tc.in)
+        if rev != tc.want {
+                t.Errorf(&quot;Reverse: %q, want %q&quot;, rev, tc.want)
+        }
+    }
+}
+</code></pre>
+<p>This simple test will assert that the listed input strings will be correctly
+reversed.</p>
+</li>
+</ol>
+<h3 id="run-the-code-1">Run the code</h3>
+<p>Run the unit test using <code>go test</code></p>
+<pre><code>$ go test
+PASS
+ok      example/fuzz  0.013s
+</code></pre>
+<p>Next, you will change the unit test into a fuzz test.</p>
+<h2 id="fuzz_test">Add a fuzz test</h2>
+<p>The unit test has limitations, namely that each input must be added to the test
+by the developer. One benefit of fuzzing is that it comes up with inputs for
+your code, and may identify edge cases that the test cases you came up with
+didn’t reach.</p>
+<p>In this section you will convert the unit test to a fuzz test so that you can
+generate more inputs with less work!</p>
+<p>Note that you can keep unit tests, benchmarks, and fuzz tests in the same
+*_test.go file, but for this example you will convert the unit test to a fuzz
+test.</p>
+<h3 id="write-the-code-2">Write the code</h3>
+<p>In your text editor, replace the unit test in reverse_test.go with the following
+fuzz test.</p>
+<pre><code>func FuzzReverse(f *testing.F) {
+    testcases := []string{&quot;Hello, world&quot;, &quot; &quot;, &quot;!12345&quot;}
+    for _, tc := range testcases {
+        f.Add(tc)  // Use f.Add to provide a seed corpus
+    }
+    f.Fuzz(func(t *testing.T, orig string) {
+        rev := Reverse(orig)
+        doubleRev := Reverse(rev)
+        if orig != doubleRev {
+            t.Errorf(&quot;Before: %q, after: %q&quot;, orig, doubleRev)
+        }
+        if utf8.ValidString(orig) &amp;&amp; !utf8.ValidString(rev) {
+            t.Errorf(&quot;Reverse produced invalid UTF-8 string %q&quot;, rev)
+        }
+    })
+}
+</code></pre>
+<p>Fuzzing has a few limitations as well. In your unit test, you could predict the
+expected output of the <code>Reverse</code> function, and verify that the actual output met
+those expectations.</p>
+<p>For example, in the test case <code>Reverse(&quot;Hello, world&quot;)</code> the unit test specifies
+the return as <code>&quot;dlrow ,olleH&quot;</code>.</p>
+<p>When fuzzing, you can&rsquo;t predict the expected output, since you don&rsquo;t have
+control over the inputs.</p>
+<p>However, there are a few properties of the <code>Reverse</code> function that you can
+verify in a fuzz test. The two properties being checked in this fuzz test are:</p>
+<ol>
+<li>Reversing a string twice preserves the original value</li>
+<li>The reversed string preserves its state as valid UTF-8.</li>
+</ol>
+<p>Note the syntax differences between the unit test and the fuzz test:</p>
+<ul>
+<li>The function begins with FuzzXxx instead of TestXxx, and takes <code>*testing.F</code>
+instead of <code>*testing.T</code></li>
+<li>Where you would expect to see a <code>t.Run</code> execution, you instead see <code>f.Fuzz</code>
+which takes a fuzz target function whose parameters are <code>*testing.T</code> and the
+types to be fuzzed. The inputs from your unit test are provided as seed corpus
+inputs using <code>f.Add</code>.</li>
+</ul>
+<p>Ensure the new package, <code>unicode/utf8</code> has been imported.</p>
+<pre><code>package main
+
+import (
+    &quot;testing&quot;
+    &quot;unicode/utf8&quot;
+)
+</code></pre>
+<p>With the unit test converted to a fuzz test, it’s time to run the test again.</p>
+<h3 id="run-the-code-2">Run the code</h3>
+<ol>
+<li>
+<p>Run the fuzz test without fuzzing it to make sure the seed inputs pass.</p>
+<pre><code>$ go test
+PASS
+ok      example/fuzz  0.013s
+</code></pre>
+<p>You can also run <code>go test -run=FuzzReverse</code> if you have other tests in that
+file, and you only wish to run the fuzz test.</p>
+</li>
+<li>
+<p>Run <code>FuzzReverse</code> with fuzzing, to see if any randomly generated string
+inputs will cause a failure. This is executed using <code>go test</code> with a new
+flag, <code>-fuzz</code>, set to the parameter <code>Fuzz</code>. Copy the command below.</p>
+<pre><code>$ go test -fuzz=Fuzz
+</code></pre>
+<p>Another useful flag is <code>-fuzztime</code>, which restricts the time fuzzing takes.
+For example, specifying <code>-fuzztime 10s</code> in the test below would mean that,
+as long as no failures occurred earlier, the test would exit by default
+after 10 seconds had elapsed. See <a href="https://pkg.go.dev/cmd/go#hdr-Testing_flags" rel="noreferrer" target="_blank">this
+section</a> of the cmd/go
+documentation to see other testing flags.</p>
+<p>Now, run the command you just copied.</p>
+<pre><code>$ go test -fuzz=Fuzz
+fuzz: elapsed: 0s, gathering baseline coverage: 0/3 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 3/3 completed, now fuzzing with 8 workers
+fuzz: minimizing 38-byte failing input file...
+--- FAIL: FuzzReverse (0.01s)
+    --- FAIL: FuzzReverse (0.00s)
+        reverse_test.go:20: Reverse produced invalid UTF-8 string &quot;\x9c\xdd&quot;
+
+    Failing input written to testdata/fuzz/FuzzReverse/af69258a12129d6cbba438df5d5f25ba0ec050461c116f777e77ea7c9a0d217a
+    To re-run:
+    go test -run=FuzzReverse/af69258a12129d6cbba438df5d5f25ba0ec050461c116f777e77ea7c9a0d217a
+FAIL
+exit status 1
+FAIL    example/fuzz  0.030s
+</code></pre>
+<p>A failure occurred while fuzzing, and the input that caused the problem is
+written to a seed corpus file that will be run the next time <code>go test</code> is
+called, even without the <code>-fuzz</code> flag. To view the input that caused the
+failure, open the corpus file written to the testdata/fuzz/FuzzReverse
+directory in a text editor. Your seed corpus file may contain a different
+string, but the format will be the same.</p>
+<pre><code>go test fuzz v1
+string(&quot;泃&quot;)
+</code></pre>
+<p>The first line of the corpus file indicates the encoding version. Each
+following line represents the value of each type making up the corpus entry.
+Since the fuzz target only takes 1 input, there is only 1 value after the
+version.</p>
+</li>
+<li>
+<p>Run <code>go test</code> again without the<code> -fuzz</code> flag; the new failing seed corpus
+entry will be used:</p>
+<pre><code>$ go test
+--- FAIL: FuzzReverse (0.00s)
+    --- FAIL: FuzzReverse/af69258a12129d6cbba438df5d5f25ba0ec050461c116f777e77ea7c9a0d217a (0.00s)
+        reverse_test.go:20: Reverse produced invalid string
+FAIL
+exit status 1
+FAIL    example/fuzz  0.016s
+</code></pre>
+<p>Since our test has failed, it’s time to debug.</p>
+</li>
+</ol>
+<h2 id="fix_invalid_string_error">Fix the invalid string error</h2>
+<p>In this section, you will debug the failure, and fix the bug.</p>
+<p>Feel free to spend some time thinking about this and trying to fix the issue
+yourself before moving on.</p>
+<h3 id="diagnose-the-error">Diagnose the error</h3>
+<p>There are a few different ways you could debug this error. If you are using VS
+Code as your text editor, you can <a href="https://github.com/golang/vscode-go/blob/master/docs/debugging.md" rel="noreferrer" target="_blank">set up your
+debugger</a> to
+investigate.</p>
+<p>In this tutorial, we will log useful debugging info to your terminal.</p>
+<p>First, consider the docs for
+<a href="https://pkg.go.dev/unicode/utf8" rel="noreferrer" target="_blank"><code>utf8.ValidString</code></a>.</p>
+<pre><code>ValidString reports whether s consists entirely of valid UTF-8-encoded runes.
+</code></pre>
+<p>The current <code>Reverse</code> function reverses the string byte-by-byte, and therein
+lies our problem. In order to preserve the UTF-8-encoded runes of the original
+string, we must instead reverse the string rune-by-rune.</p>
+<p>To examine why the input (in this case, the Chinese character <code>泃</code>) is causing
+<code>Reverse</code> to produce an invalid string when reversed, you can inspect the number
+of runes in the reversed string.</p>
+<h4 id="write-the-code-3">Write the code</h4>
+<p>In your text editor, replace the fuzz target within <code>FuzzReverse</code> with the
+following.</p>
+<pre><code>f.Fuzz(func(t *testing.T, orig string) {
+    rev := Reverse(orig)
+    doubleRev := Reverse(rev)
+    t.Logf(&quot;Number of runes: orig=%d, rev=%d, doubleRev=%d&quot;, utf8.RuneCountInString(orig), utf8.RuneCountInString(rev), utf8.RuneCountInString(doubleRev))
+    if orig != doubleRev {
+        t.Errorf(&quot;Before: %q, after: %q&quot;, orig, doubleRev)
+    }
+    if utf8.ValidString(orig) &amp;&amp; !utf8.ValidString(rev) {
+        t.Errorf(&quot;Reverse produced invalid UTF-8 string %q&quot;, rev)
+    }
+})
+</code></pre>
+<p>This <code>t.Logf</code> line will print to the command line if an error occurs, or if
+executing the test with <code>-v</code>, which can help you debug this particular issue.</p>
+<h4 id="run-the-code-3">Run the code</h4>
+<p>Run the test using go test</p>
+<pre><code>$ go test
+--- FAIL: FuzzReverse (0.00s)
+    --- FAIL: FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0 (0.00s)
+        reverse_test.go:16: Number of runes: orig=1, rev=3, doubleRev=1
+        reverse_test.go:21: Reverse produced invalid UTF-8 string &quot;\x83\xb3\xe6&quot;
+FAIL
+exit status 1
+FAIL    example/fuzz    0.598s
+</code></pre>
+<p>The entire seed corpus used strings in which every character was a single byte.
+However, characters such as 泃 can require several bytes. Thus, reversing the
+string byte-by-byte will invalidate multi-byte characters.</p>
+<p><strong>Note:</strong> If you’re curious about how Go deals with strings, read the blog post
+<a href="https://go.dev/blog/strings">Strings, bytes, runes and characters in Go</a> for a
+deeper understanding.</p>
+<p>With a better understanding of the bug, correct the error in the <code>Reverse</code>
+function.</p>
+<h3 id="fix-the-error">Fix the error</h3>
+<p>To correct the <code>Reverse</code> function, let’s traverse the string by runes, instead
+of by bytes.</p>
+<h4 id="write-the-code-4">Write the code</h4>
+<p>In your text editor, replace the existing Reverse() function with the following.</p>
+<pre><code>func Reverse(s string) string {
+    r := []rune(s)
+    for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r)
+}
+</code></pre>
+<p>The key difference is that <code>Reverse</code> is now iterating over each <code>rune</code> in the
+string, rather than each <code>byte</code>. Note that this is just an example, and does not
+handle <a href="https://en.wikipedia.org/wiki/Combining_character" rel="noreferrer" target="_blank">combining characters</a> correctly.</p>
+<h4 id="run-the-code-4">Run the code</h4>
+<ol>
+<li>
+<p>Run the test using <code>go test</code></p>
+<pre><code>$ go test
+PASS
+ok      example/fuzz  0.016s
+</code></pre>
+<p>The test now passes!</p>
+</li>
+<li>
+<p>Fuzz it again with <code>go test -fuzz</code>, to see if there are any new bugs.</p>
+<pre><code>$ go test -fuzz=Fuzz
+fuzz: elapsed: 0s, gathering baseline coverage: 0/37 completed
+fuzz: minimizing 506-byte failing input file...
+fuzz: elapsed: 0s, gathering baseline coverage: 5/37 completed
+--- FAIL: FuzzReverse (0.02s)
+    --- FAIL: FuzzReverse (0.00s)
+        reverse_test.go:33: Before: &quot;\x91&quot;, after: &quot;�&quot;
+
+    Failing input written to testdata/fuzz/FuzzReverse/1ffc28f7538e29d79fce69fef20ce5ea72648529a9ca10bea392bcff28cd015c
+    To re-run:
+    go test -run=FuzzReverse/1ffc28f7538e29d79fce69fef20ce5ea72648529a9ca10bea392bcff28cd015c
+FAIL
+exit status 1
+FAIL    example/fuzz  0.032s
+</code></pre>
+<p>We can see that the string is different from the original after being
+reversed twice. This time the input itself is invalid unicode. How is this
+possible if we’re fuzzing with strings?</p>
+<p>Let’s debug again.</p>
+</li>
+</ol>
+<h2 id="fix_double_reverse_error">Fix the double reverse error</h2>
+<p>In this section, you will debug the double reverse failure and fix the bug.</p>
+<p>Feel free to spend some time thinking about this and trying to fix the issue
+yourself before moving on.</p>
+<h3 id="diagnose-the-error-1">Diagnose the error</h3>
+<p>Like before, there are several ways you could debug this failure. In this case,
+using a
+<a href="https://github.com/golang/vscode-go/blob/master/docs/debugging.md" rel="noreferrer" target="_blank">debugger</a>
+would be a great approach.</p>
+<p>In this tutorial, we will log useful debugging info in the <code>Reverse</code> function.</p>
+<p>Look closely at the reversed string to spot the error. In Go, <a href="https://go.dev/blog/strings">a string is a
+read only slice of bytes</a>, and can contain bytes
+that aren’t valid UTF-8. The original string is a byte slice with one byte,
+<code>'\x91'</code>. When the input string is set to <code>[]rune</code>, Go encodes the byte slice to
+UTF-8, and replaces the byte with the UTF-8 character �. When we compare the
+replacement UTF-8 character to the input byte slice, they are clearly not equal.</p>
+<h4 id="write-the-code-5">Write the code</h4>
+<ol>
+<li>
+<p>In your text editor, replace the <code>Reverse</code> function with the following.</p>
+<pre><code>func Reverse(s string) string {
+    fmt.Printf(&quot;input: %q\n&quot;, s)
+    r := []rune(s)
+    fmt.Printf(&quot;runes: %q\n&quot;, r)
+    for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r)
+}
+</code></pre>
+<p>This will help us understand what is going wrong when converting the string
+to a slice of runes.</p>
+</li>
+</ol>
+<h4 id="run-the-code-5">Run the code</h4>
+<p>This time, we only want to run the failing test in order to inspect the logs. To
+do this, we will use <code>go test -run</code>.</p>
+<p>To run a specific corpus entry within FuzzXxx/testdata, you can provide
+{FuzzTestName}/{filename} to <code>-run</code>. This can be helpful when debugging.
+In this case, set the <code>-run</code> flag equal to the exact hash of the failing test.
+Copy and paste the unique hash from your terminal;
+it will be different than the one below.</p>
+<pre><code>$ go test -run=FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0
+input: &quot;\x91&quot;
+runes: ['�']
+input: &quot;�&quot;
+runes: ['�']
+--- FAIL: FuzzReverse (0.00s)
+    --- FAIL: FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0 (0.00s)
+        reverse_test.go:16: Number of runes: orig=1, rev=1, doubleRev=1
+        reverse_test.go:18: Before: &quot;\x91&quot;, after: &quot;�&quot;
+FAIL
+exit status 1
+FAIL    example/fuzz    0.145s
+</code></pre>
+<p>Knowing that the input is invalid unicode, let’s fix the error in our <code>Reverse</code>
+function.</p>
+<h3 id="fix-the-error-1">Fix the error</h3>
+<p>To fix this issue, let&rsquo;s return an error if the input to <code>Reverse</code> isn&rsquo;t valid
+UTF-8.</p>
+<h4 id="write-the-code-6">Write the code</h4>
+<ol>
+<li>
+<p>In your text editor, replace the existing <code>Reverse</code> function with the
+following.</p>
+<pre><code>func Reverse(s string) (string, error) {
+    if !utf8.ValidString(s) {
+        return s, errors.New(&quot;input is not valid UTF-8&quot;)
+    }
+    r := []rune(s)
+    for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r), nil
+}
+</code></pre>
+<p>This change will return an error if the input string contains characters
+which are not valid UTF-8.</p>
+</li>
+<li>
+<p>Since the Reverse function now returns an error, modify the <code>main</code> function to
+discard the extra error value. Replace the existing <code>main</code> function with the
+following.</p>
+<pre><code>func main() {
+    input := &quot;The quick brown fox jumped over the lazy dog&quot;
+    rev, revErr := Reverse(input)
+    doubleRev, doubleRevErr := Reverse(rev)
+    fmt.Printf(&quot;original: %q\n&quot;, input)
+    fmt.Printf(&quot;reversed: %q, err: %v\n&quot;, rev, revErr)
+    fmt.Printf(&quot;reversed again: %q, err: %v\n&quot;, doubleRev, doubleRevErr)
+}
+</code></pre>
+<p>These calls to <code>Reverse</code> should return a nil error, since the input
+string is valid UTF-8.</p>
+</li>
+<li>
+<p>You will need to import the errors and the unicode/utf8 packages.
+The import statement in main.go should look like the following.</p>
+<pre><code>import (
+    &quot;errors&quot;
+    &quot;fmt&quot;
+    &quot;unicode/utf8&quot;
+)
+</code></pre>
+</li>
+<li>
+<p>Modify the reverse_test.go file to check for errors and skip the test if
+errors are generated by returning.</p>
+<pre><code>func FuzzReverse(f *testing.F) {
+    testcases := []string {&quot;Hello, world&quot;, &quot; &quot;, &quot;!12345&quot;}
+    for _, tc := range testcases {
+        f.Add(tc)  // Use f.Add to provide a seed corpus
+    }
+    f.Fuzz(func(t *testing.T, orig string) {
+        rev, err1 := Reverse(orig)
+        if err1 != nil {
+            return
+        }
+        doubleRev, err2 := Reverse(rev)
+        if err2 != nil {
+             return
+        }
+        if orig != doubleRev {
+            t.Errorf(&quot;Before: %q, after: %q&quot;, orig, doubleRev)
+        }
+        if utf8.ValidString(orig) &amp;&amp; !utf8.ValidString(rev) {
+            t.Errorf(&quot;Reverse produced invalid UTF-8 string %q&quot;, rev)
+        }
+    })
+}
+</code></pre>
+<p>Rather than returning, you can also call <code>t.Skip()</code> to stop the execution of
+that fuzz input.</p>
+</li>
+</ol>
+<h4 id="run-the-code-6">Run the code</h4>
+<ol>
+<li>
+<p>Run the test using go test</p>
+<pre><code>$ go test
+PASS
+ok      example/fuzz  0.019s
+</code></pre>
+</li>
+<li>
+<p>Fuzz it with <code>go test -fuzz=Fuzz</code>, then after a few seconds has passed, stop
+fuzzing with <code>ctrl-C</code>. The fuzz test will run until it encounters a failing
+input unless you pass the <code>-fuzztime</code> flag. The default is to run forever if no
+failures occur, and the process can be interrupted with <code>ctrl-C</code>.</p>
+</li>
+</ol>
+<pre><code>$ go test -fuzz=Fuzz
+fuzz: elapsed: 0s, gathering baseline coverage: 0/38 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 38/38 completed, now fuzzing with 4 workers
+fuzz: elapsed: 3s, execs: 86342 (28778/sec), new interesting: 2 (total: 35)
+fuzz: elapsed: 6s, execs: 193490 (35714/sec), new interesting: 4 (total: 37)
+fuzz: elapsed: 9s, execs: 304390 (36961/sec), new interesting: 4 (total: 37)
+...
+fuzz: elapsed: 3m45s, execs: 7246222 (32357/sec), new interesting: 8 (total: 41)
+^Cfuzz: elapsed: 3m48s, execs: 7335316 (31648/sec), new interesting: 8 (total: 41)
+PASS
+ok      example/fuzz  228.000s
+</code></pre>
+<ol start="3">
+<li>
+<p>Fuzz it with <code>go test -fuzz=Fuzz -fuzztime 30s</code> which will fuzz for 30
+seconds before exiting if no failure was found.</p>
+<pre><code>$ go test -fuzz=Fuzz -fuzztime 30s
+fuzz: elapsed: 0s, gathering baseline coverage: 0/5 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 5/5 completed, now fuzzing with 4 workers
+fuzz: elapsed: 3s, execs: 80290 (26763/sec), new interesting: 12 (total: 12)
+fuzz: elapsed: 6s, execs: 210803 (43501/sec), new interesting: 14 (total: 14)
+fuzz: elapsed: 9s, execs: 292882 (27360/sec), new interesting: 14 (total: 14)
+fuzz: elapsed: 12s, execs: 371872 (26329/sec), new interesting: 14 (total: 14)
+fuzz: elapsed: 15s, execs: 517169 (48433/sec), new interesting: 15 (total: 15)
+fuzz: elapsed: 18s, execs: 663276 (48699/sec), new interesting: 15 (total: 15)
+fuzz: elapsed: 21s, execs: 771698 (36143/sec), new interesting: 15 (total: 15)
+fuzz: elapsed: 24s, execs: 924768 (50990/sec), new interesting: 16 (total: 16)
+fuzz: elapsed: 27s, execs: 1082025 (52427/sec), new interesting: 17 (total: 17)
+fuzz: elapsed: 30s, execs: 1172817 (30281/sec), new interesting: 17 (total: 17)
+fuzz: elapsed: 31s, execs: 1172817 (0/sec), new interesting: 17 (total: 17)
+PASS
+ok      example/fuzz  31.025s
+</code></pre>
+<p>Fuzzing passed!</p>
+<p>In addition to the <code>-fuzz</code> flag, several new flags have been added to <code>go test</code> and can be viewed in the <a href="https://go.dev/security/fuzz/#custom-settings">documentation</a>.</p>
+<p>See <a href="https://go.dev/security/fuzz/#command-line-output">Go Fuzzing</a> for more
+information on terms used in fuzzing output. For example, &ldquo;new interesting&rdquo;
+refers to inputs that expand the code coverage of the existing fuzz test
+corpus. The number of &ldquo;new interesting&rdquo; inputs can be expected to increase
+sharply as fuzzing begins, spike several times as new code paths are
+discovered, then taper off over time.</p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Nicely done! You&rsquo;ve just introduced yourself to fuzzing in Go.</p>
+<p>The next step is to choose a function in your code that you&rsquo;d like to fuzz, and
+try it out! If fuzzing finds a bug in your code, consider adding it to the
+<a href="https://go.dev/wiki/Fuzzing-trophy-case">trophy case</a>.</p>
+<p>If you experience any problems or have an idea for a feature, <a href="https://go.dev/issue/new/?&amp;labels=fuzz">file an
+issue</a>.</p>
+<p>For discussion and general feedback about the feature, you can also participate
+in the <a href="https://gophers.slack.com/archives/CH5KV1AKE" rel="noreferrer" target="_blank">#fuzzing channel</a> in
+Gophers Slack.</p>
+<p>Check out the documentation at <a href="https://go.dev/security/fuzz/#requirements">go.dev/security/fuzz</a> for
+further reading.</p>
+<h2 id="completed-code">Completed code</h2>
+<p>&mdash; main.go &mdash;</p>
+<pre><code>package main
+
+import (
+    &quot;errors&quot;
+    &quot;fmt&quot;
+    &quot;unicode/utf8&quot;
+)
+
+func main() {
+    input := &quot;The quick brown fox jumped over the lazy dog&quot;
+    rev, revErr := Reverse(input)
+    doubleRev, doubleRevErr := Reverse(rev)
+    fmt.Printf(&quot;original: %q\n&quot;, input)
+    fmt.Printf(&quot;reversed: %q, err: %v\n&quot;, rev, revErr)
+    fmt.Printf(&quot;reversed again: %q, err: %v\n&quot;, doubleRev, doubleRevErr)
+}
+
+func Reverse(s string) (string, error) {
+    if !utf8.ValidString(s) {
+        return s, errors.New(&quot;input is not valid UTF-8&quot;)
+    }
+    r := []rune(s)
+    for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+        r[i], r[j] = r[j], r[i]
+    }
+    return string(r), nil
+}
+</code></pre>
+<p>&mdash; reverse_test.go &mdash;</p>
+<pre><code>package main
+
+import (
+    &quot;testing&quot;
+    &quot;unicode/utf8&quot;
+)
+
+func FuzzReverse(f *testing.F) {
+    testcases := []string{&quot;Hello, world&quot;, &quot; &quot;, &quot;!12345&quot;}
+    for _, tc := range testcases {
+        f.Add(tc) // Use f.Add to provide a seed corpus
+    }
+    f.Fuzz(func(t *testing.T, orig string) {
+        rev, err1 := Reverse(orig)
+        if err1 != nil {
+            return
+        }
+        doubleRev, err2 := Reverse(rev)
+        if err2 != nil {
+            return
+        }
+        if orig != doubleRev {
+            t.Errorf(&quot;Before: %q, after: %q&quot;, orig, doubleRev)
+        }
+        if utf8.ValidString(orig) &amp;&amp; !utf8.ValidString(rev) {
+            t.Errorf(&quot;Reverse produced invalid UTF-8 string %q&quot;, rev)
+        }
+    })
+}
+</code></pre>
+<p><a href="fuzz.html#top">Back to top</a></p>
+</div>
+
+
+
+
+
+
+
+</article>
+
+
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="../devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/jquery.js"></script>
+  <script src="../../js/carousels.js"></script>
+  <script src="../../js/searchBox.js"></script>
+  <script src="../../js/misc.js"></script>
+  <script src="../../js/hats.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/godocs.js"></script>
+  <script async src="../../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

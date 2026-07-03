@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../static/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../static/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../static/assets/favicon-16x16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:url" content="https://missing.csail.mit.edu/2026/debugging-profiling/">
+  <meta property="og:site_name" content="Missing Semester">
+
+  
+    
+    <meta name="description" content="Learn how to debug programs using logging and debuggers, and how to profile code for performance.">
+    <meta name="twitter:description" content="Learn how to debug programs using logging and debuggers, and how to profile code for performance.">
+    <meta property="og:description" content="Learn how to debug programs using logging and debuggers, and how to profile code for performance.">
+  
+
+  
+  <meta name="twitter:title" content="Debugging and Profiling">
+  <meta property="og:title" content="Debugging and Profiling">
+
+  
+  <meta name="twitter:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec4.png">
+  <meta property="og:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec4.png">
+
+  <title>
+    
+      
+        Debugging and Profiling &middot; Missing Semester
+      
+    
+  </title>
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/syntax.css">
+  <script defer src="../../static/js/sidenotes.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7WVHD84D1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P7WVHD84D1');
+  </script>
+
+</head>
+
+
+  <body>
+
+    <div id="nav-bg">
+  <nav id="top-nav">
+    <a href="../../index.html" id="logo">./missing-semester</a>
+    <input type="checkbox" id="menu-icon">
+    <label class="menu-label" for="menu-icon"></label>
+    <div class="trigger">
+      <div class="trigger-child">
+        <span class="nav-link"><a href="../index.html">lectures</a></span>
+        <span class="nav-link"><a href="../../past/index.html">past</a></span>
+        <span class="nav-link"><a href="../../about/index.html">about</a></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+    <div id="content">
+    <h1 class="title">Debugging and Profiling</h1>
+
+
+
+  <div class="youtube-wrapper" style="padding-bottom: 56.25%;">
+    <iframe src="https://www.youtube.com/embed/8VYT9TcUmKs" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+
+<p>A golden rule in programming is that code does not do what you expect it to do, but what you tell it to do. Bridging that gap can sometimes be a quite difficult feat. In this lecture we are going to cover useful techniques for dealing with buggy and resource hungry code: debugging and profiling.</p>
+
+<h1 id="debugging">Debugging</h1>
+
+<h2 id="printf-debugging-and-logging">Printf Debugging and Logging</h2>
+
+<blockquote>
+  <p>“The most effective debugging tool is still careful thought, coupled with judiciously placed print statements” — Brian Kernighan, <em>Unix for Beginners</em>.</p>
+</blockquote>
+
+<p>A first approach to debug a program is to add print statements around where you have detected the problem, and keep iterating until you have extracted enough information to understand what is responsible for the issue.</p>
+
+<p>A second approach is to use logging in your program, instead of ad hoc print statements. Logging is essentially “printing with more care”, and is usually done through a logging framework that includes built-in support for things like:</p>
+
+<ul>
+  <li>the ability to direct the logs (or subsets of the logs) to other output locations;</li>
+  <li>setting severity levels (such as INFO, DEBUG, WARN, ERROR, etc.) and allow you to filter the output according to those; and</li>
+  <li>support for structured logging of data related to the log entries, which can then be extracted more easily after the fact.</li>
+</ul>
+
+<p>Logging statements you’ll also usually proactively put in while
+programming so that the data you need to debug may already be there!
+And indeed, once you’ve found and fixed a problem using print
+statements, it’s often worthwhile to convert those prints into proper
+log statements before removing them. This way, if similar bugs occur
+in the future, you’ll already have the diagnostic information you need
+without modifying the code.</p>
+
+<blockquote>
+  <p><strong>Third-party logs</strong>: Many programs support the <code class="language-plaintext highlighter-rouge">-v</code> or <code class="language-plaintext highlighter-rouge">--verbose</code> flag to print more information when they run. This can be useful for discovering why a given command fails. Some even allow repeating the flag for more details. When debugging issues with services (databases, web servers, etc.), check their logs—often in <code class="language-plaintext highlighter-rouge">/var/log/</code> on Linux. Use <code class="language-plaintext highlighter-rouge">journalctl -u &lt;service&gt;</code> to view logs for systemd services. For third-party libraries, check if they support debug logging via environment variables or configuration.</p>
+</blockquote>
+
+<h2 id="debuggers">Debuggers</h2>
+
+<p>Print debugging works well when you know what to print and can easily modify and re-run your code. Debuggers become valuable when you’re not sure what information you need, when the bug only manifests in hard-to-reproduce conditions, or when modifying and restarting the program is expensive (long startup times, complex state to recreate, etc.).</p>
+
+<p>Debuggers are programs that let you interact with the execution of a program as it happens, allowing you to:</p>
+
+<ul>
+  <li>Halt execution when it reaches a certain line.</li>
+  <li>Step through one instruction at a time.</li>
+  <li>Inspect values of variables after a crash.</li>
+  <li>Conditionally halt execution when a given condition is met.</li>
+  <li>And many more advanced features.</li>
+</ul>
+
+<p>Most programming languages support (or come with) some form of debugger. The most versatile are <strong>general-purpose debuggers</strong> like <a href="https://www.gnu.org/software/gdb/"><code class="language-plaintext highlighter-rouge">gdb</code></a> (GNU Debugger) and <a href="https://lldb.llvm.org/"><code class="language-plaintext highlighter-rouge">lldb</code></a> (LLVM Debugger), which can debug any native binary. Many languages also have <strong>language-specific debuggers</strong> that integrate more tightly with the runtime (like Python’s pdb or Java’s jdb).</p>
+
+<p><code class="language-plaintext highlighter-rouge">gdb</code> is the de-facto standard debugger for C, C++, Rust, and other compiled languages. It lets you probe pretty much any process and get its current machine state: registers, stack, program counter, and more.</p>
+
+<p>Some useful GDB commands:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">run</code> - Start the program</li>
+  <li><code class="language-plaintext highlighter-rouge">b {function}</code> or <code class="language-plaintext highlighter-rouge">b {file}:{line}</code> - Set a breakpoint</li>
+  <li><code class="language-plaintext highlighter-rouge">c</code> - Continue execution</li>
+  <li><code class="language-plaintext highlighter-rouge">step</code> / <code class="language-plaintext highlighter-rouge">next</code> / <code class="language-plaintext highlighter-rouge">finish</code> - Step in / step over / step out</li>
+  <li><code class="language-plaintext highlighter-rouge">p {variable}</code> - Print value of variable</li>
+  <li><code class="language-plaintext highlighter-rouge">bt</code> - Show backtrace (call stack)</li>
+  <li><code class="language-plaintext highlighter-rouge">watch {expression}</code> - Break when the value changes</li>
+</ul>
+
+<blockquote>
+  <p>Consider using GDB’s TUI mode (<code class="language-plaintext highlighter-rouge">gdb -tui</code> or press <code class="language-plaintext highlighter-rouge">Ctrl-x a</code> inside GDB) for a split-screen view showing source code alongside the command prompt.</p>
+</blockquote>
+
+<h3 id="record-replay-debugging">Record-Replay Debugging</h3>
+
+<p>Some of the most frustrating bugs are <em>Heisenbugs</em>: bugs that seem to disappear or change behavior when you try to observe them. Race conditions, timing-dependent bugs, and issues that only appear under certain system conditions fall into this category. Traditional debugging is often useless here because running the program again produces different behavior (e.g., print statements may slow down the code sufficiently that the race no longer happens).</p>
+
+<p><strong>Record-replay debugging</strong> solves this by recording a program’s execution and allowing you to replay it deterministically as many times as you need. Even better, you can <em>reverse</em> through the execution to find exactly where things went wrong.</p>
+
+<p><a href="https://rr-project.org/">rr</a> is a powerful tool for Linux that records program execution and allows deterministic replay with full debugging capabilities. It works with GDB, so you already know the interface.</p>
+
+<p>Basic usage:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Record a program execution</span>
+rr record ./my_program
+
+<span class="c"># Replay the recording (opens GDB)</span>
+rr replay
+</code></pre></div></div>
+
+<p>The magic happens during replay. Because the execution is deterministic, you can use <strong>reverse debugging</strong> commands:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">reverse-continue</code> (<code class="language-plaintext highlighter-rouge">rc</code>) - Run backwards until hitting a breakpoint</li>
+  <li><code class="language-plaintext highlighter-rouge">reverse-step</code> (<code class="language-plaintext highlighter-rouge">rs</code>) - Step backwards one line</li>
+  <li><code class="language-plaintext highlighter-rouge">reverse-next</code> (<code class="language-plaintext highlighter-rouge">rn</code>) - Step backwards, skipping function calls</li>
+  <li><code class="language-plaintext highlighter-rouge">reverse-finish</code> - Run backwards until entering the current function</li>
+</ul>
+
+<p>This is incredibly powerful for debugging. Say you have a crash—instead of guessing where the bug is and setting breakpoints, you can:</p>
+
+<ol>
+  <li>Run to the crash</li>
+  <li>Inspect the corrupted state</li>
+  <li>Set a watchpoint on the corrupted variable</li>
+  <li><code class="language-plaintext highlighter-rouge">reverse-continue</code> to find exactly where it was corrupted</li>
+</ol>
+
+<p><strong>When to use rr:</strong></p>
+<ul>
+  <li>Flaky tests that fail intermittently</li>
+  <li>Race conditions and threading bugs</li>
+  <li>Crashes that are hard to reproduce</li>
+  <li>Any bug where you wish you could “go back in time”</li>
+</ul>
+
+<blockquote>
+  <p>Note: rr only works on Linux and requires hardware performance counters. It doesn’t work in VMs that don’t expose these counters, such as on most AWS EC2 instances, and it doesn’t support GPU access. For macOS, check out <a href="https://warpspeed.dev/">Warpspeed</a>.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>rr and concurrency</strong>: Because rr records execution deterministically, it serializes thread scheduling. This means some race conditions may not manifest under rr if they depend on specific timing. rr is still useful for debugging races—once you capture a failing run, you can replay it reliably—but you may need multiple recording attempts to catch an intermittent bug. For bugs that don’t involve concurrency, rr shines brightest: you can always reproduce the exact execution and use reverse debugging to hunt down corruption.</p>
+</blockquote>
+
+<h2 id="system-call-tracing">System Call Tracing</h2>
+
+<p>Sometimes you need to understand how your program interacts with the operating system. Programs make <a href="https://en.wikipedia.org/wiki/System_call">system calls</a> to request services from the kernel—opening files, allocating memory, creating processes, and more. Tracing these calls can reveal why a program is hanging, what files it’s trying to access, or where it’s spending time waiting.</p>
+
+<h3 id="strace-linux-and-dtruss-macos">strace (Linux) and dtruss (macOS)</h3>
+
+<p><a href="https://www.man7.org/linux/man-pages/man1/strace.1.html"><code class="language-plaintext highlighter-rouge">strace</code></a> lets you observe every system call a program makes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Trace all system calls</span>
+strace ./my_program
+
+<span class="c"># Trace only file-related calls</span>
+strace <span class="nt">-e</span> <span class="nv">trace</span><span class="o">=</span>file ./my_program
+
+<span class="c"># Follow child processes (important for programs that start other programs)</span>
+strace <span class="nt">-f</span> ./my_program
+
+<span class="c"># Trace a running process</span>
+strace <span class="nt">-p</span> &lt;PID&gt;
+
+<span class="c"># Show timing information</span>
+strace <span class="nt">-T</span> ./my_program
+</code></pre></div></div>
+
+<blockquote>
+  <p>On macOS and BSD, use <a href="https://www.manpagez.com/man/1/dtruss/"><code class="language-plaintext highlighter-rouge">dtruss</code></a> (which wraps <code class="language-plaintext highlighter-rouge">dtrace</code>) for similar functionality:</p>
+</blockquote>
+
+<blockquote>
+  <p>For deeper dives into <code class="language-plaintext highlighter-rouge">strace</code>, check out Julia Evans’ excellent <a href="https://jvns.ca/strace-zine-unfolded.pdf">strace zine</a>.</p>
+</blockquote>
+
+<h3 id="bpftrace-and-ebpf">bpftrace and eBPF</h3>
+
+<p><a href="https://ebpf.io/">eBPF</a> (extended Berkeley Packet Filter) is a powerful Linux technology that allows running sandboxed programs in the kernel. <a href="https://github.com/iovisor/bpftrace"><code class="language-plaintext highlighter-rouge">bpftrace</code></a> provides a high-level syntax for writing eBPF programs. These are arbitrary programs running in the kernel, and thus have huge expressive power (though also a somewhat clumsy awk-like syntax). The most common use-case for them is to investigate what system calls are being invoked, including aggregations (like counts or latency statistics) or introspecting (or even filtering on) system call arguments.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Trace file opens system-wide (prints immediately)</span>
+<span class="nb">sudo </span>bpftrace <span class="nt">-e</span> <span class="s1">'tracepoint:syscalls:sys_enter_openat { printf("%s %s\n", comm, str(args-&gt;filename)); }'</span>
+
+<span class="c"># Count system calls by name (prints summary on Ctrl-C)</span>
+<span class="nb">sudo </span>bpftrace <span class="nt">-e</span> <span class="s1">'tracepoint:syscalls:sys_enter_* { @[probe] = count(); }'</span>
+</code></pre></div></div>
+
+<p>However, you can also write eBPF programs directly in C using a toolchain like <a href="https://github.com/iovisor/bcc"><code class="language-plaintext highlighter-rouge">bcc</code></a>, which also ships with <a href="https://www.brendangregg.com/blog/2015-09-22/bcc-linux-4.3-tracing.html">many handy tools</a> like <code class="language-plaintext highlighter-rouge">biosnoop</code> for printing latency distributions for disk operations or <code class="language-plaintext highlighter-rouge">opensnoop</code> for printing all open files.</p>
+
+<p>Where <code class="language-plaintext highlighter-rouge">strace</code> is useful because it’s easy to “just get up and running”, <code class="language-plaintext highlighter-rouge">bpftrace</code> is what you should reach for when you need lower overhead, want to trace through kernel functions, need to do any kind of aggregation, etc. Note that <code class="language-plaintext highlighter-rouge">bpftrace</code> has to run as <code class="language-plaintext highlighter-rouge">root</code> though, and that it generally monitors the entire kernel, not just a particular process. To target a specific program, you can filter by command name or PID:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Filter by command name (prints summary on Ctrl-C)</span>
+<span class="nb">sudo </span>bpftrace <span class="nt">-e</span> <span class="s1">'tracepoint:syscalls:sys_enter_* /comm == "bash"/ { @[probe] = count(); }'</span>
+
+<span class="c"># Trace a specific command from startup using -c (cpid = child PID)</span>
+<span class="nb">sudo </span>bpftrace <span class="nt">-e</span> <span class="s1">'tracepoint:syscalls:sys_enter_* /pid == cpid/ { @[probe] = count(); }'</span> <span class="nt">-c</span> <span class="s1">'ls -la'</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">-c</code> flag runs the specified command and sets <code class="language-plaintext highlighter-rouge">cpid</code> to its PID, which is useful for tracing a program from the moment it starts. When the traced command exits, bpftrace prints the aggregated results.</p>
+
+<h3 id="network-debugging">Network Debugging</h3>
+
+<p>For network issues, <a href="https://www.man7.org/linux/man-pages/man1/tcpdump.1.html"><code class="language-plaintext highlighter-rouge">tcpdump</code></a> and <a href="https://www.wireshark.org/">Wireshark</a> let you capture and analyze network packets:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Capture packets on port 80</span>
+<span class="nb">sudo </span>tcpdump <span class="nt">-i</span> any port 80
+
+<span class="c"># Capture and save to file for Wireshark analysis</span>
+<span class="nb">sudo </span>tcpdump <span class="nt">-i</span> any <span class="nt">-w</span> capture.pcap
+</code></pre></div></div>
+
+<p>For HTTPS traffic, the encryption makes tcpdump less useful. Tools like <a href="https://mitmproxy.org/">mitmproxy</a> can act as an intercepting proxy to inspect encrypted traffic. Browser developer tools (Network tab) are often the easiest way to debug HTTPS requests from web applications—they show decrypted request/response data, headers, and timing.</p>
+
+<h2 id="memory-debugging">Memory Debugging</h2>
+
+<p>Memory bugs—buffer overflows, use-after-free, memory leaks—are among the most dangerous and difficult to debug. They often don’t crash immediately but corrupt memory in ways that cause problems much later.</p>
+
+<h3 id="sanitizers">Sanitizers</h3>
+
+<p>One approach to finding memory bugs is to use <strong>sanitizers</strong>, which are compiler features that instrument your code to detect errors at runtime. For example, the widely used <strong>AddressSanitizer (ASan)</strong> detects:</p>
+<ul>
+  <li>Buffer overflows (stack, heap, and global)</li>
+  <li>Use-after-free</li>
+  <li>Use-after-return</li>
+  <li>Memory leaks</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compile with AddressSanitizer</span>
+gcc <span class="nt">-fsanitize</span><span class="o">=</span>address <span class="nt">-g</span> program.c <span class="nt">-o</span> program
+./program
+</code></pre></div></div>
+
+<p>There are a variety of useful sanitizers:</p>
+
+<ul>
+  <li><strong>ThreadSanitizer (TSan)</strong>: Detects data races in multithreaded code (<code class="language-plaintext highlighter-rouge">-fsanitize=thread</code>)</li>
+  <li><strong>MemorySanitizer (MSan)</strong>: Detects reads of uninitialized memory (<code class="language-plaintext highlighter-rouge">-fsanitize=memory</code>)</li>
+  <li><strong>UndefinedBehaviorSanitizer (UBSan)</strong>: Detects undefined behavior like integer overflow (<code class="language-plaintext highlighter-rouge">-fsanitize=undefined</code>)</li>
+</ul>
+
+<p>Sanitizers require recompilation but are fast enough to use in CI pipelines and during regular development.</p>
+
+<h3 id="valgrind-when-you-cant-recompile">Valgrind: When You Can’t Recompile</h3>
+
+<p><a href="https://valgrind.org/">Valgrind</a> instead runs your program in something akin to a virtual machine to detect memory errors. It’s slower than sanitizers but doesn’t require recompilation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>valgrind <span class="nt">--leak-check</span><span class="o">=</span>full ./my_program
+</code></pre></div></div>
+
+<p>Use Valgrind when:</p>
+<ul>
+  <li>You don’t have source code</li>
+  <li>You can’t recompile (third-party libraries)</li>
+  <li>You need specific tools not available as sanitizers</li>
+</ul>
+
+<p>Valgrind is actually a really powerful controlled execution environment, and we’ll see more of it later when we get to profiling!</p>
+
+<h2 id="ai-for-debugging">AI for Debugging</h2>
+
+<p>Large language models have become surprisingly useful debugging assistants. They excel at certain debugging tasks that complement traditional tools.</p>
+
+<p><strong>Where LLMs shine:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>Explaining cryptic error messages</strong>: Compiler errors, especially from C++ templates or Rust’s borrow checker, can be notoriously cryptic. LLMs can translate them into plain English and suggest fixes.</p>
+  </li>
+  <li>
+    <p><strong>Traversing language and abstraction boundaries</strong>: If you’re debugging a problem that spans multiple languages (say, a bug in a C library that manifests through a Python binding), LLMs can help navigate the different layers. They’re particularly good at understanding FFI boundaries, build system issues, and cross-language debugging (e.g., my program errors, but I believe it is because of a bug in one of my dependencies).</p>
+  </li>
+  <li>
+    <p><strong>Correlating symptoms with root causes</strong>: “My program works fine but uses 10x more memory than expected” is the kind of vague symptom that LLMs can help investigate, suggesting likely causes and what to look for.</p>
+  </li>
+  <li>
+    <p><strong>Analyzing crash dumps and stack traces</strong>: Paste a stack trace and ask what might have caused it.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note on debug symbols</strong>: For meaningful stack traces and debugging, ensure your binaries (and any linked libraries) are compiled with debug symbols (<code class="language-plaintext highlighter-rouge">-g</code> flag). Debug information is typically stored in DWARF format. Additionally, compiling with frame pointers (<code class="language-plaintext highlighter-rouge">-fno-omit-frame-pointer</code>) makes stack traces more reliable, especially for profiling tools. Without these, stack traces may show only memory addresses or be incomplete. This matters more for natively compiled programs (C++, Rust) than Python or Java.</p>
+</blockquote>
+
+<p><strong>Limitations to keep in mind:</strong></p>
+<ul>
+  <li>LLMs can hallucinate plausible-sounding but wrong explanations</li>
+  <li>They may suggest fixes that mask the bug rather than fix it</li>
+  <li>Always verify suggestions with actual debugging tools</li>
+  <li>They work best as a complement to, not replacement for, understanding your code</li>
+</ul>
+
+<blockquote>
+  <p>This is distinct from the <a href="../development-environment/index.html#ai-powered-development">general AI coding capabilities</a> covered in the Development Environment lecture. Here we’re specifically talking about using LLMs as a debugging aid.</p>
+</blockquote>
+
+<h1 id="profiling">Profiling</h1>
+
+<p>Even if your code functionally behaves as you would expect, that might not be good enough if it takes all your CPU or memory in the process. Algorithms classes often teach big <em>O</em> notation but not how to find hot spots in your programs. Since <a href="https://wiki.c2.com/?PrematureOptimization">premature optimization is the root of all evil</a>, you should learn about profilers and monitoring tools. They will help you understand which parts of your program are taking most of the time and/or resources so you can focus on optimizing those parts.</p>
+
+<h2 id="timing">Timing</h2>
+
+<p>The simplest way to measure performance is to time things. In many scenarios it can be enough to just print the time it took your code between two points.</p>
+
+<p>However, wall clock time can be misleading since your computer might be running other processes at the same time or waiting for events to happen. The <code class="language-plaintext highlighter-rouge">time</code> command distinguishes between <em>Real</em>, <em>User</em>, and <em>Sys</em> time:</p>
+
+<ul>
+  <li><strong>Real</strong> - Wall clock time from start to finish, including time spent waiting</li>
+  <li><strong>User</strong> - Time spent in the CPU running user code</li>
+  <li><strong>Sys</strong> - Time spent in the CPU running kernel code</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">time </span>curl https://missing.csail.mit.edu &amp;&gt; /dev/null
+real	0m0.272s
+user	0m0.079s
+sys	    0m0.028s
+</code></pre></div></div>
+
+<p>Here the request took nearly 300 milliseconds (real time) but only 107ms of CPU time (user + sys). The rest was waiting for the network.</p>
+
+<h2 id="resource-monitoring">Resource Monitoring</h2>
+
+<p>Sometimes the first step towards analyzing the performance of your program is to understand what its actual resource consumption is. Programs often run slowly when they are resource constrained.</p>
+
+<ul>
+  <li>
+    <p><strong>General Monitoring</strong>: <a href="https://htop.dev/"><code class="language-plaintext highlighter-rouge">htop</code></a> is an improved version of <code class="language-plaintext highlighter-rouge">top</code> that presents various statistics for currently running processes. Useful keybinds: <code class="language-plaintext highlighter-rouge">&lt;F6&gt;</code> to sort processes, <code class="language-plaintext highlighter-rouge">t</code> to show tree hierarchy, <code class="language-plaintext highlighter-rouge">h</code> to toggle threads. There’s also <a href="https://github.com/aristocratos/btop"><code class="language-plaintext highlighter-rouge">btop</code></a> which monitors <em>way</em> more things.</p>
+  </li>
+  <li>
+    <p><strong>I/O Operations</strong>: <a href="https://www.man7.org/linux/man-pages/man8/iotop.8.html"><code class="language-plaintext highlighter-rouge">iotop</code></a> displays live I/O usage information.</p>
+  </li>
+  <li>
+    <p><strong>Memory Usage</strong>: <a href="https://www.man7.org/linux/man-pages/man1/free.1.html"><code class="language-plaintext highlighter-rouge">free</code></a> displays total free and used memory.</p>
+  </li>
+  <li>
+    <p><strong>Open Files</strong>: <a href="https://www.man7.org/linux/man-pages/man8/lsof.8.html"><code class="language-plaintext highlighter-rouge">lsof</code></a> lists file information about files opened by processes. Useful for checking which process has opened a specific file.</p>
+  </li>
+  <li>
+    <p><strong>Network Connections</strong>: <a href="https://www.man7.org/linux/man-pages/man8/ss.8.html"><code class="language-plaintext highlighter-rouge">ss</code></a> lets you monitor network connections. A common use case is figuring out what process is using a given port: <code class="language-plaintext highlighter-rouge">ss -tlnp | grep :8080</code>.</p>
+  </li>
+  <li>
+    <p><strong>Network Usage</strong>: <a href="https://github.com/raboof/nethogs"><code class="language-plaintext highlighter-rouge">nethogs</code></a> and <a href="https://pdw.ex-parrot.com/iftop/"><code class="language-plaintext highlighter-rouge">iftop</code></a> are good interactive CLI tools for monitoring network usage per process.</p>
+  </li>
+</ul>
+
+<h2 id="visualizing-performance-data">Visualizing Performance Data</h2>
+
+<p>Humans spot patterns in graphs much faster than in tables of numbers. When analyzing performance, plotting your data often reveals trends, spikes, and anomalies that would be invisible in raw numbers.</p>
+
+<p><strong>Making data plottable</strong>: When adding print or log statements for debugging, consider formatting the output so it can be easily graphed later. A simple timestamp and value in CSV format (<code class="language-plaintext highlighter-rouge">1705012345,42.5</code>) is much easier to plot than a prose sentence. JSON-structured logs can also be parsed and plotted with minimal effort. In other words, log your data <a href="https://vita.had.co.nz/papers/tidy-data.pdf">in a tidy way</a>.</p>
+
+<p><strong>Quick plotting with gnuplot</strong>: For simple command-line plotting, <a href="http://www.gnuplot.info/"><code class="language-plaintext highlighter-rouge">gnuplot</code></a> can generate graphs directly from data files:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Plot a simple CSV with timestamp,value</span>
+gnuplot <span class="nt">-e</span> <span class="s2">"set datafile separator ','; plot 'latency.csv' using 1:2 with lines"</span>
+</code></pre></div></div>
+
+<p><strong>Iterative exploration with matplotlib and ggplot2</strong>: For deeper analysis, Python’s <a href="https://matplotlib.org/"><code class="language-plaintext highlighter-rouge">matplotlib</code></a> and R’s <a href="https://ggplot2.tidyverse.org/"><code class="language-plaintext highlighter-rouge">ggplot2</code></a> enable iterative exploration. Unlike one-off plotting, these tools let you quickly slice and transform data to investigate hypotheses. ggplot2’s facet plots are particularly powerful—you can split a single dataset across multiple subplots by category (e.g., faceting request latency by endpoint or time-of-day) to tease out patterns that would otherwise be hidden.</p>
+
+<p><strong>Example use cases:</strong></p>
+<ul>
+  <li>Plotting request latency over time reveals periodic slowdowns (garbage collection, cron jobs, traffic patterns) that raw percentiles obscure</li>
+  <li>Visualizing insert times for a growing data structure can expose algorithmic complexity issues—a plot of vector insertions will show characteristic spikes when the backing array doubles in size</li>
+  <li>Faceting metrics by different dimensions (request type, user cohort, server) often reveals that a “system-wide” problem is actually isolated to one category</li>
+</ul>
+
+<h2 id="cpu-profilers">CPU Profilers</h2>
+
+<p>Most of the time when people refer to <em>profilers</em> they mean <em>CPU profilers</em>. There are two main types:</p>
+
+<ul>
+  <li><strong>Tracing profilers</strong> keep a record of every function call your program makes</li>
+  <li><strong>Sampling profilers</strong> probe your program periodically (commonly every millisecond) and record the program’s stack</li>
+</ul>
+
+<p>Sampling profilers have lower overhead and are generally preferred for production use.</p>
+
+<h3 id="perf-the-sampling-profiler">perf: the sampling profiler</h3>
+
+<p><a href="https://www.man7.org/linux/man-pages/man1/perf.1.html"><code class="language-plaintext highlighter-rouge">perf</code></a> is the standard Linux profiler. It can profile any program without recompilation:</p>
+
+<p><code class="language-plaintext highlighter-rouge">perf stat</code> gives you a quick overview of where time is spent:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>perf <span class="nb">stat</span> ./slow_program
+
+ Performance counter stats <span class="k">for</span> <span class="s1">'./slow_program'</span>:
+
+         3,210.45 msec task-clock                <span class="c">#    0.998 CPUs utilized</span>
+               12      context-switches          <span class="c">#    3.738 /sec</span>
+                0      cpu-migrations            <span class="c">#    0.000 /sec</span>
+              156      page-faults               <span class="c">#   48.587 /sec</span>
+   12,345,678,901      cycles                    <span class="c">#    3.845 GHz</span>
+    9,876,543,210      instructions              <span class="c">#    0.80  insn per cycle</span>
+    1,234,567,890      branches                  <span class="c">#  384.532 M/sec</span>
+       12,345,678      branch-misses             <span class="c">#    1.00% of all branches</span>
+</code></pre></div></div>
+
+<p>Profiler output for real world programs will contain large amounts of information. Humans are visual creatures and are quite terrible at reading large amounts of numbers. <a href="https://www.brendangregg.com/flamegraphs.html">Flame graphs</a> are a visualization that makes profiling data much easier to understand.</p>
+
+<p>A flame graph displays a hierarchy of function calls across the Y axis and time taken proportional to the X axis. They’re interactive—you can click to zoom into specific parts of the program.</p>
+
+<p><a href="https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg"><img src="https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg" alt="FlameGraph" /></a></p>
+
+<p>To generate a flame graph from <code class="language-plaintext highlighter-rouge">perf</code> data:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Record profile</span>
+perf record <span class="nt">-g</span> ./my_program
+
+<span class="c"># Generate flame graph (requires flamegraph scripts)</span>
+perf script | stackcollapse-perf.pl | flamegraph.pl <span class="o">&gt;</span> flamegraph.svg
+</code></pre></div></div>
+
+<blockquote>
+  <p>Consider using <a href="https://www.speedscope.app/">Speedscope</a> for an interactive web-based flame graph viewer, or <a href="https://perfetto.dev/">Perfetto</a> for comprehensive system-level analysis.</p>
+</blockquote>
+
+<h3 id="valgrinds-callgrind-the-tracing-profiler">Valgrind’s Callgrind: the tracing profiler</h3>
+
+<p><a href="https://valgrind.org/docs/manual/cl-manual.html"><code class="language-plaintext highlighter-rouge">callgrind</code></a> is a profiling tool that records the call history and instruction counts of your program. Unlike sampling profilers, it provides exact call counts and can show the relationship between callers and callees:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run with callgrind</span>
+valgrind <span class="nt">--tool</span><span class="o">=</span>callgrind ./my_program
+
+<span class="c"># Analyze with callgrind_annotate (text) or kcachegrind (GUI)</span>
+callgrind_annotate callgrind.out.&lt;pid&gt;
+kcachegrind callgrind.out.&lt;pid&gt;
+</code></pre></div></div>
+
+<p>Callgrind is slower than sampling profilers but provides precise call counts and can optionally simulate cache behavior (with <code class="language-plaintext highlighter-rouge">--cache-sim=yes</code>) if you need that information.</p>
+
+<blockquote>
+  <p>If you’re using a particular language, there may be more specialized profilers. For example, Python has <a href="https://docs.python.org/3/library/profile.html"><code class="language-plaintext highlighter-rouge">cProfile</code></a> and <a href="https://github.com/benfred/py-spy"><code class="language-plaintext highlighter-rouge">py-spy</code></a>, Go has <a href="https://pkg.go.dev/cmd/pprof"><code class="language-plaintext highlighter-rouge">go tool pprof</code></a>, and Rust has <a href="https://github.com/flamegraph-rs/flamegraph"><code class="language-plaintext highlighter-rouge">cargo-flamegraph</code></a> (which actually works for any compiled program!).</p>
+</blockquote>
+
+<h2 id="memory-profilers">Memory Profilers</h2>
+
+<p>Memory profilers help you understand how your program uses memory over time and find memory leaks.</p>
+
+<h3 id="valgrinds-massif">Valgrind’s Massif</h3>
+
+<p><a href="https://valgrind.org/docs/manual/ms-manual.html"><code class="language-plaintext highlighter-rouge">massif</code></a> profiles heap memory usage:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>valgrind <span class="nt">--tool</span><span class="o">=</span>massif ./my_program
+ms_print massif.out.&lt;pid&gt;
+</code></pre></div></div>
+
+<p>This shows you heap usage over time, helping identify memory leaks and excessive allocation.</p>
+
+<blockquote>
+  <p>For Python, <a href="https://pypi.org/project/memory-profiler/"><code class="language-plaintext highlighter-rouge">memory-profiler</code></a> provides line-by-line memory usage information.</p>
+</blockquote>
+
+<h2 id="benchmarking">Benchmarking</h2>
+
+<p>When you need to compare the performance of different implementations or tools, <a href="https://github.com/sharkdp/hyperfine"><code class="language-plaintext highlighter-rouge">hyperfine</code></a> is excellent for benchmarking command-line programs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>hyperfine <span class="nt">--warmup</span> 3 <span class="s1">'fd -e jpg'</span> <span class="s1">'find . -iname "*.jpg"'</span>
+Benchmark <span class="c">#1: fd -e jpg</span>
+  Time <span class="o">(</span>mean ± σ<span class="o">)</span>:      51.4 ms ±   2.9 ms    <span class="o">[</span>User: 121.0 ms, System: 160.5 ms]
+  Range <span class="o">(</span>min … max<span class="o">)</span>:    44.2 ms …  60.1 ms    56 runs
+
+Benchmark <span class="c">#2: find . -iname "*.jpg"</span>
+  Time <span class="o">(</span>mean ± σ<span class="o">)</span>:      1.126 s ±  0.101 s    <span class="o">[</span>User: 141.1 ms, System: 956.1 ms]
+  Range <span class="o">(</span>min … max<span class="o">)</span>:    0.975 s …  1.287 s    10 runs
+
+Summary
+  <span class="s1">'fd -e jpg'</span> ran
+   21.89 ± 2.33 <span class="nb">times </span>faster than <span class="s1">'find . -iname "*.jpg"'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>For web development, browser developer tools include excellent profilers. See the <a href="https://profiler.firefox.com/docs/">Firefox Profiler</a> and <a href="https://developers.google.com/web/tools/chrome-devtools/rendering-tools">Chrome DevTools</a> documentation.</p>
+</blockquote>
+
+<h1 id="exercises">Exercises</h1>
+
+<h2 id="debugging-1">Debugging</h2>
+
+<ol>
+  <li>
+    <p><strong>Debug a sorting algorithm</strong>: The following pseudocode implements merge sort but contains a bug. Implement it in a language of your choice, then use a debugger (gdb, lldb, pdb, or your IDE’s debugger) to find and fix the bug.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function merge_sort(arr):
+    if length(arr) &lt;= 1:
+        return arr
+    mid = length(arr) / 2
+    left = merge_sort(arr[0..mid])
+    right = merge_sort(arr[mid..end])
+    return merge(left, right)
+
+function merge(left, right):
+    result = []
+    i = 0, j = 0
+    while i &lt; length(left) AND j &lt; length(right):
+        if left[i] &lt;= right[j]:
+            append result, left[i]
+            i = i + 1
+        else:
+            append result, right[i]
+            j = j + 1
+    append remaining elements from left and right
+    return result
+</code></pre></div>    </div>
+
+    <p>Test vector: <code class="language-plaintext highlighter-rouge">merge_sort([3, 1, 4, 1, 5, 9, 2, 6])</code> should return <code class="language-plaintext highlighter-rouge">[1, 1, 2, 3, 4, 5, 6, 9]</code>. Use breakpoints and step through the merge function to find where the incorrect element is being selected.</p>
+  </li>
+  <li>
+    <p>Install <a href="https://rr-project.org/"><code class="language-plaintext highlighter-rouge">rr</code></a> and use reverse debugging to find a corruption bug. Save this program as <code class="language-plaintext highlighter-rouge">corruption.c</code>:</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">scores</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">Student</span><span class="p">;</span>
+
+<span class="n">Student</span> <span class="n">students</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1001</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">85</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">92</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">78</span><span class="p">;</span>
+
+    <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1002</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">90</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">88</span><span class="p">;</span>
+    <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">95</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">curve_scores</span><span class="p">(</span><span class="kt">int</span> <span class="n">student_idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">curve</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">students</span><span class="p">[</span><span class="n">student_idx</span><span class="p">].</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">curve</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">init</span><span class="p">();</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"=== Initial state ===</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Student 0: id=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">id</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Student 1: id=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">id</span><span class="p">);</span>
+
+    <span class="n">curve_scores</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">=== After curving ===</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Student 0: id=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">id</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Student 1: id=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">id</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">1002</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">ERROR: Student 1's ID was corrupted! Expected 1002, got %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+               <span class="n">students</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+
+    <p>Compile with <code class="language-plaintext highlighter-rouge">gcc -g corruption.c -o corruption</code> and run it. Student 1’s ID gets corrupted, but the corruption happens in a function that only touches student 0. Use <code class="language-plaintext highlighter-rouge">rr record ./corruption</code> and <code class="language-plaintext highlighter-rouge">rr replay</code> to find the culprit. Set a watchpoint on <code class="language-plaintext highlighter-rouge">students[1].id</code> and use <code class="language-plaintext highlighter-rouge">reverse-continue</code> after the corruption to find exactly which line of code overwrote it.</p>
+  </li>
+  <li>
+    <p>Debug a memory error with AddressSanitizer. Save this as <code class="language-plaintext highlighter-rouge">uaf.c</code>:</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">greeting</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span> <span class="s">"Hello, world!"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">greeting</span><span class="p">);</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">greeting</span><span class="p">);</span>
+
+    <span class="n">greeting</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'J'</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">greeting</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+
+    <p>First compile and run without sanitizers: <code class="language-plaintext highlighter-rouge">gcc uaf.c -o uaf &amp;&amp; ./uaf</code>. It may appear to work. Now compile with AddressSanitizer: <code class="language-plaintext highlighter-rouge">gcc -fsanitize=address -g uaf.c -o uaf &amp;&amp; ./uaf</code>. Read the error report. What bug does ASan find? Fix the issue it identifies.</p>
+  </li>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">strace</code> (Linux) or <code class="language-plaintext highlighter-rouge">dtruss</code> (macOS) to trace the system calls made by a command like <code class="language-plaintext highlighter-rouge">ls -l</code>. What system calls is it making? Try tracing a more complex program and see what files it opens.</p>
+  </li>
+  <li>
+    <p>Use an LLM to help debug a cryptic error message. Try copying a compiler error (especially from C++ templates or Rust) and asking for an explanation and fix. Try putting some of the output from <code class="language-plaintext highlighter-rouge">strace</code> or the address sanitizer into it.</p>
+  </li>
+</ol>
+
+<h2 id="profiling-1">Profiling</h2>
+
+<ol>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">perf stat</code> to get basic performance statistics for a program of your choice. What do the different counters mean?</p>
+  </li>
+  <li>
+    <p>Profile with <code class="language-plaintext highlighter-rouge">perf record</code>. Save this as <code class="language-plaintext highlighter-rouge">slow.c</code>:</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="kt">double</span> <span class="nf">slow_computation</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="n">slow_computation</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Result: %f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+
+    <p>Compile with debug symbols: <code class="language-plaintext highlighter-rouge">gcc -g -O2 slow.c -o slow -lm</code>. Run <code class="language-plaintext highlighter-rouge">perf record -g ./slow</code>, then <code class="language-plaintext highlighter-rouge">perf report</code> to see where time is spent. Try generating a flame graph using the flamegraph scripts.</p>
+  </li>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">hyperfine</code> to benchmark two different implementations of the same task (e.g., <code class="language-plaintext highlighter-rouge">find</code> vs <code class="language-plaintext highlighter-rouge">fd</code>, <code class="language-plaintext highlighter-rouge">grep</code> vs <code class="language-plaintext highlighter-rouge">ripgrep</code>, or two versions of your own code).</p>
+  </li>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">htop</code> to monitor your system while running a resource-intensive program. Try using <code class="language-plaintext highlighter-rouge">taskset</code> to limit which CPUs a process can use: <code class="language-plaintext highlighter-rouge">taskset --cpu-list 0,2 stress -c 3</code>. Why doesn’t <code class="language-plaintext highlighter-rouge">stress</code> use three CPUs?</p>
+  </li>
+  <li>
+    <p>A common issue is that a port you want to listen on is already taken by another process. Learn how to discover that process: First execute <code class="language-plaintext highlighter-rouge">python -m http.server 4444</code> to start a minimal web server on port 4444. On a separate terminal run <code class="language-plaintext highlighter-rouge">ss -tlnp | grep 4444</code> to find the process. Terminate it with <code class="language-plaintext highlighter-rouge">kill &lt;PID&gt;</code>.</p>
+  </li>
+</ol>
+
+
+<hr>
+
+<div class="small center">
+<p><a href="https://github.com/missing-semester/missing-semester/blob/master/_2026/debugging-profiling.md">Edit this page</a>.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA</a>.</p>
+</div>
+
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="workspaces.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../../css/styles.css">
+<link rel="icon" href="../../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/tutorial/workspaces">
+<meta name="og:title" content="Tutorial: Getting started with multi-module workspaces - The Go Programming Language">
+<title>Tutorial: Getting started with multi-module workspaces - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="workspaces.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="workspaces.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="workspaces.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="workspaces.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="workspaces.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="workspaces.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="workspaces.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="workspaces.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="workspaces.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="workspaces.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+
+
+<article class="Doc Article">
+
+
+
+  
+<ol class="SiteBreadcrumb">
+  
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="../index.html">
+  Documentation
+  </a>
+</li>
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="index.html">
+  Tutorials
+  </a>
+</li>
+<li class="BreadcrumbNav-li active">
+  <a class="BreadcrumbNav-link" href="workspaces.html">
+  Tutorial: Getting started with multi-module workspaces
+  </a>
+</li>
+</ol>
+
+
+
+<h1>Tutorial: Getting started with multi-module workspaces</h1>
+
+
+
+
+
+
+<div id="nav" class="TOC"></div>
+
+
+
+<div class='markdown'>
+<p>This tutorial introduces the basics of multi-module workspaces in Go.
+With multi-module workspaces, you can tell the Go command that you&rsquo;re
+writing code in multiple modules at the same time and easily build and
+run code in those modules.</p>
+<p>In this tutorial, you&rsquo;ll create two modules in a shared multi-module
+workspace, make changes across those modules, and see the results
+of those changes in a build.</p>
+<!-- TODO TOC -->
+<p><strong>Note:</strong> For other tutorials, see <a href="index.html">Tutorials</a>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>An installation of Go 1.18 or later.</strong></li>
+<li><strong>A tool to edit your code.</strong> Any text editor you have will work fine.</li>
+<li><strong>A command terminal.</strong> Go works well using any terminal on Linux and Mac,
+and on PowerShell or cmd in Windows.</li>
+</ul>
+<p>This tutorial requires go1.18 or later. Make sure you&rsquo;ve installed Go at Go 1.18 or later using the
+links at <a href="https://go.dev/dl">go.dev/dl</a>.</p>
+<h2 id="create_folder">Create a module for your code</h2>
+<p>To begin, create a module for the code you’ll write.</p>
+<ol>
+<li>
+<p>Open a command prompt and change to your home directory.</p>
+<p>On Linux or Mac:</p>
+<pre><code>$ cd
+</code></pre>
+<p>On Windows:</p>
+<pre><code>C:\&gt; cd %HOMEPATH%
+</code></pre>
+<p>The rest of the tutorial will show a $ as the prompt. The commands you use
+will work on Windows too.</p>
+</li>
+<li>
+<p>From the command prompt, create a directory for your code called workspace.</p>
+<pre><code>$ mkdir workspace
+$ cd workspace
+</code></pre>
+</li>
+<li>
+<p>Initialize the module</p>
+<p>Our example will create a new module <code>hello</code> that will depend on the golang.org/x/example module.</p>
+<p>Create the hello module:</p>
+<pre><code>$ mkdir hello
+$ cd hello
+$ go mod init example.com/hello
+go: creating new go.mod: module example.com/hello
+</code></pre>
+<p>Add a dependency on the golang.org/x/example/hello/reverse package by using <code>go get</code>.</p>
+<pre><code>$ go get golang.org/x/example/hello/reverse
+</code></pre>
+<p>Create hello.go in the hello directory with the following contents:</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+
+    &quot;golang.org/x/example/hello/reverse&quot;
+)
+
+func main() {
+    fmt.Println(reverse.String(&quot;Hello&quot;))
+}
+</code></pre>
+<p>Now, run the hello program:</p>
+<pre><code>$ go run .
+olleH
+</code></pre>
+</li>
+</ol>
+<h2 id="create-the-workspace">Create the workspace</h2>
+<p>In this step, we&rsquo;ll create a <code>go.work</code> file to specify a workspace with the module.</p>
+<h4 id="initialize-the-workspace">Initialize the workspace</h4>
+<p>In the <code>workspace</code> directory, run:</p>
+<pre><code>$ go work init ./hello
+</code></pre>
+<p>The <code>go work init</code> command tells <code>go</code> to create a <code>go.work</code> file
+for a workspace containing the modules in the <code>./hello</code>
+directory.</p>
+<p>The <code>go</code> command produces a <code>go.work</code> file that looks like this:</p>
+<pre><code>go 1.18
+
+use ./hello
+</code></pre>
+<p>The <code>go.work</code> file has similar syntax to <code>go.mod</code>.</p>
+<p>The <code>go</code> directive tells Go which version of Go the file should be
+interpreted with. It&rsquo;s similar to the <code>go</code> directive in the <code>go.mod</code>
+file.</p>
+<p>The <code>use</code> directive tells Go that the module in the <code>hello</code>
+directory should be main modules when doing a build.</p>
+<p>So in any subdirectory of <code>workspace</code> the module will be active.</p>
+<h4 id="run-the-program-in-the-workspace-directory">Run the program in the workspace directory</h4>
+<p>In the <code>workspace</code> directory, run:</p>
+<pre><code>$ go run ./hello
+olleH
+</code></pre>
+<p>The Go command includes all the modules in the workspace as main modules. This allows us
+to refer to a package in the module, even outside the module. Running the <code>go run</code> command
+outside the module or the workspace would result in an error because the <code>go</code> command
+wouldn&rsquo;t know which modules to use.</p>
+<p>Next, we&rsquo;ll add a local copy of the <code>golang.org/x/example/hello</code> module to the workspace.
+That module is stored in a subdirectory of the <code>go.googlesource.com/example</code> Git repository.
+We&rsquo;ll then add a new function to the <code>reverse</code> package that we can use instead of <code>String</code>.</p>
+<h2 id="download-and-modify-the-golangorgxexamplehello-module">Download and modify the <code>golang.org/x/example/hello</code> module</h2>
+<p>In this step, we&rsquo;ll download a copy of the Git repo containing the <code>golang.org/x/example/hello</code> module,
+add it to the workspace, and then add a new function to it that we will use from the hello program.</p>
+<ol>
+<li>
+<p>Clone the repository</p>
+<p>From the workspace directory, run the <code>git</code> command to clone the repository:</p>
+<pre><code>$ git clone https://go.googlesource.com/example
+Cloning into 'example'...
+remote: Total 165 (delta 27), reused 165 (delta 27)
+Receiving objects: 100% (165/165), 434.18 KiB | 1022.00 KiB/s, done.
+Resolving deltas: 100% (27/27), done.
+</code></pre>
+</li>
+<li>
+<p>Add the module to the workspace</p>
+<p>The Git repo was just checked out into <code>./example</code>.
+The source code for the <code>golang.org/x/example/hello</code> module is in <code>./example/hello</code>.
+Add it to the workspace:</p>
+<pre><code>$ go work use ./example/hello
+</code></pre>
+<p>The <code>go work use</code> command adds a new module to the go.work file. It will now look like this:</p>
+<pre><code>go 1.18
+
+use (
+    ./hello
+    ./example/hello
+)
+</code></pre>
+<p>The workspace now includes both the <code>example.com/hello</code> module and the <code>golang.org/x/example/hello</code> module,
+which provides the <code>golang.org/x/example/hello/reverse</code> package.</p>
+<p>This will allow us to use the new code we will write in our copy of the <code>reverse</code> package
+instead of the version of the package in the module cache
+that we downloaded with the <code>go get</code> command.</p>
+</li>
+<li>
+<p>Add the new function.</p>
+<p>We&rsquo;ll add a new function to reverse a number to the <code>golang.org/x/example/hello/reverse</code> package.</p>
+<p>Create a new file named <code>int.go</code> in the <code>workspace/example/hello/reverse</code> directory containing the following contents:</p>
+<pre><code>package reverse
+
+import &quot;strconv&quot;
+
+// Int returns the decimal reversal of the integer i.
+func Int(i int) int {
+    i, _ = strconv.Atoi(String(strconv.Itoa(i)))
+    return i
+}
+</code></pre>
+</li>
+<li>
+<p>Modify the hello program to use the function.</p>
+<p>Modify the contents of <code>workspace/hello/hello.go</code> to contain the following contents:</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+
+    &quot;golang.org/x/example/hello/reverse&quot;
+)
+
+func main() {
+    fmt.Println(reverse.String(&quot;Hello&quot;), reverse.Int(24601))
+}
+</code></pre>
+</li>
+</ol>
+<h4 id="run-the-code-in-the-workspace">Run the code in the workspace</h4>
+<p>From the workspace directory, run</p>
+<pre><code>$ go run ./hello
+olleH 10642
+</code></pre>
+<p>The Go command finds the <code>example.com/hello</code> module specified in the
+command line in the <code>hello</code> directory specified by the <code>go.work</code>
+file, and similarly resolves the <code>golang.org/x/example/hello/reverse</code> import using
+the <code>go.work</code> file.</p>
+<p><code>go.work</code> can be used instead of adding <a href="https://go.dev/ref/mod#go-mod-file-replace"><code>replace</code></a>
+directives to work across multiple modules.</p>
+<p>Since the two modules are in the same workspace it&rsquo;s easy
+to make a change in one module and use it in another.</p>
+<h4 id="future-step">Future step</h4>
+<p>Now, to properly release these modules we&rsquo;d need to make a release of the <code>golang.org/x/example/hello</code>
+module, for example at <code>v0.1.0</code>. This is usually done by tagging a commit on the module&rsquo;s version
+control repository. See the
+<a href="../modules/release-workflow.html">module release workflow documentation</a>
+for more details. Once the release is done, we can increase the requirement on the
+<code>golang.org/x/example/hello</code> module in <code>hello/go.mod</code>:</p>
+<pre><code>cd hello
+go get golang.org/x/example/hello@v0.1.0
+</code></pre>
+<p>That way, the <code>go</code> command can properly resolve the modules outside the workspace.</p>
+<h2 id="learn-more-about-workspaces">Learn more about workspaces</h2>
+<p>The <code>go</code> command has a couple of subcommands for working with workspaces in addition to <code>go work init</code> which
+we saw earlier in the tutorial:</p>
+<ul>
+<li><code>go work use [-r] [dir]</code> adds a <code>use</code> directive to the <code>go.work</code> file for <code>dir</code>,
+if it exists, and removes the <code>use</code> directory if the argument directory doesn&rsquo;t exist. The <code>-r</code>
+flag examines subdirectories of <code>dir</code> recursively.</li>
+<li><code>go work edit</code> edits the <code>go.work</code> file similarly to <code>go mod edit</code></li>
+<li><code>go work sync</code> syncs dependencies from the workspace&rsquo;s build list into each of the workspace modules.</li>
+</ul>
+<p>See <a href="https://go.dev/ref/mod#workspaces">Workspaces</a> in the Go Modules Reference for more detail on
+workspaces and <code>go.work</code> files.</p>
+</div>
+
+
+
+
+
+
+
+</article>
+
+
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="../devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/jquery.js"></script>
+  <script src="../../js/carousels.js"></script>
+  <script src="../../js/searchBox.js"></script>
+  <script src="../../js/misc.js"></script>
+  <script src="../../js/hats.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/godocs.js"></script>
+  <script async src="../../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

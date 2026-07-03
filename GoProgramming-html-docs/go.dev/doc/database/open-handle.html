@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="open-handle.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../../css/styles.css">
+<link rel="icon" href="../../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/database/open-handle">
+<meta name="og:title" content="Opening a database handle - The Go Programming Language">
+<title>Opening a database handle - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="open-handle.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="open-handle.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="open-handle.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="open-handle.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="open-handle.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="open-handle.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="open-handle.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="open-handle.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="open-handle.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="open-handle.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+
+
+<article class="Doc Article">
+
+
+
+  
+<ol class="SiteBreadcrumb">
+  
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="../index.html">
+  Documentation
+  </a>
+</li>
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="index.html">
+  Accessing relational databases
+  </a>
+</li>
+<li class="BreadcrumbNav-li active">
+  <a class="BreadcrumbNav-link" href="open-handle.html">
+  Opening a database handle
+  </a>
+</li>
+</ol>
+
+
+
+<h1>Opening a database handle</h1>
+
+
+
+
+
+
+<div id="nav" class="TOC"></div>
+
+
+
+<div class='markdown'>
+<p>The <a href="https://pkg.go.dev/database/sql" rel="noreferrer" target="_blank"><code>database/sql</code></a> package simplifies
+database access by reducing the need
+for you to manage connections. Unlike many data access APIs, with
+<code>database/sql</code> you don&rsquo;t explicitly open a connection, do work, then close
+the connection. Instead, your code opens a database handle that represents
+a connection pool, then executes data access operations with the handle,
+calling a <code>Close</code> method only when needed to free resources, such as those
+held by retrieved rows or a prepared statement.</p>
+<p>In other words, it&rsquo;s the database handle, represented by an
+<a href="https://pkg.go.dev/database/sql#DB" rel="noreferrer" target="_blank"><code>sql.DB</code></a>, that
+handles connections, opening and closing them on your code&rsquo;s behalf. As your
+code uses the handle to execute database operations, those operations have
+concurrent access to the database. For more, see
+<a href="manage-connections.html">Managing connections</a>.</p>
+<p><strong>Note:</strong> You can also reserve a database connection. For more
+information, see
+<a href="manage-connections.html#dedicated_connections">Using dedicated connections</a>.</p>
+<p>In addition to the APIs available in the <code>database/sql</code> package, the Go
+community has developed drivers for all of the most common (and many uncommon)
+database management systems (DBMSes).</p>
+<p>When opening a database handle, you follow these high-level steps:</p>
+<ol>
+<li>
+<p>Locate a driver.</p>
+<p>A driver translates requests and responses between your Go code and the
+database. For more, see <a href="open-handle.html#database_driver">Locating and importing a database driver</a>.</p>
+</li>
+<li>
+<p>Open a database handle.</p>
+<p>After you&rsquo;ve imported the driver, you can open a handle for a specific
+database. For more, see <a href="open-handle.html#opening_handle">Opening a database handle</a>.</p>
+</li>
+<li>
+<p>Confirm a connection.</p>
+<p>Once you&rsquo;ve opened a database handle, your code can check that a
+connection is available. For more, see <a href="open-handle.html#confirm_connection">Confirming a connection</a>.</p>
+</li>
+</ol>
+<p>Your code typically won’t explicitly open or close database connections &ndash; that&rsquo;s
+done by the database handle. However, your code should free resources it
+obtains along the way, such as an <code>sql.Rows</code> containing query results. For
+more, see <a href="open-handle.html#free_resources">Freeing resources</a>.</p>
+<h3 id="database_driver">Locating and importing a database driver</h3>
+<p>You&rsquo;ll need a database driver that supports the DBMS you&rsquo;re using. To locate
+a driver for your database, see <a href="https://go.dev/wiki/SQLDrivers">SQLDrivers</a>.</p>
+<p>To make the driver available to your code, you import it as you would
+another Go package. Here&rsquo;s an example:</p>
+<pre><code>import &quot;github.com/go-sql-driver/mysql&quot;
+</code></pre>
+<p>Note that if you&rsquo;re not calling any functions directly from the driver
+package –- such as when it&rsquo;s being used implicitly by the <code>sql</code> package &ndash;
+you&rsquo;ll need to use a blank import, which prefixes the import path with an
+underscore:</p>
+<pre><code>import _ &quot;github.com/go-sql-driver/mysql&quot;
+</code></pre>
+<p><strong>Note:</strong> As a best practice, avoid using the database driver&rsquo;s own API
+for database operations. Instead, use functions in the <code>database/sql</code>
+package. This will help keep your code loosely coupled with the DBMS,
+making it easier to switch to a different DBMS if you need to.</p>
+<h3 id="opening_handle">Opening a database handle</h3>
+<p>An <code>sql.DB</code> database handle provides the ability to read from and write to a
+database, either individually or in a transaction.</p>
+<p>You can get a database handle by calling either <code>sql.Open</code> (which takes a
+connection string) or <code>sql.OpenDB</code> (which takes a <code>driver.Connector</code>). Both
+return a pointer to an <a href="https://pkg.go.dev/database/sql#DB" rel="noreferrer" target="_blank"><code>sql.DB</code></a>.</p>
+<p><strong>Note:</strong> Be sure to keep your database credentials out of your Go source.
+For more, see <a href="open-handle.html#store_credentials">Storing database credentials</a>.</p>
+<h4 id="open_connection_string">Opening with a connection string</h4>
+<p>Use the <a href="https://pkg.go.dev/database/sql#Open" rel="noreferrer" target="_blank"><code>sql.Open</code> function</a> when you
+want to connect using a connection string. The format for the string will vary
+depending on the driver you&rsquo;re using.</p>
+<p>Here&rsquo;s an example for MySQL:</p>
+<pre><code>db, err = sql.Open(&quot;mysql&quot;, &quot;username:password@tcp(127.0.0.1:3306)/jazzrecords&quot;)
+if err != nil {
+    log.Fatal(err)
+}
+</code></pre>
+<p>However, you&rsquo;ll likely find that capturing connection properties in a more
+structured way gives you code that&rsquo;s more readable. The details will vary by
+driver.</p>
+<p>For example, you could replace the preceding example with the following, which
+uses the MySQL driver&rsquo;s <a href="https://pkg.go.dev/github.com/go-sql-driver/mysql#Config" rel="noreferrer" target="_blank"><code>Config</code></a>
+to specify properties and its
+<a href="https://pkg.go.dev/github.com/go-sql-driver/mysql#Config.FormatDSN" rel="noreferrer" target="_blank"><code>FormatDSN method</code></a>
+to build a connection string.</p>
+<pre><code>// Specify connection properties.
+cfg := mysql.NewConfig()
+cfg.User = username
+cfg.Passwd = password
+cfg.Net = &quot;tcp&quot;
+cfg.Addr = &quot;127.0.0.1:3306&quot;
+cfg.DBName = &quot;jazzrecords&quot;
+
+// Get a database handle.
+db, err = sql.Open(&quot;mysql&quot;, cfg.FormatDSN())
+if err != nil {
+    log.Fatal(err)
+}
+</code></pre>
+<h4 id="open_connector">Opening with a Connector</h4>
+<p>Use the <a href="https://pkg.go.dev/database/sql#OpenDB" rel="noreferrer" target="_blank"><code>sql.OpenDB function</code></a> when
+you want to take advantage of driver-specific connection features that aren&rsquo;t
+available in a connection string. Each driver supports its own set of
+connection properties, often providing ways to customize the connection request
+specific to the DBMS.</p>
+<p>Adapting the preceding <code>sql.Open</code> example to use <code>sql.OpenDB</code>, you could
+create a handle with code such as the following:</p>
+<pre><code>// Specify connection properties.
+cfg := mysql.NewConfig()
+cfg.User = username
+cfg.Passwd = password
+cfg.Net = &quot;tcp&quot;
+cfg.Addr = &quot;127.0.0.1:3306&quot;
+cfg.DBName = &quot;jazzrecords&quot;
+
+// Get a driver-specific connector.
+connector, err := mysql.NewConnector(&amp;cfg)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Get a database handle.
+db = sql.OpenDB(connector)
+</code></pre>
+<h4 id="handle_errors">Handling errors</h4>
+<p>Your code should check for an error from attempting to create a handle, such
+as with <code>sql.Open</code>. This won&rsquo;t be a connection error. Instead, you&rsquo;ll get an
+error if <code>sql.Open</code> was unable to initialize the handle. This could happen,
+for example, if it&rsquo;s unable to parse the DSN you specified.</p>
+<h3 id="confirm_connection">Confirming a connection</h3>
+<p>When you open a database handle, the <code>sql</code> package may not create a new
+database connection itself right away. Instead, it may create the connection
+when your code needs it. If you won&rsquo;t be using the database right away and
+want to confirm that a connection could be established, call
+<a href="https://pkg.go.dev/database/sql#DB.Ping" rel="noreferrer" target="_blank"><code>Ping</code></a> or
+<a href="https://pkg.go.dev/database/sql#DB.PingContext" rel="noreferrer" target="_blank"><code>PingContext</code></a>.</p>
+<p>Code in the following example pings the database to confirm a connection.</p>
+<pre><code>db, err = sql.Open(&quot;mysql&quot;, connString)
+
+// Confirm a successful connection.
+if err := db.Ping(); err != nil {
+    log.Fatal(err)
+}
+</code></pre>
+<h3 id="store_credentials">Storing database credentials</h3>
+<p>Avoid storing database credentials in your Go source, which could expose the
+contents of your database to others. Instead, find a way to store them in a
+location outside your code but available to it. For example, consider a
+secret keeper app that stores credentials and provides an API your code can
+use to retrieve credentials for authenticating with your DBMS.</p>
+<p>One popular approach is to store the secrets in the environment before the
+program starts, perhaps loaded from a secret manager, and then your Go program
+can read them using <a href="https://pkg.go.dev/os#Getenv" rel="noreferrer" target="_blank"><code>os.Getenv</code></a>:</p>
+<pre><code>username := os.Getenv(&quot;DB_USER&quot;)
+password := os.Getenv(&quot;DB_PASS&quot;)
+</code></pre>
+<p>This approach also lets you set the environment variables yourself for local
+testing.</p>
+<h3 id="free_resources">Freeing resources</h3>
+<p>Although you don&rsquo;t manage or close connections explicitly with the
+<code>database/sql</code> package, your code should free resources it has obtained when
+they&rsquo;re no longer needed. Those can include resources held by an <code>sql.Rows</code>
+representing data returned from a query or an <code>sql.Stmt</code> representing a
+prepared statement.</p>
+<p>Typically, you close resources by deferring a call to a <code>Close</code> function so
+that resources are released before the enclosing function exits.</p>
+<p>Code in the following example defers <code>Close</code> to free the resource held by
+<a href="https://pkg.go.dev/database/sql#Rows" rel="noreferrer" target="_blank"><code>sql.Rows</code></a>.</p>
+<pre><code>rows, err := db.Query(&quot;SELECT * FROM album WHERE artist = ?&quot;, artist)
+if err != nil {
+    log.Fatal(err)
+}
+defer rows.Close()
+
+// Loop through returned rows.
+</code></pre>
+</div>
+
+
+
+
+
+
+
+</article>
+
+
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="../devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/jquery.js"></script>
+  <script src="../../js/carousels.js"></script>
+  <script src="../../js/searchBox.js"></script>
+  <script src="../../js/misc.js"></script>
+  <script src="../../js/hats.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/godocs.js"></script>
+  <script async src="../../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

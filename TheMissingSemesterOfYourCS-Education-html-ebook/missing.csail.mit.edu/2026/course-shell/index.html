@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../static/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../static/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../static/assets/favicon-16x16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:url" content="https://missing.csail.mit.edu/2026/course-shell/">
+  <meta property="og:site_name" content="Missing Semester">
+
+  
+    
+    <meta name="description" content="Learn about the motivation for this class, and get started with the shell.">
+    <meta name="twitter:description" content="Learn about the motivation for this class, and get started with the shell.">
+    <meta property="og:description" content="Learn about the motivation for this class, and get started with the shell.">
+  
+
+  
+  <meta name="twitter:title" content="Course Overview + Introduction to the Shell">
+  <meta property="og:title" content="Course Overview + Introduction to the Shell">
+
+  
+  <meta name="twitter:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec1.png">
+  <meta property="og:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec1.png">
+
+  <title>
+    
+      
+        Course Overview + Introduction to the Shell &middot; Missing Semester
+      
+    
+  </title>
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/syntax.css">
+  <script defer src="../../static/js/sidenotes.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7WVHD84D1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P7WVHD84D1');
+  </script>
+
+</head>
+
+
+  <body>
+
+    <div id="nav-bg">
+  <nav id="top-nav">
+    <a href="../../index.html" id="logo">./missing-semester</a>
+    <input type="checkbox" id="menu-icon">
+    <label class="menu-label" for="menu-icon"></label>
+    <div class="trigger">
+      <div class="trigger-child">
+        <span class="nav-link"><a href="../index.html">lectures</a></span>
+        <span class="nav-link"><a href="../../past/index.html">past</a></span>
+        <span class="nav-link"><a href="../../about/index.html">about</a></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+    <div id="content">
+    <h1 class="title">Course Overview + Introduction to the Shell</h1>
+
+
+
+  <div class="youtube-wrapper" style="padding-bottom: 56.25%;">
+    <iframe src="https://www.youtube.com/embed/MSgoeuMqUmU" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+
+<h1 id="who-are-we">Who are we?</h1>
+
+<p>This class is co-taught by <a href="https://anish.io/">Anish</a>,
+<a href="https://thesquareplanet.com/">Jon</a>, and <a href="http://josejg.com/">Jose</a>. We
+are all ex-MIT students who started this MIT IAP class back when we were
+students. You can reach us collectively at
+<a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+
+<p>We are not paid to teach this class, and do not monetize the class in
+any way. We make all the <a href="../../index.html">course
+materials</a> and <a href="https://www.youtube.com/@MissingSemester">recordings of the
+lectures</a> freely available
+online. If you want to support our work, the best way to do so is to
+simply spread the word about the class. If you’re a company, university,
+or other organization that runs this content past larger cohorts, please
+send us experience reports/testimonials by email so we get to hear about
+it :)</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>As computer scientists, we know that computers are great at aiding in
+repetitive tasks. However, far too often, we forget that this applies
+just as much to our <em>use</em> of the computer as it does to the computations
+we want our programs to perform. We have a vast range of tools available
+at our fingertips that enable us to be more productive and solve more
+complex problems when working on any computer-related problem. Yet many
+of us utilize only a small fraction of those tools; we only know enough
+magical incantations by rote to get by, and blindly copy-paste commands
+from the internet when we get stuck.</p>
+
+<p>This class is an attempt to <a href="../../about/index.html">address this</a>.</p>
+
+<p>We want to teach you how to make the most of the tools you know, show
+you new tools to add to your toolbox, and hopefully instill in you some
+excitement for exploring (and perhaps building) more tools on your own.
+This is what we believe to be the missing semester from most Computer
+Science curricula.</p>
+
+<h1 id="class-structure">Class structure</h1>
+
+<p>The not-for-credit class consists of nine 1-hour lectures, each one
+centering on a <a href="../index.html">particular topic</a>. The lectures are largely
+independent, though as the semester goes on we will presume that you are
+familiar with the content from the earlier lectures. We have lecture
+notes online, but there may be content covered in class (e.g. in the
+form of demos) that may not be in the notes. As for past years, we will
+be recording lectures and posting the recordings
+<a href="https://www.youtube.com/@MissingSemester">online</a>.</p>
+
+<p>We are trying to cover a lot of ground over the course of just a few
+1-hour lectures, so the lectures are fairly dense. To allow you some
+time to get familiar with the content at your own pace, each lecture
+includes a set of exercises that guide you through the lecture’s key
+points. We will not be running dedicated office hours, but we encourage
+you to ask questions on the <a href="https://ossu.dev/#community">OSSU Discord</a>,
+in <code class="language-plaintext highlighter-rouge">#missing-semester-forum</code>, or email us at
+<a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+
+<p>Due to the limited time we have, we won’t be able to cover all the tools
+in the same level of detail a full-scale class might. Where possible, we
+will try to point you towards resources for digging further into a tool
+or topic, but if something particularly strikes your fancy, don’t
+hesitate to reach out to us and ask for pointers!</p>
+
+<p>Finally, if you have feedback about the class, please send it to us by
+email at <a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+
+<h1 id="topic-1-the-shell">Topic 1: The Shell</h1>
+
+<h2 id="what-is-the-shell">What is the shell?</h2>
+
+<p>Computers these days have a variety of interfaces for giving them
+commands; fanciful graphical user interfaces, voice interfaces, AR/VR,
+and more recently: LLMs. These are great for 80% of use-cases, but they
+are often fundamentally restricted in what they allow you to do — you
+cannot press a button that isn’t there or give a voice command that
+hasn’t been programmed. To take full advantage of the tools your
+computer provides, we have to go old-school and drop down to a textual
+interface: The Shell.</p>
+
+<p>Nearly all platforms you can get your hands on have a shell in one form
+or another, and many of them have several shells for you to choose from.
+While they may vary in the details, at their core they are all roughly
+the same: they allow you to run programs, give them input, and inspect
+their output in a semi-structured way.</p>
+
+<p>To open a shell <em>prompt</em> (where you can type commands), you first need a
+<em>terminal</em>, which is the visual interface to a shell. Your device
+probably shipped with one installed, or you can install one fairly
+easily:</p>
+
+<ul>
+  <li><strong>Linux:</strong>
+Press <code class="language-plaintext highlighter-rouge">Ctrl + Alt + T</code> (works on most distributions). Or search for
+“Terminal” in your applications menu.</li>
+  <li><strong>Windows:</strong>
+Press <code class="language-plaintext highlighter-rouge">Win + R</code>, type <code class="language-plaintext highlighter-rouge">cmd</code> or <code class="language-plaintext highlighter-rouge">powershell</code>, and press Enter.
+Alternatively, search “Terminal” or “Command Prompt” in the Start menu.</li>
+  <li><strong>macOS:</strong>
+Press <code class="language-plaintext highlighter-rouge">Cmd + Space</code> to open Spotlight, type “Terminal”, and press Enter.
+Or find it in Applications → Utilities → Terminal.</li>
+</ul>
+
+<p>On Linux and macOS, this will usually open the Bourne Again SHell, or
+“bash” for short. This is one of the most widely used shells, and its
+syntax is similar to what you will see in many other shells. On Windows,
+you’ll be greeted by the “batch” or “powershell” shells, depending on
+which command you ran. These are Windows-specific, and not what we’ll be
+focusing on in this class, although it has analogues for most of what
+we’ll be teaching. You’ll instead want the <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for
+Linux</a> or a Linux virtual
+machine.</p>
+
+<p>Other shells exist, often with many ergonomic improvements over bash
+(fish and zsh are among the most common). While these are very popular
+(all the instructors use one), they’re nowhere near as ubiquitous as
+bash, and lean on many of the same concepts, so we won’t be focusing on
+those in this lecture.</p>
+
+<h2 id="why-should-you-care-about-it">Why should you care about it?</h2>
+
+<p>The shell is not just (usually) much faster than “clicking around”, it
+also comes with expressive power you can’t easily find in any one
+graphical program. As we’ll see, the shell gives you the ability to
+<em>combine</em> programs in creative ways to automate nearly any task.</p>
+
+<p>Knowing your way around a shell is also very useful to navigate the
+world of open-source software (which often come with install
+instructions that require the shell), building continuous integration
+for your software projects (as described in the <a href="../code-quality/index.html">Code Quality
+lecture</a>), and debugging errors when other programs
+fail.</p>
+
+<h2 id="navigating-in-the-shell">Navigating in the shell</h2>
+
+<p>When you launch your terminal, you will see a <em>prompt</em> that often looks
+a little like this:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This is the main textual interface to the shell. It tells you that you
+are on the machine <code class="language-plaintext highlighter-rouge">missing</code> and that your “current working directory”,
+or where you currently are, is <code class="language-plaintext highlighter-rouge">~</code> (short for “home”). The <code class="language-plaintext highlighter-rouge">$</code> tells you
+that you are not the root user (more on that later). At this prompt you
+can type a <em>command</em>, which will then be interpreted by the shell. The
+most basic command is to execute a program:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">date</span>
+<span class="go">Fri 10 Jan 2020 11:49:31 AM EST
+</span><span class="gp">missing:~$</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Here, we executed the <code class="language-plaintext highlighter-rouge">date</code> program, which (perhaps unsurprisingly)
+prints the current date and time. The shell then asks us for another
+command to execute. We can also execute a command with <em>arguments</em>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">echo </span>hello
+<span class="go">hello
+</span></code></pre></div></div>
+
+<p>In this case, we told the shell to execute the program <code class="language-plaintext highlighter-rouge">echo</code> with the
+argument <code class="language-plaintext highlighter-rouge">hello</code>. The <code class="language-plaintext highlighter-rouge">echo</code> program simply prints out its arguments.
+The shell parses the command by splitting it by whitespace, and then
+runs the program indicated by the first word, supplying each subsequent
+word as an argument that the program can access. If you want to provide
+an argument that contains spaces or other special characters (e.g., a
+directory named “My Photos”), you can either quote the argument with <code class="language-plaintext highlighter-rouge">'</code>
+or <code class="language-plaintext highlighter-rouge">"</code> (<code class="language-plaintext highlighter-rouge">"My Photos"</code>), or escape just the relevant characters with <code class="language-plaintext highlighter-rouge">\</code>
+(<code class="language-plaintext highlighter-rouge">My\ Photos</code>).</p>
+
+<p>Perhaps the most important command when you’re starting out is <code class="language-plaintext highlighter-rouge">man</code>,
+short for “manual”. The <code class="language-plaintext highlighter-rouge">man</code> program, among other things, lets you look
+up more information about any command on your system. For example, if
+you run <code class="language-plaintext highlighter-rouge">man date</code>, it’ll explain what <code class="language-plaintext highlighter-rouge">date</code> is, and all of the various
+arguments you can pass it to alter its behavior. You can also usually
+get a short version of the help by passing <code class="language-plaintext highlighter-rouge">--help</code> as an argument to
+most commands.</p>
+
+<blockquote>
+  <p>Consider installing and using <a href="https://tldr.sh/"><code class="language-plaintext highlighter-rouge">tldr</code></a> in addition
+to <code class="language-plaintext highlighter-rouge">man</code>, as it shows you common usage examples right there in the
+terminal. LLMs are also usually very good at explaining how commands
+work and how you can call them to achieve what you want to accomplish.</p>
+</blockquote>
+
+<p>After <code class="language-plaintext highlighter-rouge">man</code>, the most important command to learn is <code class="language-plaintext highlighter-rouge">cd</code>, or “change
+directory”. This command is actually built into the shell, and isn’t a
+separate program (i.e., <code class="language-plaintext highlighter-rouge">which cd</code> will say “no cd found”). You pass it
+a path, and that path becomes your current working directory. You’ll
+also see the working directory reflected in the shell prompt:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">cd</span> /bin
+<span class="gp">missing:/bin$</span><span class="w"> </span><span class="nb">cd</span> /
+<span class="gp">missing:/$</span><span class="w"> </span><span class="nb">cd</span> ~
+<span class="gp">missing:~$</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>Note that the shell comes with auto-completion, so you can often
+complete paths faster by pressing <code class="language-plaintext highlighter-rouge">&lt;TAB&gt;</code>!</p>
+</blockquote>
+
+<p>A lot of commands operate on the current working directory if nothing
+else is specified. If you’re ever unsure where you are, you can run
+<code class="language-plaintext highlighter-rouge">pwd</code> or print the <code class="language-plaintext highlighter-rouge">$PWD</code> environment variable (with <code class="language-plaintext highlighter-rouge">echo $PWD</code>), both
+of which produce the current working directory.</p>
+
+<p>The current working directory also comes in handy in that it allows us to
+use <em>relative</em> paths. All the paths we’ve seen so far have been
+<em>absolute</em> — they start with <code class="language-plaintext highlighter-rouge">/</code> and give the full set of directories
+needed to navigate to some location from the root of the file system
+(<code class="language-plaintext highlighter-rouge">/</code>). In practice, you’ll more commonly work with relative paths; so
+called because they are relative to the current working directory. In a
+relative path (anything <em>not</em> starting with <code class="language-plaintext highlighter-rouge">/</code>), the first path
+component is looked up in the current working directory, and subsequent
+components traverse as usual. For example:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">cd</span> /
+<span class="gp">missing:/$</span><span class="w"> </span><span class="nb">cd </span>bin
+<span class="gp">missing:/bin$</span><span class="w">
+</span></code></pre></div></div>
+
+<p>There are also two “special” components that exist in every directory:
+<code class="language-plaintext highlighter-rouge">.</code> and <code class="language-plaintext highlighter-rouge">..</code>. <code class="language-plaintext highlighter-rouge">.</code> is “this directory”, and <code class="language-plaintext highlighter-rouge">..</code> is “the parent
+directory”. So:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">cd</span> /
+<span class="gp">missing:/$</span><span class="w"> </span><span class="nb">cd </span>bin/../bin/../bin/././../bin/..
+<span class="gp">missing:/$</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You can usually use absolute and relative paths interchangeably for any
+command argument, just keep in mind what your current working directory
+is when using a relative one!</p>
+
+<blockquote>
+  <p>Consider installing and using
+<a href="https://github.com/ajeetdsouza/zoxide"><code class="language-plaintext highlighter-rouge">zoxide</code></a> to speed up your
+<code class="language-plaintext highlighter-rouge">cd</code>ing — <code class="language-plaintext highlighter-rouge">z</code> will remember the paths you frequently visit and let
+you access with less typing.</p>
+</blockquote>
+
+<h2 id="what-is-available-in-the-shell">What is available in the shell?</h2>
+
+<p>But how does the shell know how to find programs like <code class="language-plaintext highlighter-rouge">date</code> or <code class="language-plaintext highlighter-rouge">echo</code>?
+If the shell is asked to execute a command, it consults an <em>environment
+variable</em> called <code class="language-plaintext highlighter-rouge">$PATH</code> that lists which directories the shell should
+search for programs when it is given a command:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$PATH</span>
+<span class="go">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span><span class="gp">missing:~$</span><span class="w"> </span>which <span class="nb">echo</span>
+<span class="go">/bin/echo
+</span><span class="gp">missing:~$</span><span class="w"> </span>/bin/echo <span class="nv">$PATH</span>
+<span class="go">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span></code></pre></div></div>
+
+<p>When we run the <code class="language-plaintext highlighter-rouge">echo</code> command, the shell sees that it should execute
+the program <code class="language-plaintext highlighter-rouge">echo</code>, and then searches through the <code class="language-plaintext highlighter-rouge">:</code>-separated list of
+directories in <code class="language-plaintext highlighter-rouge">$PATH</code> for a file by that name. When it finds it, it
+runs it (assuming the file is <em>executable</em>; more on that later). We can
+find out which file is executed for a given program name using the
+<code class="language-plaintext highlighter-rouge">which</code> program. We can also bypass <code class="language-plaintext highlighter-rouge">$PATH</code> entirely by giving the
+<em>path</em> to the file we want to execute.</p>
+
+<p>This also gives a clue for how we can determine <em>all</em> the programs we’re
+able to execute in the shell: by listing the contents of all the
+directories on <code class="language-plaintext highlighter-rouge">$PATH</code>. We can do this by passing a given directory path
+to the <code class="language-plaintext highlighter-rouge">ls</code> program, which lists files:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">ls</span> /bin
+</code></pre></div></div>
+
+<blockquote>
+  <p>Consider installing and using <a href="https://eza.rocks/"><code class="language-plaintext highlighter-rouge">eza</code></a> for a more
+human-friendly <code class="language-plaintext highlighter-rouge">ls</code>.</p>
+</blockquote>
+
+<p>This will, on most computers, print a <em>lot</em> of programs, but we’ll only
+focus on some of the most important ones here. First, some simple ones:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">cat file</code>, which prints the contents of <code class="language-plaintext highlighter-rouge">file</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">sort file</code>, which prints out the lines of <code class="language-plaintext highlighter-rouge">file</code> in sorted order.</li>
+  <li><code class="language-plaintext highlighter-rouge">uniq file</code>, which eliminates consecutive duplicate lines from <code class="language-plaintext highlighter-rouge">file</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">head file</code> and <code class="language-plaintext highlighter-rouge">tail file</code>, which respectively print the first and
+last few lines of <code class="language-plaintext highlighter-rouge">file</code>.</li>
+</ul>
+
+<blockquote>
+  <p>Consider installing and using <a href="https://github.com/sharkdp/bat"><code class="language-plaintext highlighter-rouge">bat</code></a>
+over <code class="language-plaintext highlighter-rouge">cat</code> for syntax highlighting and scrolling.</p>
+</blockquote>
+
+<p>There’s also <code class="language-plaintext highlighter-rouge">grep pattern file</code>, which finds lines matching <code class="language-plaintext highlighter-rouge">pattern</code>
+in <code class="language-plaintext highlighter-rouge">file</code>. This one deserves slightly more attention as it’s both <em>very</em>
+useful and sports a wider array of features than one may expect.
+<code class="language-plaintext highlighter-rouge">pattern</code> is actually a <em>regular expression</em> which can express very
+complex patterns — we’ll <a href="../code-quality/index.html#regular-expressions">cover
+those</a>
+in the code quality lecture. You can also specify a directory instead of a
+file (or leave it off for <code class="language-plaintext highlighter-rouge">.</code>) and pass <code class="language-plaintext highlighter-rouge">-r</code> to recursively search all
+the files in a directory.</p>
+
+<blockquote>
+  <p>Consider installing and using
+<a href="https://github.com/BurntSushi/ripgrep"><code class="language-plaintext highlighter-rouge">ripgrep</code></a> over <code class="language-plaintext highlighter-rouge">grep</code> for a
+faster and more human-friendly (but less portable) alternative.
+<code class="language-plaintext highlighter-rouge">ripgrep</code> will also recursively search the current working directory
+by default!</p>
+</blockquote>
+
+<p>There are also some very useful tools with a slightly more complicated
+interface. First among those is <code class="language-plaintext highlighter-rouge">sed</code>, which is a programmatic file
+editor. It has its own programming language for making automated edits
+to files, but the most common use of it is:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/pattern/replacement/g'</span> file
+</code></pre></div></div>
+
+<p>This replaces all instances of <code class="language-plaintext highlighter-rouge">pattern</code> with <code class="language-plaintext highlighter-rouge">replacement</code> in <code class="language-plaintext highlighter-rouge">file</code>.
+The <code class="language-plaintext highlighter-rouge">-i</code> indicates that we want the substitutions to happen inline (as
+opposed to leaving <code class="language-plaintext highlighter-rouge">file</code> unmodified and printing the substituted
+contents). The <code class="language-plaintext highlighter-rouge">s/</code> is the way to express in the sed programming
+language that we want to do a substitution. The <code class="language-plaintext highlighter-rouge">/</code> separates the
+pattern from the replacement. And the trailing <code class="language-plaintext highlighter-rouge">/g</code> indicates that we
+want to replace <em>all</em> occurrences on each line rather than just the
+first. As with <code class="language-plaintext highlighter-rouge">grep</code>, <code class="language-plaintext highlighter-rouge">pattern</code> here is a regular expression, which
+gives you significant expressive power. Regular expression substitutions
+also allow <code class="language-plaintext highlighter-rouge">replacement</code> to refer back to parts of the matched pattern;
+we’ll see an example of that in a second.</p>
+
+<p>Next, we have <code class="language-plaintext highlighter-rouge">find</code>, which lets you find files (recursively) that match
+certain conditions. For example:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span>find ~/Downloads <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s2">"*.zip"</span> <span class="nt">-mtime</span> +30
+</code></pre></div></div>
+
+<p>Finds ZIP files in the download directory that are older than 30 days.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span>find ~ <span class="nt">-type</span> f <span class="nt">-size</span> +100M <span class="nt">-exec</span> <span class="nb">ls</span> <span class="nt">-lh</span> <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></div></div>
+
+<p>Finds files larger than 100M in your home directory and lists them. Note
+that <code class="language-plaintext highlighter-rouge">-exec</code> takes a <em>command</em> terminated with a stand-alone <code class="language-plaintext highlighter-rouge">;</code> (which
+we need to escape much like a space) where <code class="language-plaintext highlighter-rouge">{}</code> is replaced with each
+matching file path by <code class="language-plaintext highlighter-rouge">find</code>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span>find <span class="nb">.</span> <span class="nt">-name</span> <span class="s2">"*.py"</span> <span class="nt">-exec</span> <span class="nb">grep</span> <span class="nt">-l</span> <span class="s2">"TODO"</span> <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></div></div>
+
+<p>Finds any <code class="language-plaintext highlighter-rouge">.py</code> files with TODO items in them.</p>
+
+<p>The syntax of <code class="language-plaintext highlighter-rouge">find</code> can be a little daunting, but hopefully this gives
+you a sense of how useful it can be!</p>
+
+<blockquote>
+  <p>Consider installing and using <a href="https://github.com/sharkdp/fd"><code class="language-plaintext highlighter-rouge">fd</code></a>
+instead of <code class="language-plaintext highlighter-rouge">find</code> for a more human-friendly (but less portable!)
+experience.</p>
+</blockquote>
+
+<p>Next on the docket is <code class="language-plaintext highlighter-rouge">awk</code>, which, like <code class="language-plaintext highlighter-rouge">sed</code>, has its own programming
+language. Where <code class="language-plaintext highlighter-rouge">sed</code> is built for editing files, <code class="language-plaintext highlighter-rouge">awk</code> is built for
+parsing them. By far the most common use of <code class="language-plaintext highlighter-rouge">awk</code> is for data files with
+a regular syntax (like CSV files) where you want to extract only certain
+parts of every record (i.e., line):</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span><span class="nb">awk</span> <span class="s1">'{print $2}'</span> file
+</code></pre></div></div>
+
+<p>Prints the second whitespace-separated column of every line of <code class="language-plaintext highlighter-rouge">file</code>.
+If you add <code class="language-plaintext highlighter-rouge">-F,</code>, it’ll print the second comma-separated column of every
+line. <code class="language-plaintext highlighter-rouge">awk</code> can do much more — filtering rows, computing aggregates,
+and more — see the exercises for a taste.</p>
+
+<p>Putting these tools together, we can do fancy things like:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">missing:~$</span><span class="w"> </span>ssh myserver <span class="s1">'journalctl -u sshd -b-1 | grep "Disconnected from"'</span> <span class="se">\</span>
+<span class="go">  | sed -E 's/.*Disconnected from .* user (.*) [^ ]+ port.*/\1/' \
+  | sort | uniq -c \
+  | sort -nk1,1 | tail -n10 \
+</span><span class="gp">  | awk '{print $</span>2<span class="o">}</span><span class="s1">' | paste -sd,
+</span><span class="go">postgres,mysql,oracle,dell,ubuntu,inspur,test,admin,user,root
+</span></code></pre></div></div>
+
+<p>This grabs SSH logs from a remote server (we’ll talk more about <code class="language-plaintext highlighter-rouge">ssh</code> in
+the next lecture), searches for disconnect messages, extracts the
+username from each such message, and prints the top 10 usernames
+comma-separated. All in one command! We’ll leave dissecting each step as
+an exercise.</p>
+
+<h2 id="the-shell-language-bash">The shell language (bash)</h2>
+
+<p>The previous example introduced a new concept: pipes (<code class="language-plaintext highlighter-rouge">|</code>). These let
+you string together the output of one program with the input of another.
+This works because most command-line programs will operate on their
+“standard input” (where your keystrokes normally go) if no <code class="language-plaintext highlighter-rouge">file</code>
+argument is given. <code class="language-plaintext highlighter-rouge">|</code> takes the “standard output” (what normally gets
+printed to your terminal) of the program before the <code class="language-plaintext highlighter-rouge">|</code> and makes it be
+the standard input of the program after the <code class="language-plaintext highlighter-rouge">|</code>. This allows you to
+<em>compose</em> shell programs, and it’s part of what makes the shell such a
+productive environment to work in!</p>
+
+<p>In fact, most shells implement a full programming language (like bash),
+just like Python or Ruby. It has variables, conditionals, loops, and
+functions. When you run commands in your shell, you are really writing a
+small bit of code that your shell interprets. We won’t teach you all of
+bash today, but there are some bits you’ll find particularly useful:</p>
+
+<p>First, redirects: <code class="language-plaintext highlighter-rouge">&gt;file</code> lets you take the standard output of a program
+and write it to <code class="language-plaintext highlighter-rouge">file</code> instead of to your terminal. This makes it easier
+to analyze after the fact. <code class="language-plaintext highlighter-rouge">&gt;&gt;file</code> will append to <code class="language-plaintext highlighter-rouge">file</code> rather than
+overwrite it. There’s also <code class="language-plaintext highlighter-rouge">&lt;file</code> which tells the shell to read from
+<code class="language-plaintext highlighter-rouge">file</code> instead of from your keyboard as the standard input to a program.</p>
+
+<blockquote>
+  <p>This is a good time to mention the <code class="language-plaintext highlighter-rouge">tee</code> program. <code class="language-plaintext highlighter-rouge">tee</code> will print
+standard input to standard output (just like <code class="language-plaintext highlighter-rouge">cat</code>!), but will <em>also</em>
+write it to a file. So <code class="language-plaintext highlighter-rouge">verbose cmd | tee verbose.log | grep CRITICAL</code>
+will preserve the full verbose log to a file while keeping your
+terminal clean!</p>
+</blockquote>
+
+<p>Next, conditionals: <code class="language-plaintext highlighter-rouge">if command1; then command2; command3; fi</code> will
+execute <code class="language-plaintext highlighter-rouge">command1</code>, and if it doesn’t result in an error, will run
+<code class="language-plaintext highlighter-rouge">command2</code> and <code class="language-plaintext highlighter-rouge">command3</code>. You can also have an <code class="language-plaintext highlighter-rouge">else</code> branch if you
+wish. The most common command to use as <code class="language-plaintext highlighter-rouge">command1</code> is the <code class="language-plaintext highlighter-rouge">test</code>
+command, often abbreviated simply as <code class="language-plaintext highlighter-rouge">[</code>, which lets you evaluate
+conditions like “does a file exist” (<code class="language-plaintext highlighter-rouge">test -f file</code> / <code class="language-plaintext highlighter-rouge">[ -f file ]</code>) or
+“does a string equal another” (<code class="language-plaintext highlighter-rouge">[ "$var" = "string" ]</code>). In bash,
+there’s also <code class="language-plaintext highlighter-rouge">[[ ]]</code>, which is a “safer” built-in version of <code class="language-plaintext highlighter-rouge">test</code> that
+has fewer odd behaviours around quoting.</p>
+
+<p>Bash also has two forms of loops, <code class="language-plaintext highlighter-rouge">while</code> and <code class="language-plaintext highlighter-rouge">for</code>. <code class="language-plaintext highlighter-rouge">while command1; do
+command2; command3; done</code> functions just like the equivalent <code class="language-plaintext highlighter-rouge">if</code>
+command, except that it will re-execute the whole thing over and over
+for as long as <code class="language-plaintext highlighter-rouge">command1</code> does not error. <code class="language-plaintext highlighter-rouge">for varname in a b c d; do
+command; done</code> executes <code class="language-plaintext highlighter-rouge">command</code> four times, each time with <code class="language-plaintext highlighter-rouge">$varname</code>
+set to one of <code class="language-plaintext highlighter-rouge">a</code>, <code class="language-plaintext highlighter-rouge">b</code>, <code class="language-plaintext highlighter-rouge">c</code>, and <code class="language-plaintext highlighter-rouge">d</code>. Instead of listing the items
+explicitly, you’ll often use “command substitution”, such as:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>1 10<span class="si">)</span><span class="p">;</span> <span class="k">do</span>
+</code></pre></div></div>
+
+<p>This executes the command <code class="language-plaintext highlighter-rouge">seq 1 10</code> (which prints the numbers from 1 to
+10 inclusive) and then replaces the whole <code class="language-plaintext highlighter-rouge">$()</code> with that command’s
+output, giving you a 10-iteration for loop. In older code you’ll
+sometimes see literal backticks (like <code class="language-plaintext highlighter-rouge">for i in `seq 1 10`; do</code>)
+instead of <code class="language-plaintext highlighter-rouge">$()</code>, but you should strongly prefer the <code class="language-plaintext highlighter-rouge">$()</code> form as it
+can be nested.</p>
+
+<p>While you <em>can</em> write long shell scripts directly in your prompt, you’ll
+usually want to write them into a <code class="language-plaintext highlighter-rouge">.sh</code> file instead. For example,
+here’s a script that will run a program in a loop until it fails,
+printing the output only of the failed run, while stressing your CPU in
+the background (useful to reproduce flaky tests for example):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+
+<span class="c"># Start CPU stress in background</span>
+stress <span class="nt">--cpu</span> 8 &amp;
+<span class="nv">STRESS_PID</span><span class="o">=</span><span class="nv">$!</span>
+
+<span class="c"># Setup log file</span>
+<span class="nv">LOGFILE</span><span class="o">=</span><span class="s2">"test_runs_</span><span class="si">$(</span><span class="nb">date</span> +%s<span class="si">)</span><span class="s2">.log"</span>
+<span class="nb">echo</span> <span class="s2">"Logging to </span><span class="nv">$LOGFILE</span><span class="s2">"</span>
+
+<span class="c"># Run tests until one fails</span>
+<span class="nv">RUN</span><span class="o">=</span>1
+<span class="k">while </span>cargo <span class="nb">test </span>my_test <span class="o">&gt;</span> <span class="s2">"</span><span class="nv">$LOGFILE</span><span class="s2">"</span> 2&gt;&amp;1<span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="s2">"Run </span><span class="nv">$RUN</span><span class="s2"> passed"</span>
+    <span class="o">((</span>RUN++<span class="o">))</span>
+<span class="k">done</span>
+
+<span class="c"># Cleanup and report</span>
+<span class="nb">kill</span> <span class="nv">$STRESS_PID</span>
+<span class="nb">echo</span> <span class="s2">"Test failed on run </span><span class="nv">$RUN</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"Last 20 lines of output:"</span>
+<span class="nb">tail</span> <span class="nt">-n</span> 20 <span class="s2">"</span><span class="nv">$LOGFILE</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"Full log: </span><span class="nv">$LOGFILE</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>This has a number of new things in it that I recommend you spend some
+time diving into, as they’re very useful in crafting useful shell
+invocations like background jobs (<code class="language-plaintext highlighter-rouge">&amp;</code>) to run programs concurrently,
+trickier <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html">shell
+redirections</a>,
+and <a href="https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html">arithmetic
+expansion</a>.</p>
+
+<p>It’s worth spending a second on the first two lines of the program
+though. The first is the “shebang” – you’ll see this at the top of
+other files than shell scripts too. When a file that starts with the
+magic incantation <code class="language-plaintext highlighter-rouge">#!/path</code> is executed, the shell will start the
+program at <code class="language-plaintext highlighter-rouge">/path</code>, and pass it the contents of the file as input. In
+the case of a shell script, this means passing the contents of the shell
+script to <code class="language-plaintext highlighter-rouge">/bin/bash</code>, but you can also write Python scripts with a
+shebang line of <code class="language-plaintext highlighter-rouge">/usr/bin/python</code>!</p>
+
+<p>The second line is a way to make bash “stricter”, and mitigate a number
+of footguns when writing shell scripts. <code class="language-plaintext highlighter-rouge">set</code> can take a whole lot of
+arguments, but briefly: <code class="language-plaintext highlighter-rouge">-e</code> makes it so that if any command fails, the
+script exits early; <code class="language-plaintext highlighter-rouge">-u</code> makes it so that use of undefined variables
+crashes the script rather than just using an empty string; and <code class="language-plaintext highlighter-rouge">-o
+pipefail</code> makes it so that if programs in a <code class="language-plaintext highlighter-rouge">|</code> sequence fail, the
+shell script as a whole also exits early.</p>
+
+<blockquote>
+  <p>Shell programming is a deep topic, just as any programming language
+is, but be warned: bash has an unusual number of gotchas, to the point
+that there are <a href="https://tldp.org/LDP/abs/html/gotchas.html">multiple</a>
+websites dedicated to <a href="https://mywiki.wooledge.org/BashPitfalls">listing them</a>.
+I highly recommend making heavy use of
+<a href="https://www.shellcheck.net/">shellcheck</a> when writing them. LLMs are
+also great at writing and debugging shell scripts, as well as
+translating them to a “real” programming language (like Python) when
+they’ve grown too unwieldy for bash (100+ lines).</p>
+</blockquote>
+
+<h1 id="next-steps">Next steps</h1>
+
+<p>At this point you know your way around a shell enough to accomplish
+basic tasks. You should be able to navigate around to find files of
+interest and use the basic functionality of most programs. In the next
+lecture, we will talk about how to perform and automate more complex
+tasks using the shell and the many handy command-line programs out
+there.</p>
+
+<h1 id="exercises">Exercises</h1>
+
+<p>All classes in this course are accompanied by a series of exercises.
+Some give you a specific task to do, while others are open-ended, like
+“try using X and Y programs”. We highly encourage you to try them out.</p>
+
+<p>We have not written solutions for the exercises. If you are stuck on
+anything in particular, feel free to post in <code class="language-plaintext highlighter-rouge">#missing-semester-forum</code>
+on <a href="https://ossu.dev/#community">Discord</a> or send us an email describing
+what you’ve tried so far, and we will try to help you out. These
+exercises will also likely work well as initial prompts in a
+conversation with an LLM where you can interactively dive into the
+topic. The real value in these exercises is the journey of discovering
+the answers, not the answer itself. We encourage you to follow tangents
+and ask “why” as you work through them, rather than just looking for the
+shortest path to the solution.</p>
+
+<ol>
+  <li>
+    <p>For this course, you need to be using a Unix shell like Bash or ZSH. If
+you are on Linux or macOS, you don’t have to do anything special. If you
+are on Windows, you need to make sure you are not running cmd.exe or
+PowerShell; you can use <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for
+Linux</a> or a Linux virtual
+machine to use Unix-style command-line tools. To make sure you’re running
+an appropriate shell, you can try the command <code class="language-plaintext highlighter-rouge">echo $SHELL</code>. If it says
+something like <code class="language-plaintext highlighter-rouge">/bin/bash</code> or <code class="language-plaintext highlighter-rouge">/usr/bin/zsh</code>, that means you’re running
+the right program.</p>
+  </li>
+  <li>
+    <p>What does the <code class="language-plaintext highlighter-rouge">-l</code> flag to <code class="language-plaintext highlighter-rouge">ls</code> do? Run <code class="language-plaintext highlighter-rouge">ls -l /</code> and examine the output.
+What do the first 10 characters of each line mean? (Hint: <code class="language-plaintext highlighter-rouge">man ls</code>)</p>
+  </li>
+  <li>
+    <p>In the command <code class="language-plaintext highlighter-rouge">find ~/Downloads -type f -name "*.zip" -mtime +30</code>, the
+<code class="language-plaintext highlighter-rouge">*.zip</code> is a “glob”. What is a glob? Create a test directory with some
+files and experiment with patterns like <code class="language-plaintext highlighter-rouge">ls *.txt</code>, <code class="language-plaintext highlighter-rouge">ls file?.txt</code>, and
+<code class="language-plaintext highlighter-rouge">ls {a,b,c}.txt</code>. See <a href="https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html">Pattern
+Matching</a>
+in the Bash manual.</p>
+  </li>
+  <li>
+    <p>What’s the difference between <code class="language-plaintext highlighter-rouge">'single quotes'</code>, <code class="language-plaintext highlighter-rouge">"double quotes"</code>, and
+<code class="language-plaintext highlighter-rouge">$'ANSI quotes'</code>? Write a command that echoes a string containing a
+literal <code class="language-plaintext highlighter-rouge">$</code>, a <code class="language-plaintext highlighter-rouge">!</code>, and a newline character. See
+<a href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html">Quoting</a>.</p>
+  </li>
+  <li>
+    <p>The shell has three standard streams: stdin (0), stdout (1), and stderr
+(2). Run <code class="language-plaintext highlighter-rouge">ls /nonexistent /tmp</code> and redirect stdout to one file and
+stderr to another. How would you redirect both to the same file? See
+<a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html">Redirections</a>.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">$?</code> holds the exit status of the last command (0 = success). <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> runs
+the next command only if the previous succeeded; <code class="language-plaintext highlighter-rouge">||</code> runs it only if
+the previous failed. Write a one-liner that creates <code class="language-plaintext highlighter-rouge">/tmp/mydir</code> only if
+it doesn’t already exist. See <a href="https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html">Exit
+Status</a>.</p>
+  </li>
+  <li>
+    <p>Why does <code class="language-plaintext highlighter-rouge">cd</code> have to be built into the shell itself rather than a
+standalone program? (Hint: think about what a child process can and
+cannot affect in its parent.)</p>
+  </li>
+  <li>
+    <p>Write a script that takes a filename as an argument (<code class="language-plaintext highlighter-rouge">$1</code>) and checks
+whether the file exists using <code class="language-plaintext highlighter-rouge">test -f</code> or <code class="language-plaintext highlighter-rouge">[ -f ... ]</code>. It should print
+different messages depending on whether the file exists. See <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html">Bash
+Conditional
+Expressions</a>.</p>
+  </li>
+  <li>
+    <p>Save the script from the previous exercise to a file (e.g., <code class="language-plaintext highlighter-rouge">check.sh</code>).
+Try running it with <code class="language-plaintext highlighter-rouge">./check.sh somefile</code>. What happens? Now run
+<code class="language-plaintext highlighter-rouge">chmod +x check.sh</code> and try again. Why is this step necessary? (Hint:
+look at <code class="language-plaintext highlighter-rouge">ls -l check.sh</code> before and after the <code class="language-plaintext highlighter-rouge">chmod</code>.)</p>
+  </li>
+  <li>
+    <p>What happens if you add <code class="language-plaintext highlighter-rouge">-x</code> to the <code class="language-plaintext highlighter-rouge">set</code> flags in a script? Try it with
+ a simple script and observe the output. See <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">The Set
+ Builtin</a>.</p>
+  </li>
+  <li>
+    <p>Write a command that copies a file to a backup with today’s date in the
+ filename (e.g., <code class="language-plaintext highlighter-rouge">notes.txt</code> → <code class="language-plaintext highlighter-rouge">notes_2026-01-12.txt</code>). (Hint: <code class="language-plaintext highlighter-rouge">$(date
+ +%Y-%m-%d)</code>). See <a href="https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html">Command
+ Substitution</a>.</p>
+  </li>
+  <li>
+    <p>Modify the flaky test script from the lecture to accept the test command
+ as an argument instead of hardcoding <code class="language-plaintext highlighter-rouge">cargo test my_test</code>. (Hint: <code class="language-plaintext highlighter-rouge">$1</code>
+ or <code class="language-plaintext highlighter-rouge">$@</code>). See <a href="https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html">Special
+ Parameters</a>.</p>
+  </li>
+  <li>
+    <p>Use pipes to find the 5 most common file extensions in your home
+ directory. (Hint: combine <code class="language-plaintext highlighter-rouge">find</code>, <code class="language-plaintext highlighter-rouge">grep</code> or <code class="language-plaintext highlighter-rouge">sed</code> or <code class="language-plaintext highlighter-rouge">awk</code>, <code class="language-plaintext highlighter-rouge">sort</code>,
+ <code class="language-plaintext highlighter-rouge">uniq -c</code>, and <code class="language-plaintext highlighter-rouge">head</code>.)</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">xargs</code> converts lines from stdin into command arguments. Use <code class="language-plaintext highlighter-rouge">find</code> and
+ <code class="language-plaintext highlighter-rouge">xargs</code> together (not <code class="language-plaintext highlighter-rouge">find -exec</code>) to find all <code class="language-plaintext highlighter-rouge">.sh</code> files in a
+ directory and count the lines in each with <code class="language-plaintext highlighter-rouge">wc -l</code>. Bonus: make it
+ handle filenames with spaces. (Hint: <code class="language-plaintext highlighter-rouge">-print0</code> and <code class="language-plaintext highlighter-rouge">-0</code>). See <code class="language-plaintext highlighter-rouge">man
+ xargs</code>.</p>
+  </li>
+  <li>
+    <p>Use <code class="language-plaintext highlighter-rouge">curl</code> to fetch the HTML of the course website
+ (<code class="language-plaintext highlighter-rouge">https://missing.csail.mit.edu/</code>) and pipe it to <code class="language-plaintext highlighter-rouge">grep</code> to count how
+ many lectures are listed. (Hint: look for a pattern that appears once
+ per lecture; use <code class="language-plaintext highlighter-rouge">curl -s</code> to silence the progress output.)</p>
+  </li>
+  <li>
+    <p><a href="https://jqlang.github.io/jq/"><code class="language-plaintext highlighter-rouge">jq</code></a> is a powerful tool for processing
+ JSON data. Fetch the sample data at
+ <code class="language-plaintext highlighter-rouge">https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json</code> with
+ <code class="language-plaintext highlighter-rouge">curl</code> and use <code class="language-plaintext highlighter-rouge">jq</code> to extract just the names of people whose version
+ is greater than 6. (Hint: pipe to <code class="language-plaintext highlighter-rouge">jq .</code> first to see the structure;
+ then try <code class="language-plaintext highlighter-rouge">jq '.[] | select(...) | .name'</code>)</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">awk</code> can filter lines based on column values and manipulate output.
+ For example, <code class="language-plaintext highlighter-rouge">awk '$3 ~ /pattern/ {$4=""; print}'</code> prints only lines
+ where the third column matches <code class="language-plaintext highlighter-rouge">pattern</code>, while omitting the fourth
+ column. Write an <code class="language-plaintext highlighter-rouge">awk</code> command that prints only lines where the second
+ column is greater than 100, and swaps the first and third columns. Test
+ with: <code class="language-plaintext highlighter-rouge">printf 'a 50 x\nb 150 y\nc 200 z\n'</code></p>
+  </li>
+  <li>
+    <p>Dissect the SSH log pipeline from the lecture: what does each step do?
+ Then build something similar to find your most-used shell commands from
+ <code class="language-plaintext highlighter-rouge">~/.bash_history</code> (or <code class="language-plaintext highlighter-rouge">~/.zsh_history</code>).</p>
+  </li>
+</ol>
+
+
+<hr>
+
+<div class="small center">
+<p><a href="https://github.com/missing-semester/missing-semester/blob/master/_2026/course-shell.md">Edit this page</a>.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA</a>.</p>
+</div>
+
+    </div>
+
+  </body>
+
+</html>

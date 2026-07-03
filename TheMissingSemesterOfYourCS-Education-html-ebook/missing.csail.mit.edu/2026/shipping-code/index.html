@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../static/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../static/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../static/assets/favicon-16x16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:url" content="https://missing.csail.mit.edu/2026/shipping-code/">
+  <meta property="og:site_name" content="Missing Semester">
+
+  
+    
+    <meta name="description" content="Learn about project packaging, environments, versioning, and deploying libraries, applications, and services.">
+    <meta name="twitter:description" content="Learn about project packaging, environments, versioning, and deploying libraries, applications, and services.">
+    <meta property="og:description" content="Learn about project packaging, environments, versioning, and deploying libraries, applications, and services.">
+  
+
+  
+  <meta name="twitter:title" content="Packaging and Shipping Code">
+  <meta property="og:title" content="Packaging and Shipping Code">
+
+  
+  <meta name="twitter:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec6.png">
+  <meta property="og:image" content="https://missing.csail.mit.edu/static/assets/thumbnails/2026/lec6.png">
+
+  <title>
+    
+      
+        Packaging and Shipping Code &middot; Missing Semester
+      
+    
+  </title>
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/syntax.css">
+  <script defer src="../../static/js/sidenotes.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7WVHD84D1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P7WVHD84D1');
+  </script>
+
+</head>
+
+
+  <body>
+
+    <div id="nav-bg">
+  <nav id="top-nav">
+    <a href="../../index.html" id="logo">./missing-semester</a>
+    <input type="checkbox" id="menu-icon">
+    <label class="menu-label" for="menu-icon"></label>
+    <div class="trigger">
+      <div class="trigger-child">
+        <span class="nav-link"><a href="../index.html">lectures</a></span>
+        <span class="nav-link"><a href="../../past/index.html">past</a></span>
+        <span class="nav-link"><a href="../../about/index.html">about</a></span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+    <div id="content">
+    <h1 class="title">Packaging and Shipping Code</h1>
+
+
+
+  <div class="youtube-wrapper" style="padding-bottom: 56.25%;">
+    <iframe src="https://www.youtube.com/embed/KBMiB-8P4Ns" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+
+<p>Getting code to work as intended is hard; getting that same code to run on a machine different from your own is often harder.</p>
+
+<p>Shipping code means taking the code you wrote and converting it into a usable form that someone else can run without your computer’s exact setup.
+Shipping code takes many forms and depends on the choices of programming language, system libraries, and operating system, among many other factors.
+It also depends on what you are building: a software library, a command line tool, and a web service all have different requirements and deployment steps.
+Regardless, there is a common pattern between all these scenarios: we need to define what the deliverable is — a.k.a. the <em>artifact</em> — and what assumptions it makes about the environment around it.</p>
+
+<p>In this lecture, we’ll cover:</p>
+
+<ul>
+  <li><a href="index.html#dependencies--environments">Dependencies &amp; Environments</a></li>
+  <li><a href="index.html#artifacts--packaging">Artifacts &amp; Packaging</a></li>
+  <li><a href="index.html#releases--versioning">Releases &amp; Versioning</a></li>
+  <li><a href="index.html#reproducibility">Reproducibility</a></li>
+  <li><a href="index.html#vms--containers">VMs &amp; Containers</a></li>
+  <li><a href="index.html#configuration">Configuration</a></li>
+  <li><a href="index.html#services--orchestration">Services &amp; Orchestration</a></li>
+  <li><a href="index.html#publishing">Publishing</a></li>
+</ul>
+
+<p>We’ll explain these concepts through examples from the Python ecosystem, as concrete examples are helpful for understanding. While the tools are different for other programming language ecosystems, the concepts will largely be the same.</p>
+
+<h1 id="dependencies--environments">Dependencies &amp; Environments</h1>
+
+<p>In modern software development, layers of abstraction are ubiquitous.
+Programs naturally offload logic to other libraries or services.
+However, this introduces a <em>dependency</em> relationship between your program and the libraries it requires to function.
+For instance, in Python, to fetch the content of a website we often do:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://missing.csail.mit.edu"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Yet the <code class="language-plaintext highlighter-rouge">requests</code> library does not come bundled with the Python runtime, so if we try to run this code without having <code class="language-plaintext highlighter-rouge">requests</code> installed, Python will raise an error:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python fetch.py
+<span class="go">Traceback (most recent call last):
+</span><span class="gp">  File "fetch.py", line 1, in &lt;module&gt;</span><span class="w">
+</span><span class="go">    import requests
+ModuleNotFoundError: No module named 'requests'
+</span></code></pre></div></div>
+
+<p>To make this library available we need to first run <code class="language-plaintext highlighter-rouge">pip install requests</code> to install it.
+<code class="language-plaintext highlighter-rouge">pip</code> is the command line tool that the Python programming language provides for installing packages.
+Executing <code class="language-plaintext highlighter-rouge">pip install requests</code> produces the following sequence of actions:</p>
+
+<ol>
+  <li>Search for requests in the Python Package Index (<a href="https://pypi.org/">PyPI</a>)</li>
+  <li>Search for the appropriate artifact for the platform we are running under</li>
+  <li>Resolve dependencies — the <code class="language-plaintext highlighter-rouge">requests</code> library itself depends on other packages, so the installer must find compatible versions of all transitive dependencies and install them beforehand</li>
+  <li>Download the artifacts, then unpack and copy the files into the right places in our filesystem</li>
+</ol>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>pip <span class="nb">install </span>requests
+<span class="go">Collecting requests
+  Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+</span><span class="gp">Collecting charset-normalizer&lt;4,&gt;</span><span class="o">=</span>2
+<span class="go">  Downloading charset_normalizer-3.4.0-cp311-cp311-manylinux_x86_64.whl (142 kB)
+</span><span class="gp">Collecting idna&lt;4,&gt;</span><span class="o">=</span>2.5
+<span class="go">  Downloading idna-3.10-py3-none-any.whl (70 kB)
+</span><span class="gp">Collecting urllib3&lt;3,&gt;</span><span class="o">=</span>1.21.1
+<span class="go">  Downloading urllib3-2.2.3-py3-none-any.whl (126 kB)
+</span><span class="gp">Collecting certifi&gt;</span><span class="o">=</span>2017.4.17
+<span class="go">  Downloading certifi-2024.8.30-py3-none-any.whl (167 kB)
+Installing collected packages: urllib3, idna, charset-normalizer, certifi, requests
+Successfully installed certifi-2024.8.30 charset-normalizer-3.4.0 idna-3.10 requests-2.32.3 urllib3-2.2.3
+</span></code></pre></div></div>
+
+<p>Here we can see that <code class="language-plaintext highlighter-rouge">requests</code> has its own dependencies such as <code class="language-plaintext highlighter-rouge">certifi</code> or <code class="language-plaintext highlighter-rouge">charset-normalizer</code> and that they have to be installed before <code class="language-plaintext highlighter-rouge">requests</code> can be installed.
+Once installed, the Python runtime can find this library when importing it.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s1">'import requests; print(requests.__path__)'</span>
+<span class="go">['/usr/local/lib/python3.11/dist-packages/requests']
+
+</span><span class="gp">$</span><span class="w"> </span>pip list | <span class="nb">grep </span>requests
+<span class="go">requests        2.32.3
+</span></code></pre></div></div>
+
+<p>Programming languages have different tools, conventions and practices for installing and publishing libraries.
+In some languages like Rust, the toolchain is unified — <code class="language-plaintext highlighter-rouge">cargo</code> handles building, testing, dependency management, and publishing.
+In others like Python, the unification happens at a specification level — rather than a single tool, there are standardized specifications that define how packaging works, allowing multiple competing tools for each task (<code class="language-plaintext highlighter-rouge">pip</code> vs <a href="https://docs.astral.sh/uv/"><code class="language-plaintext highlighter-rouge">uv</code></a>, <code class="language-plaintext highlighter-rouge">setuptools</code> vs <a href="https://hatch.pypa.io/"><code class="language-plaintext highlighter-rouge">hatch</code></a> vs <a href="https://python-poetry.org/"><code class="language-plaintext highlighter-rouge">poetry</code></a>).
+And in some ecosystems like LaTeX, distributions like TeX Live or MacTeX come bundled with thousands of packages pre-installed.</p>
+
+<p>Introducing dependencies also introduces dependency conflicts.
+Conflicts happen when programs require incompatible versions of the same dependency.
+For example, if <code class="language-plaintext highlighter-rouge">tensorflow==2.3.0</code> requires <code class="language-plaintext highlighter-rouge">numpy&gt;=1.16.0,&lt;1.19.0</code> and <code class="language-plaintext highlighter-rouge">pandas==1.2.0</code>  requires <code class="language-plaintext highlighter-rouge">numpy&gt;=1.16.5</code>, then any version satisfying <code class="language-plaintext highlighter-rouge">numpy&gt;=1.16.5,&lt;1.19.0</code> will be valid.
+But if another package in your project requires <code class="language-plaintext highlighter-rouge">numpy&gt;=1.19</code>, you have a conflict with no valid version that satisfies all constraints.</p>
+
+<p>This situation — where multiple packages require mutually incompatible versions of shared dependencies — is commonly referred to as <em>dependency hell</em>.
+One way to deal with conflicts is to isolate the dependencies of each program into their own <em>environment</em>.
+In Python we create a virtual environment by running:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>which python
+<span class="go">/usr/bin/python
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">pwd</span>
+<span class="go">/home/missingsemester
+</span><span class="gp">$</span><span class="w"> </span>python <span class="nt">-m</span> venv venv
+<span class="gp">$</span><span class="w"> </span><span class="nb">source </span>venv/bin/activate
+<span class="gp">$</span><span class="w"> </span>which python
+<span class="go">/home/missingsemester/venv/bin/python
+</span><span class="gp">$</span><span class="w"> </span>which pip
+<span class="go">/home/missingsemester/venv/bin/pip
+</span><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s1">'import requests; print(requests.__path__)'</span>
+<span class="go">['/home/missingsemester/venv/lib/python3.11/site-packages/requests']
+
+</span><span class="gp">$</span><span class="w"> </span>pip list
+<span class="go">Package Version
+------- -------
+pip     24.0
+</span></code></pre></div></div>
+
+<p>You can think of an environment as an entire standalone version of the language runtime with its own set of installed packages.
+This virtual environment or venv isolates the installed dependencies from the global Python installation.
+It is a good practice to have a virtual environment for each project, containing the dependencies it requires.</p>
+
+<blockquote>
+  <p>While many modern operating systems ship with installations of programming language runtimes like Python, it is unwise to modify these installations since the OS might rely on them for its own functionality. Prefer using separate environments instead.</p>
+</blockquote>
+
+<p>In some languages, the installation protocol is not defined by a tool but as a specification.
+In Python <a href="https://peps.python.org/pep-0517/">PEP 517</a> defines the build system interface and <a href="https://peps.python.org/pep-0621/">PEP 621</a> specifies how project metadata is stored in <code class="language-plaintext highlighter-rouge">pyproject.toml</code>.
+This has enabled developers to improve upon <code class="language-plaintext highlighter-rouge">pip</code> and produce more optimized tools like <code class="language-plaintext highlighter-rouge">uv</code>. To install <code class="language-plaintext highlighter-rouge">uv</code> it suffices to do <code class="language-plaintext highlighter-rouge">pip install uv</code>.</p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">uv</code> instead of <code class="language-plaintext highlighter-rouge">pip</code> follows the same interface but is significantly faster:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv pip <span class="nb">install </span>requests
+<span class="go">Resolved 5 packages in 12ms
+Prepared 5 packages in 0.45ms
+Installed 5 packages in 8ms
+ + certifi==2024.8.30
+ + charset-normalizer==3.4.0
+ + idna==3.10
+ + requests==2.32.3
+ + urllib3==2.2.3
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>We strongly recommend using <code class="language-plaintext highlighter-rouge">uv pip</code> instead of <code class="language-plaintext highlighter-rouge">pip</code> whenever possible as it dramatically reduces the installation time.</p>
+</blockquote>
+
+<p>Beyond dependency isolation, environments also allow you to have different versions of your programming language runtime.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv venv <span class="nt">--python</span> 3.12 venv312
+<span class="go">Using CPython 3.12.7
+Creating virtual environment at: venv312
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">source </span>venv312/bin/activate <span class="o">&amp;&amp;</span> python <span class="nt">--version</span>
+<span class="go">Python 3.12.7
+
+</span><span class="gp">$</span><span class="w"> </span>uv venv <span class="nt">--python</span> 3.11 venv311
+<span class="go">Using CPython 3.11.10
+Creating virtual environment at: venv311
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">source </span>venv311/bin/activate <span class="o">&amp;&amp;</span> python <span class="nt">--version</span>
+<span class="go">Python 3.11.10
+</span></code></pre></div></div>
+
+<p>This helps when you need to test your code across multiple Python versions or when a project requires a specific version.</p>
+
+<blockquote>
+  <p>In some programming languages, each project automatically gets its own environment for its dependencies rather than you creating it manually, but the principle is the same. Most languages these days also have a mechanism for managing multiple versions of the language on a single system, and then specifying which version to use for individual projects.</p>
+</blockquote>
+
+<h1 id="artifacts--packaging">Artifacts &amp; Packaging</h1>
+
+<p>In software development we differentiate between source code and artifacts. Developers write and read source code, while artifacts are the packaged, distributable outputs produced from that source code — ready to be installed or deployed.
+An artifact can be as simple as a file of code that we run, and as complex as an entire Virtual Machine that contains all the necessary bits and bobs of an application.
+Consider this example where we have a Python file <code class="language-plaintext highlighter-rouge">greet.py</code> in our current directory:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>greet.py
+<span class="go">def greet(name):
+    return f"Hello, {name}!"
+
+</span><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s2">"from greet import greet; print(greet('World'))"</span>
+<span class="go">Hello, World!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cd</span> /tmp
+<span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s2">"from greet import greet; print(greet('World'))"</span>
+<span class="go">ModuleNotFoundError: No module named 'greet'
+</span></code></pre></div></div>
+
+<p>The import fails once we move to a different directory because Python only searches for modules in specific locations (the current directory, installed packages, and paths in <code class="language-plaintext highlighter-rouge">PYTHONPATH</code>). Packaging solves this by installing the code into a known location.</p>
+
+<p>In Python, packaging a library involves producing an artifact that package installers like <code class="language-plaintext highlighter-rouge">pip</code> or <code class="language-plaintext highlighter-rouge">uv</code> can use to install the relevant files.
+Python artifacts are called <em>wheels</em> and contain all the necessary information to install a package: the code files, metadata about the package (name, version, dependencies), and instructions for where to place files in the environment.
+Building an artifact requires that we write a project file (also often known as manifest) detailing the specifics of the project, the required dependencies, the version of the package, and other information. In Python, we use <code class="language-plaintext highlighter-rouge">pyproject.toml</code> for this purpose.</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">pyproject.toml</code> is the modern and recommended way. While earlier packaging methods like <code class="language-plaintext highlighter-rouge">requirements.txt</code> or <code class="language-plaintext highlighter-rouge">setup.py</code> are still supported, you should prefer <code class="language-plaintext highlighter-rouge">pyproject.toml</code> whenever possible.</p>
+</blockquote>
+
+<p>Here’s a minimal <code class="language-plaintext highlighter-rouge">pyproject.toml</code> for a library that also provides a command-line tool:</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[project]</span>
+<span class="py">name</span> <span class="p">=</span> <span class="s">"greeting"</span>
+<span class="py">version</span> <span class="p">=</span> <span class="s">"0.1.0"</span>
+<span class="py">description</span> <span class="p">=</span> <span class="s">"A simple greeting library"</span>
+<span class="py">dependencies</span> <span class="p">=</span> <span class="nn">["typer&gt;=0.9"]</span>
+
+<span class="nn">[project.scripts]</span>
+<span class="py">greet</span> <span class="p">=</span> <span class="s">"greeting:cli"</span>
+
+<span class="nn">[build-system]</span>
+<span class="py">requires</span> <span class="p">=</span> <span class="nn">["setuptools&gt;=61.0"]</span>
+<span class="py">build-backend</span> <span class="p">=</span> <span class="s">"setuptools.build_meta"</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">typer</code> library is a popular Python package for creating command-line interfaces with minimal boilerplate.</p>
+
+<p>And the corresponding <code class="language-plaintext highlighter-rouge">greeting.py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">typer</span>
+
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s">"Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!"</span>
+
+
+<span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
+    <span class="n">typer</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">greet</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">cli</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>With this file, we can now build the wheel:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv build
+<span class="go">Building source distribution...
+Building wheel from source distribution...
+Successfully built dist/greeting-0.1.0.tar.gz
+Successfully built dist/greeting-0.1.0-py3-none-any.whl
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">ls </span>dist/
+<span class="go">greeting-0.1.0-py3-none-any.whl
+greeting-0.1.0.tar.gz
+</span></code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">.whl</code> file is the wheel (a zip archive with a specific structure), and the <code class="language-plaintext highlighter-rouge">.tar.gz</code> is a source distribution for systems that need to build from source.</p>
+
+<p>You can inspect the contents of a wheel to see what gets packaged:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>unzip <span class="nt">-l</span> dist/greeting-0.1.0-py3-none-any.whl
+<span class="go">Archive:  dist/greeting-0.1.0-py3-none-any.whl
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+      150  2024-01-15 10:30   greeting.py
+      312  2024-01-15 10:30   greeting-0.1.0.dist-info/METADATA
+       92  2024-01-15 10:30   greeting-0.1.0.dist-info/WHEEL
+        9  2024-01-15 10:30   greeting-0.1.0.dist-info/top_level.txt
+      435  2024-01-15 10:30   greeting-0.1.0.dist-info/RECORD
+---------                     -------
+      998                     5 files
+</span></code></pre></div></div>
+
+<p>Now if we were to give this wheel to someone else, they could install it by running:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv pip <span class="nb">install</span> ./greeting-0.1.0-py3-none-any.whl
+<span class="gp">$</span><span class="w"> </span>greet Alice
+<span class="go">Hello, Alice!
+</span></code></pre></div></div>
+
+<p>This would install the library we built earlier into their environment, including the <code class="language-plaintext highlighter-rouge">greet</code> cli tool.</p>
+
+<p>There are limitations to this approach. In particular if our library depends on platform-specific libraries, e.g. CUDA for GPU acceleration, then our artifact only works on systems with those specific libraries installed, and we may need to build separate wheels for different platforms (Linux, macOS, Windows) and architectures (x86, ARM).</p>
+
+<p>When installing software, there’s an important distinction between installing from source and installing a prebuilt binary. Installing from source means downloading the original code and compiling it on your machine — this requires having a compiler and build tools installed, and can take significant time for large projects.</p>
+
+<p>Installing a prebuilt binary means downloading an artifact that was already compiled by someone else — faster and simpler, but the binary must match your platform and architecture.
+For example, <a href="https://github.com/BurntSushi/ripgrep/releases">ripgrep’s releases page</a> shows prebuilt binaries for Linux (x86_64, ARM), macOS (Intel, Apple Silicon), and Windows.</p>
+
+<h1 id="releases--versioning">Releases &amp; Versioning</h1>
+
+<p>Code is built in a continuous process but is released on a discrete basis.
+In software development there is a clear distinction between development and production environments.
+Code needs to be proven to work in a dev environment before getting <em>shipped</em> to prod.
+The release process involves many steps, including testing, dependency management, versioning, configuration, deployment and publishing.</p>
+
+<p>Software libraries are not static and evolve over time getting fixes and new features.
+We track this evolution by discrete version identifiers that correspond to the state of the library at a certain point in time.
+Changes in the behavior of a library can range from patches that fix noncritical functionality, new features that extend its functionality, to changes breaking backwards compatibility.
+Changelogs document what changes a version introduces — these are documents that software developers use to communicate the changes associated with a new release.</p>
+
+<p>However, keeping track of the ongoing changes in each and every dependency is impractical, even more so when we consider the transitive dependencies — i.e. the dependencies of our dependencies.</p>
+
+<blockquote>
+  <p>You can visualize the entire dependency tree of your project with <code class="language-plaintext highlighter-rouge">uv tree</code>, which shows all packages and their transitive dependencies in a tree format.</p>
+</blockquote>
+
+<p>To simplify this problem there are conventions on how to version software, and one of the most prevalent is <a href="https://semver.org/">Semantic Versioning</a> or SemVer.
+Under Semantic Versioning a version has an identifier of the form MAJOR.MINOR.PATCH where each one of the values takes an integer value. The short version is that upgrading:</p>
+
+<ul>
+  <li>PATCH (e.g., 1.2.3 → 1.2.4) should only contain bug fixes and be fully backwards compatible</li>
+  <li>MINOR (e.g., 1.2.3 → 1.3.0) adds new functionality in a backwards-compatible way</li>
+  <li>MAJOR (e.g., 1.2.3 → 2.0.0) indicates breaking changes that may require code modifications</li>
+</ul>
+
+<blockquote>
+  <p>This is a simplification and we encourage reading the full SemVer specification to understand for instance why going from 0.1.3 to 0.2.0 might cause breaking changes or what 1.0.0-rc.1 means.
+Python packaging supports semantic versioning natively, so when we specify the versions of our dependencies we can use various specifiers:</p>
+</blockquote>
+
+<p>In the <code class="language-plaintext highlighter-rouge">pyproject.toml</code> we have different ways of constraining the ranges of compatible versions of our dependencies:</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[project]</span>
+<span class="py">dependencies</span> <span class="p">=</span> <span class="p">[</span>
+    <span class="py">"requests=</span><span class="p">=</span><span class="mf">2.32</span><span class="err">.</span><span class="mi">3</span><span class="s">",  # Exact version - only this specific version</span><span class="err">
+</span>    <span class="py">"click&gt;</span><span class="p">=</span><span class="mf">8.0</span><span class="s">",        # Minimum version - 8.0 or newer</span><span class="err">
+</span>    <span class="py">"numpy&gt;</span><span class="p">=</span><span class="mf">1.24</span><span class="p">,</span><span class="err">&lt;</span><span class="mf">2.0</span><span class="s">",  # Range - at least 1.24 but less than 2.0</span><span class="err">
+</span>    <span class="py">"pandas~</span><span class="p">=</span><span class="mf">2.1</span><span class="err">.</span><span class="mi">0</span><span class="s">",     # Compatible release - &gt;=2.1.0 and &lt;2.2.0</span><span class="err">
+</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Version specifiers exist across many package managers (npm, cargo, etc.) with varying exact semantics. The <code class="language-plaintext highlighter-rouge">~=</code> operator is Python’s “compatible release” operator — <code class="language-plaintext highlighter-rouge">~=2.1.0</code> means “any version that is compatible with 2.1.0”, which translates to <code class="language-plaintext highlighter-rouge">&gt;=2.1.0</code> and <code class="language-plaintext highlighter-rouge">&lt;2.2.0</code>. This is roughly equivalent to the caret (<code class="language-plaintext highlighter-rouge">^</code>) operator in npm and cargo, which follows SemVer’s notion of compatibility.</p>
+
+<p>Not all software uses semantic versioning. A common alternative is Calendar Versioning (CalVer), where versions are based on release dates rather than semantic meaning. For example, Ubuntu uses versions like <code class="language-plaintext highlighter-rouge">24.04</code> (April 2024) and <code class="language-plaintext highlighter-rouge">24.10</code> (October 2024). CalVer makes it easy to see how old a release is, though it doesn’t communicate anything about compatibility.  Lastly, semantic versioning is not infallible, and sometimes maintainers inadvertently introduce breaking changes in minor or patch releases.</p>
+
+<h1 id="reproducibility">Reproducibility</h1>
+
+<p>In modern software development the code you write sits atop a significant number of layers of abstraction.
+This includes things like your programming language runtime, third party libraries, the operating system, or even the hardware itself.
+Any difference across any of these layers might change the behavior of your code or even prevent it from working as intended.
+Furthermore, even differences in the underlying hardware impact your ability to ship software.</p>
+
+<p>Pinning a library refers to specifying an exact version rather than a range, e.g. <code class="language-plaintext highlighter-rouge">requests==2.32.3</code> instead of <code class="language-plaintext highlighter-rouge">requests&gt;=2.0</code>.</p>
+
+<p>Part of the job of a package manager is to consider all the constraints provided by the dependencies — and transitive dependencies — and then produce a valid list of versions that will satisfy all the constraints.
+The specific list of versions can then be saved to a file for reproducibility purposes; these files are referred to as <em>lock files</em>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv lock
+<span class="go">Resolved 12 packages in 45ms
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>uv.lock | <span class="nb">head</span> <span class="nt">-20</span>
+<span class="go">version = 1
+</span><span class="gp">requires-python = "&gt;</span><span class="o">=</span>3.11<span class="s2">"
+</span><span class="go">
+[[package]]
+name = "certifi"
+version = "2024.8.30"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/...", hash = "sha256:..." }
+wheels = [
+    { url = "https://files.pythonhosted.org/...", hash = "sha256:..." },
+]
+</span><span class="c">...
+</span></code></pre></div></div>
+
+<p>One critical distinction when dealing with dependency versioning and reproducibility is the difference between libraries and applications/services.
+A library is intended to be imported and used by other code which might have its own dependencies, so specifying overly strict version constraints can cause conflicts with the user’s other dependencies.
+In contrast, applications or services are final consumers of the software and typically expose their functionality through a user interface or an API, not through a programming interface.
+For libraries, it is good practice to specify version ranges to maximize compatibility with the wider package ecosystem. For applications, pinning exact versions ensures reproducibility — everyone running the application uses the exact same dependencies.</p>
+
+<p>For projects requiring maximum reproducibility, tools like <a href="https://nixos.org/">Nix</a> and <a href="https://bazel.build/">Bazel</a> provide <em>hermetic</em> builds — where every input including compilers, system libraries, and even the build environment itself is pinned and content-addressed. This guarantees bit-for-bit identical outputs regardless of when or where the build runs.</p>
+
+<blockquote>
+  <p>You can even use NixOS to manage your entire computer install so that you can trivially spin up new copies of your computer setup and manage their complete configuration through version-controlled configuration files.</p>
+</blockquote>
+
+<p>A neverending tension in software development is that new software versions introduce breakage either intentionally or unintentionally, while on the other hand, old software versions become compromised with security vulnerabilities over time.
+We can address this by using continuous integration pipelines (we’ll see more in the <a href="../code-quality/index.html">Code Quality and CI</a> lecture) that test our application against new software versions and having automation in place for detecting when new versions of our dependencies are released, such as <a href="https://github.com/dependabot">Dependabot</a>.</p>
+
+<p>Even with CI testing in place, issues still occur when upgrading software versions, often because of the inevitable mismatch between dev and prod environments.
+In those circumstances the best course of action is to have a <em>rollback</em> plan, where the version upgrade is reverted and a known good version is redeployed instead.</p>
+
+<h1 id="vms--containers">VMs &amp; Containers</h1>
+
+<p>As you start relying on more complex dependencies, it is likely that the dependencies of your code will span beyond the boundaries of what the package manager can handle.
+One common reason is having to interface with specific system libraries or hardware drivers.
+For example, in scientific computing and AI, programs often need specialized libraries and drivers to utilize GPU hardware.
+Many system-level dependencies (GPU drivers, specific compiler versions, shared libraries like OpenSSL) still require system-wide installation.</p>
+
+<p>Traditionally this wider dependency problem was solved with Virtual Machines (VMs).
+VMs abstract the entire computer and provide a completely isolated environment with its own dedicated operating system.
+A more modern approach is containers, which package an application along with its dependencies, libraries, and filesystem, but share the host’s operating system kernel rather than virtualizing an entire computer.
+Containers are lighter weight than VMs because they share the kernel, making them faster to start and more efficient to run.</p>
+
+<p>The most popular container platform is <a href="https://www.docker.com/">Docker</a>. Docker introduced a standardized way to build, distribute, and run containers. Under the hood, Docker uses containerd as its container runtime — an industry standard that other tools like Kubernetes also use.</p>
+
+<p>Running a container is straightforward. For example, to run a Python interpreter inside a container we use <code class="language-plaintext highlighter-rouge">docker run</code> (The <code class="language-plaintext highlighter-rouge">-it</code> flags make the container interactive with a terminal. When you exit, the container stops.).</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>docker run <span class="nt">-it</span> python:3.12 python
+<span class="go">Python 3.12.7 (main, Nov  5 2024, 02:53:25) [GCC 12.2.0] on linux
+</span><span class="gp">&gt;</span><span class="o">&gt;&gt;</span> print<span class="o">(</span><span class="s2">"Hello from inside a container!"</span><span class="o">)</span>
+<span class="go">Hello from inside a container!
+</span></code></pre></div></div>
+
+<p>In practice your program might depend on the entire filesystem.
+To overcome this, we can use container images that ship the entire filesystem of the application as the artifact.
+The container images are created programmatically. With docker we specify exactly the dependencies, system libraries, and configuration of the image using a Dockerfile syntax:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.12</span>
+<span class="k">RUN </span>apt-get update
+<span class="k">RUN </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> gcc
+<span class="k">RUN </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> libpq-dev
+<span class="k">RUN </span>pip <span class="nb">install </span>numpy
+<span class="k">RUN </span>pip <span class="nb">install </span>pandas
+<span class="k">COPY</span><span class="s"> . /app</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> .
+</code></pre></div></div>
+
+<p>An important distinction: a Docker <strong>image</strong> is the packaged artifact (like a template), while a <strong>container</strong> is a running instance of that image. You can run multiple containers from the same image. Images are built in layers, where each instruction (<code class="language-plaintext highlighter-rouge">FROM</code>, <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">COPY</code>, etc) in a Dockerfile creates a new layer. Docker caches these layers, so if you change a line in your Dockerfile, only that layer and subsequent layers need to be rebuilt.</p>
+
+<p>The previous Dockerfile has several issues: it uses the full Python image instead of a slim variant, runs separate <code class="language-plaintext highlighter-rouge">RUN</code> commands creating unnecessary layers, versions are not pinned, and it doesn’t clean up package manager caches, shipping unnecessary files. Other frequent mistakes include insecurely running containers as root and accidentally embedding secrets in layers.</p>
+
+<p>Here’s an improved version</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.12-slim</span>
+<span class="k">COPY</span><span class="s"> --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv</span>
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="nt">--no-install-recommends</span> gcc libpq-dev <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+<span class="k">COPY</span><span class="s"> pyproject.toml uv.lock ./</span>
+<span class="k">RUN </span>uv pip <span class="nb">install</span> <span class="nt">--system</span> <span class="nt">-r</span> uv.lock
+<span class="k">COPY</span><span class="s"> . /app</span>
+</code></pre></div></div>
+
+<p>In the previous example we see that instead of installing <code class="language-plaintext highlighter-rouge">uv</code> from source, we are copying the prebuilt binary from the <code class="language-plaintext highlighter-rouge">ghcr.io/astral-sh/uv:latest</code> image. This is known as the <em>builder</em> pattern. With this pattern we do not need to ship all the tools needed to compile our code, just the final binary that is needed to run the application (<code class="language-plaintext highlighter-rouge">uv</code> in this case).</p>
+
+<p>Docker has important limitations to be aware of. First, container images are often platform-specific — an image built for <code class="language-plaintext highlighter-rouge">linux/amd64</code> won’t run natively on <code class="language-plaintext highlighter-rouge">linux/arm64</code> (Apple Silicon Macs) without emulation, which is slow. Second, Docker containers require a Linux kernel, so on macOS and Windows, Docker actually runs a lightweight Linux VM under the hood, adding overhead. Third, Docker’s isolation is weaker than VMs — containers share the host kernel, which is a security concern in multi-tenant environments.</p>
+
+<blockquote>
+  <p>These days, more projects are also making use of nix to manage even “system-wide” libraries and applications per project through <a href="https://serokell.io/blog/practical-nix-flakes">nix flakes</a>.</p>
+</blockquote>
+
+<h1 id="configuration">Configuration</h1>
+
+<p>Software is inherently configurable. In the <a href="../command-line-environment/index.html">command line environment</a> lecture we saw programs receiving options via flags, environment variables or even configuration files a.k.a. dotfiles. This holds true even for more complex applications, and there are established patterns for managing configuration at scale.
+Software configuration should not be embedded in the code but be provided at runtime.
+A couple of common ones being environment variables and config files.</p>
+
+<p>Here’s an example of an application that is configured via environment variables:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"DATABASE_URL"</span><span class="p">,</span> <span class="s">"sqlite:///local.db"</span><span class="p">)</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"DEBUG"</span><span class="p">,</span> <span class="s">"false"</span><span class="p">).</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">"true"</span>
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">"API_KEY"</span><span class="p">]</span>  <span class="c1"># Required - will raise if not set
+</span></code></pre></div></div>
+
+<p>An application could also be configured via a configuration file (e.g., a Python program that loads a config via <code class="language-plaintext highlighter-rouge">yaml.load</code>), <code class="language-plaintext highlighter-rouge">config.yaml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">database</span><span class="pi">:</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">postgresql://localhost/myapp"</span>
+  <span class="na">pool_size</span><span class="pi">:</span> <span class="m">5</span>
+<span class="na">server</span><span class="pi">:</span>
+  <span class="na">host</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0.0.0.0"</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+  <span class="na">debug</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div></div>
+
+<p>A good right-hand rule for thinking about configuration is that the same codebase should be deployable to different environments (development, staging, production) with only configuration changes, never code changes.</p>
+
+<p>Among the many configuration options there is often sensitive data such as API keys.
+Secrets need to be handled with care to avoid exposing them accidentally, and must not be included in version control.</p>
+
+<h1 id="services--orchestration">Services &amp; Orchestration</h1>
+
+<p>Modern applications rarely exist in isolation. A typical web application might need a database for persistent storage, a cache for performance, a message queue for background tasks, and various other supporting services. Rather than bundling everything into a single monolithic application, modern architectures often decompose functionality into separate services that can be developed, deployed, and scaled independently.</p>
+
+<p>As an example, if we determine our application might benefit from using a cache, instead of rolling our own we can leverage existing battle tested solutions like <a href="https://redis.io/">Redis</a> or <a href="https://memcached.org/">Memcached</a>.
+We could embed Redis in our application dependencies by building it as part of the container, but that means harmonizing all the dependencies between Redis and our application which could be challenging or even unfeasible.
+Instead what we can do is deploy each application separately in its own container.
+This is commonly referred to as a microservice architecture where each component runs as an independent service that communicates over the network, typically via HTTP APIs.</p>
+
+<p><a href="https://docs.docker.com/compose/">Docker Compose</a> is a tool for defining and running multi-container applications. Rather than managing containers individually, you declare all services in a single YAML file and orchestrate them together. Now our full application encompasses more than one container:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:8080"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">REDIS_URL=redis://cache:6379</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">cache</span>
+
+  <span class="na">cache</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:7-alpine</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis_data:/data</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">redis_data</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<p>With <code class="language-plaintext highlighter-rouge">docker compose up</code>, both services start together, and the web application can connect to Redis using the hostname <code class="language-plaintext highlighter-rouge">cache</code> (Docker’s internal DNS resolves service names automatically).
+Docker Compose lets us declare how we want to deploy one or more services, and handles the orchestration of starting them together, setting up networking between them, and managing shared volumes for data persistence.</p>
+
+<p>For production deployments, you often want your docker compose services to start automatically on boot and restart on failure. A common approach is to use systemd to manage the docker compose deployment:</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /etc/systemd/system/myapp.service
+</span><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">My Application</span>
+<span class="py">Requires</span><span class="p">=</span><span class="s">docker.service</span>
+<span class="py">After</span><span class="p">=</span><span class="s">docker.service</span>
+
+<span class="nn">[Service]</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">oneshot</span>
+<span class="py">RemainAfterExit</span><span class="p">=</span><span class="s">yes</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/opt/myapp</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/docker compose up -d</span>
+<span class="py">ExecStop</span><span class="p">=</span><span class="s">/usr/bin/docker compose down</span>
+
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span>
+</code></pre></div></div>
+
+<p>This systemd unit file ensures your application starts when the system boots (after Docker is ready), and provides standard controls like <code class="language-plaintext highlighter-rouge">systemctl start myapp</code>, <code class="language-plaintext highlighter-rouge">systemctl stop myapp</code>, and <code class="language-plaintext highlighter-rouge">systemctl status myapp</code>.</p>
+
+<p>As deployment requirements grow more complex — needing scalability across multiple machines, fault tolerance when services crash, and high availability guarantees — organizations turn to sophisticated container orchestration platforms like Kubernetes (k8s), which can manage thousands of containers across clusters of machines. That said, Kubernetes has a steep learning curve and significant operational overhead, so it’s often overkill for smaller projects.</p>
+
+<p>This multi-container setup is partly feasible because modern services communicate with each other via standardized APIs, with HTTP REST APIs. For example, whenever a program interacts with an LLM provider like OpenAI or Anthropic, under the hood it is sending an HTTP request to their servers and parsing the response:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>curl https://api.anthropic.com/v1/messages <span class="se">\</span>
+<span class="gp">    -H "x-api-key: $</span>ANTHROPIC_API_KEY<span class="s2">" </span><span class="se">\</span><span class="s2">
+</span><span class="go">    -H "content-type: application/json" \
+    -H "anthropic-version: 2023-06-01" \
+    -d '{"model": "claude-sonnet-4-20250514", "max_tokens": 256,
+         "messages": [{"role": "user", "content": "Explain containers vs VMs in one sentence."}]}'
+</span></code></pre></div></div>
+
+<h1 id="publishing">Publishing</h1>
+
+<p>Once you have shown your code to work, you might be interested in distributing it for others to download and install.
+Distribution takes many forms and is intrinsically tied to the programming language and environments that you operate with.</p>
+
+<p>The simplest form of distribution is uploading artifacts for people to download and install locally.
+This is still common and you can find it in places like <a href="http://archive.ubuntu.com/ubuntu/pool/main/">Ubuntu’s package archive</a>, which is essentially an HTTP directory listing of <code class="language-plaintext highlighter-rouge">.deb</code> files.</p>
+
+<p>These days, GitHub has become the de facto platform for publishing source code and artifacts.
+While the source code is often publicly available, GitHub Releases allow maintainers to attach prebuilt binaries and other artifacts to tagged versions.</p>
+
+<p>Package managers sometimes support installing directly from GitHub, either from source or from a pre-built wheel:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="w"> </span>Install from <span class="nb">source</span> <span class="o">(</span>will clone and build<span class="o">)</span>
+<span class="gp">$</span><span class="w"> </span>pip <span class="nb">install </span>git+https://github.com/psf/requests.git
+<span class="go">
+</span><span class="gp">#</span><span class="w"> </span>Install from a specific tag/branch
+<span class="gp">$</span><span class="w"> </span>pip <span class="nb">install </span>git+https://github.com/psf/requests.git@v2.32.3
+<span class="go">
+</span><span class="gp">#</span><span class="w"> </span>Install a wheel directly from a GitHub release
+<span class="gp">$</span><span class="w"> </span>pip <span class="nb">install </span>https://github.com/user/repo/releases/download/v1.0/package-1.0-py3-none-any.whl
+</code></pre></div></div>
+
+<p>In fact, some languages like Go use a decentralized distribution model — rather than a central package repository, Go modules are distributed directly from their source code repositories.
+Module paths like <code class="language-plaintext highlighter-rouge">github.com/gorilla/mux</code> indicate where the code lives, and <code class="language-plaintext highlighter-rouge">go get</code> fetches directly from there. However, most package managers like <code class="language-plaintext highlighter-rouge">pip</code>, <code class="language-plaintext highlighter-rouge">cargo</code>, or <code class="language-plaintext highlighter-rouge">brew</code> have central indexes of pre-packaged projects for ease of distribution and installation. If we run</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv pip <span class="nb">install </span>requests <span class="nt">--verbose</span> <span class="nt">--no-cache</span> 2&gt;&amp;1 | <span class="nb">grep</span> <span class="nt">-F</span> <span class="s1">'.whl'</span>
+<span class="go">DEBUG Selecting: requests==2.32.5 [compatible] (requests-2.32.5-py3-none-any.whl)
+DEBUG No cache entry for: https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl.metadata
+DEBUG No cache entry for: https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl
+</span></code></pre></div></div>
+
+<p>we see where we are fetching the <code class="language-plaintext highlighter-rouge">requests</code> wheel from. Notice the <code class="language-plaintext highlighter-rouge">py3-none-any</code> in the filename — this means the wheel works with any Python 3 version, on any OS, on any architecture. For packages with compiled code, the wheel is platform-specific:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv pip <span class="nb">install </span>numpy <span class="nt">--verbose</span> <span class="nt">--no-cache</span> 2&gt;&amp;1 | <span class="nb">grep</span> <span class="nt">-F</span> <span class="s1">'.whl'</span>
+<span class="go">DEBUG Selecting: numpy==2.2.1 [compatible] (numpy-2.2.1-cp312-cp312-macosx_14_0_arm64.whl)
+</span></code></pre></div></div>
+
+<p>Here <code class="language-plaintext highlighter-rouge">cp312-cp312-macosx_14_0_arm64</code> indicates this wheel is specifically for CPython 3.12 on macOS 14+ for ARM64 (Apple Silicon). If you’re on a different platform, <code class="language-plaintext highlighter-rouge">pip</code> will download a different wheel or build from source.</p>
+
+<p>Conversely, for people to be able to find a package we’ve created, we need to publish it to one of these registries.
+In Python, the main registry is the <a href="https://pypi.org">Python Package Index (PyPI)</a>.
+Like with installing, there are multiple ways of publishing packages. The <code class="language-plaintext highlighter-rouge">uv publish</code> command provides a modern interface for uploading packages to PyPI:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv publish <span class="nt">--publish-url</span> https://test.pypi.org/legacy/
+<span class="go">Publishing greeting-0.1.0.tar.gz
+Publishing greeting-0.1.0-py3-none-any.whl
+</span></code></pre></div></div>
+
+<p>Here we are using <a href="https://test.pypi.org">TestPyPI</a> — a separate package registry intended for testing your publishing workflow without polluting the real PyPI. Once uploaded, you can install from TestPyPI:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>uv pip <span class="nb">install</span> <span class="nt">--index-url</span> https://test.pypi.org/simple/ greeting
+</code></pre></div></div>
+
+<p>A key consideration when publishing software is trust. How do users verify that the package they download actually comes from you and hasn’t been tampered with? Package registries use checksums to verify integrity, and some ecosystems support package signing to provide cryptographic proof of authorship.</p>
+
+<p>Different languages have their own package registries: <a href="https://crates.io">crates.io</a> for Rust, <a href="https://www.npmjs.com">npm</a> for JavaScript, <a href="https://rubygems.org">RubyGems</a> for Ruby, and <a href="https://hub.docker.com">Docker Hub</a> for container images. Meanwhile, for private or internal packages, organizations often deploy their own package repositories (such as a private PyPI server or a private Docker registry) or use managed solutions from cloud providers.</p>
+
+<p>Deploying a web service to the internet involves additional infrastructure: domain name registration, DNS configuration to point your domain to your server, and often a reverse proxy like nginx to handle HTTPS and route traffic. For simpler use cases like documentation or static sites, <a href="https://pages.github.com/">GitHub Pages</a> provides free hosting directly from a repository.</p>
+
+<!--
+## Documentation
+
+So far we have emphasized the deliverable _artifact_ as the main output of packaging and shipping code.
+In addition to the artifact, we need to document for users the code's functionality, installation instructions, and usage examples.
+
+Tools like [Sphinx](https://www.sphinx-doc.org/) (Python) and [MkDocs](https://www.mkdocs.org/) can automatically generate browsable documentation from docstrings and markdown files, often hosted on services like [Read the Docs](https://readthedocs.org/).
+For HTTP-based APIs, the [OpenAPI specification](https://www.openapis.org/) (formerly Swagger) provides a standard format for describing API endpoints, which tools can use to generate interactive documentation and client libraries automatically. -->
+
+<h1 id="exercises">Exercises</h1>
+
+<ol>
+  <li>Save your environment with <code class="language-plaintext highlighter-rouge">printenv</code> to a file, create a venv, activate it, <code class="language-plaintext highlighter-rouge">printenv</code> to another file and <code class="language-plaintext highlighter-rouge">diff before.txt after.txt</code>. What changed in the environment? Why does the shell prefer the venv? (Hint: look at <code class="language-plaintext highlighter-rouge">$PATH</code> before and after activation.) Run <code class="language-plaintext highlighter-rouge">which deactivate</code> and reason about what the deactivate bash function is doing.</li>
+  <li>Create a Python package with a <code class="language-plaintext highlighter-rouge">pyproject.toml</code> and install it in a virtual environment. Create a lockfile and inspect it.</li>
+  <li>Install Docker and use it to build the Missing Semester class website locally using docker compose.</li>
+  <li>Write a Dockerfile for a simple Python application. Then write a <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> that runs your application alongside a Redis cache.</li>
+  <li>Publish a Python package to TestPyPI (don’t publish to the real PyPI unless it’s worth sharing!). Then build a Docker image with said package and push it to <code class="language-plaintext highlighter-rouge">ghcr.io</code>.</li>
+  <li>Make a website using <a href="https://docs.github.com/en/pages/quickstart">GitHub Pages</a>. Extra (non-)credit: configure it with a custom domain.</li>
+</ol>
+
+
+<hr>
+
+<div class="small center">
+<p><a href="https://github.com/missing-semester/missing-semester/blob/master/_2026/shipping-code.md">Edit this page</a>.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA</a>.</p>
+</div>
+
+    </div>
+
+  </body>
+
+</html>

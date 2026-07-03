@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="go1.11.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="icon" href="../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/go1.11">
+<meta name="og:title" content="Go 1.11 Release Notes - The Go Programming Language">
+<title>Go 1.11 Release Notes - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="go1.11.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="go1.11.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="go1.11.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="go1.11.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="go1.11.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="go1.11.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="go1.11.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="go1.11.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="go1.11.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="go1.11.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+
+
+<article class="Doc Article">
+
+
+
+
+
+<h1>Go 1.11 Release Notes</h1>
+
+
+
+
+
+
+<div id="nav" class="TOC"></div>
+
+
+
+<div class='markdown'>
+<!--
+NOTE: In this document and others in this directory, the convention is to
+set fixed-width phrases with non-fixed-width spaces, as in
+`hello` `world`.
+Do not send CLs removing the interior tags from such phrases.
+-->
+<style>
+  main ul li { margin: 0.5em 0; }
+</style>
+<h2 id="introduction">Introduction to Go 1.11</h2>
+<p>The latest Go release, version 1.11, arrives six months after <a href="go1.10.html">Go 1.10</a>.
+Most of its changes are in the implementation of the toolchain, runtime, and libraries.
+As always, the release maintains the Go 1 <a href="go1compat.html">promise of compatibility</a>.
+We expect almost all Go programs to continue to compile and run as before.</p>
+<h2 id="language">Changes to the language</h2>
+<p>There are no changes to the language specification.</p>
+<h2 id="ports">Ports</h2>
+<!-- CL 94255, CL 115038, etc -->
+<p>As <a href="go1.10.html#ports">announced in the Go 1.10 release notes</a>, Go 1.11 now requires
+OpenBSD 6.2 or later, macOS 10.10 Yosemite or later, or Windows 7 or later;
+support for previous versions of these operating systems has been removed.</p>
+<!-- CL 121657 -->
+<p>Go 1.11 supports the upcoming OpenBSD 6.4 release. Due to changes in
+the OpenBSD kernel, older versions of Go will not work on OpenBSD 6.4.</p>
+<p>There are <a href="https://go.dev/issue/25206">known issues</a> with NetBSD on i386 hardware.</p>
+<!-- CL 107935 -->
+<p>The race detector is now supported on <code>linux/ppc64le</code>
+and, to a lesser extent, on <code>netbsd/amd64</code>. The NetBSD race detector support
+has <a href="https://go.dev/issue/26403">known issues</a>.</p>
+<!-- CL 109255 -->
+<p>The memory sanitizer (<code>-msan</code>) is now supported on <code>linux/arm64</code>.</p>
+<!-- CL 93875 -->
+<p>The build modes <code>c-shared</code> and <code>c-archive</code> are now supported on
+<code>freebsd/amd64</code>.</p>
+<!-- CL 108475 -->
+<p>On 64-bit MIPS systems, the new environment variable settings
+<code>GOMIPS64=hardfloat</code> (the default) and
+<code>GOMIPS64=softfloat</code> select whether to use
+hardware instructions or software emulation for floating-point computations.
+For 32-bit systems, the environment variable is still <code>GOMIPS</code>,
+as <a href="go1.10.html#mips">added in Go 1.10</a>.</p>
+<!-- CL 107475 -->
+<p>On soft-float ARM systems (<code>GOARM=5</code>), Go now uses a more
+efficient software floating point interface. This is transparent to
+Go code, but ARM assembly that uses floating-point instructions not
+guarded on GOARM will break and must be ported to
+the <a href="https://go.dev/cl/107475">new interface</a>.</p>
+<!-- CL 94076 -->
+<p>Go 1.11 on ARMv7 no longer requires a Linux kernel configured
+with <code>KUSER_HELPERS</code>. This setting is enabled in default
+kernel configurations, but is sometimes disabled in stripped-down
+configurations.</p>
+<h3 id="wasm">WebAssembly</h3>
+<p>Go 1.11 adds an experimental port to <a href="https://webassembly.org" rel="noreferrer" target="_blank">WebAssembly</a>
+(<code>js/wasm</code>).</p>
+<p>Go programs currently compile to one WebAssembly module that
+includes the Go runtime for goroutine scheduling, garbage
+collection, maps, etc.
+As a result, the resulting size is at minimum around
+2 MB, or 500 KB compressed. Go programs can call into JavaScript
+using the new experimental
+<a href="https://go.dev/pkg/syscall/js/"><code>syscall/js</code></a> package.
+Binary size and interop with other languages has not yet been a
+priority but may be addressed in future releases.</p>
+<p>As a result of the addition of the new <code>GOOS</code> value
+&ldquo;<code>js</code>&rdquo; and <code>GOARCH</code> value &ldquo;<code>wasm</code>&rdquo;,
+Go files named <code>*_js.go</code> or <code>*_wasm.go</code> will
+now be <a href="https://go.dev/pkg/go/build/#hdr-Build_Constraints">ignored by Go
+tools</a> except when those GOOS/GOARCH values are being used.
+If you have existing filenames matching those patterns, you will need to rename them.</p>
+<p>More information can be found on the
+<a href="https://go.dev/wiki/WebAssembly">WebAssembly wiki page</a>.</p>
+<h3 id="riscv">RISC-V GOARCH values reserved</h3>
+<!-- CL 106256 -->
+<p>The main Go compiler does not yet support the RISC-V architecture <!-- is gonna change everything -->
+but we&rsquo;ve reserved the <code>GOARCH</code> values
+&ldquo;<code>riscv</code>&rdquo; and &ldquo;<code>riscv64</code>&rdquo;, as used by Gccgo,
+which does support RISC-V. This means that Go files
+named <code>*_riscv.go</code> will now also
+be <a href="https://go.dev/pkg/go/build/#hdr-Build_Constraints">ignored by Go
+tools</a> except when those GOOS/GOARCH values are being used.</p>
+<h2 id="tools">Tools</h2>
+<h3 id="modules">Modules, package versioning, and dependency management</h3>
+<p>Go 1.11 adds preliminary support for a <a href="https://go.dev/cmd/go/#hdr-Modules__module_versions__and_more">new concept called “modules,”</a>
+an alternative to GOPATH with integrated support for versioning and
+package distribution.
+Using modules, developers are no longer confined to working inside GOPATH,
+version dependency information is explicit yet lightweight,
+and builds are more reliable and reproducible.</p>
+<p>Module support is considered experimental.
+Details are likely to change in response to feedback from Go 1.11 users,
+and we have more tools planned.
+Although the details of module support may change, projects that convert
+to modules using Go 1.11 will continue to work with Go 1.12 and later.
+If you encounter bugs using modules,
+please <a href="https://go.dev/issue/new">file issues</a>
+so we can fix them. For more information, see the
+<a href="https://go.dev/cmd/go#hdr-Modules__module_versions__and_more"><code>go</code> command documentation</a>.</p>
+<h3 id="importpath">Import path restriction</h3>
+<p>Because Go module support assigns special meaning to the
+<code>@</code> symbol in command line operations,
+the <code>go</code> command now disallows the use of
+import paths containing <code>@</code> symbols.
+Such import paths were never allowed by <code>go</code> <code>get</code>,
+so this restriction can only affect users building
+custom GOPATH trees by other means.</p>
+<h3 id="gopackages">Package loading</h3>
+<p>The new package
+<a href="https://godoc.org/golang.org/x/tools/go/packages" rel="noreferrer" target="_blank"><code>golang.org/x/tools/go/packages</code></a>
+provides a simple API for locating and loading packages of Go source code.
+Although not yet part of the standard library, for many tasks it
+effectively replaces the <a href="https://go.dev/pkg/go/build"><code>go/build</code></a>
+package, whose API is unable to fully support modules.
+Because it runs an external query command such as
+<a href="https://go.dev/cmd/go/#hdr-List_packages"><code>go list</code></a>
+to obtain information about Go packages, it enables the construction of
+analysis tools that work equally well with alternative build systems
+such as <a href="https://bazel.build" rel="noreferrer" target="_blank">Bazel</a>
+and <a href="https://buckbuild.com" rel="noreferrer" target="_blank">Buck</a>.</p>
+<h3 id="gocache">Build cache requirement</h3>
+<p>Go 1.11 will be the last release to support setting the environment
+variable <code>GOCACHE=off</code> to disable the
+<a href="https://go.dev/cmd/go/#hdr-Build_and_test_caching">build cache</a>,
+introduced in Go 1.10.
+Starting in Go 1.12, the build cache will be required,
+as a step toward eliminating <code>$GOPATH/pkg</code>.
+The module and package loading support described above
+already require that the build cache be enabled.
+If you have disabled the build cache to avoid problems you encountered,
+please <a href="https://go.dev/issue/new">file an issue</a> to let us know about them.</p>
+<h3 id="compiler">Compiler toolchain</h3>
+<!-- CL 109918 -->
+<p>More functions are now eligible for inlining by default, including
+functions that call <code>panic</code>.</p>
+<!-- CL 97375 -->
+<p>The compiler toolchain now supports column information
+in <a href="https://go.dev/cmd/compile/#hdr-Compiler_Directives">line
+directives</a>.</p>
+<!-- CL 106797 -->
+<p>A new package export data format has been introduced.
+This should be transparent to end users, except for speeding up
+build times for large Go projects.
+If it does cause problems, it can be turned off again by
+passing <code>-gcflags=all=-iexport=false</code> to
+the <code>go</code> tool when building a binary.</p>
+<!-- CL 100459 -->
+<p>The compiler now rejects unused variables declared in a type switch
+guard, such as <code>x</code> in the following example:</p>
+<pre><code>func f(v interface{}) {
+    switch x := v.(type) {
+    }
+}
+</code></pre>
+<p>This was already rejected by both <code>gccgo</code>
+and <a href="https://go.dev/pkg/go/types/">go/types</a>.</p>
+<h3 id="assembler">Assembler</h3>
+<!-- CL 113315 -->
+<p>The assembler for <code>amd64</code> now accepts AVX512 instructions.</p>
+<h3 id="debugging">Debugging</h3>
+<!-- CL 100738, CL 93664 -->
+<p>The compiler now produces significantly more accurate debug
+information for optimized binaries, including variable location
+information, line numbers, and breakpoint locations.
+This should make it possible to debug binaries
+compiled <em>without</em> <code>-N</code> <code>-l</code>.
+There are still limitations to the quality of the debug information,
+some of which are fundamental, and some of which will continue to
+improve with future releases.</p>
+<!-- CL 118276 -->
+<p>DWARF sections are now compressed by default because of the expanded
+and more accurate debug information produced by the compiler.
+This is transparent to most ELF tools (such as debuggers on Linux
+and *BSD) and is supported by the Delve debugger on all platforms,
+but has limited support in the native tools on macOS and Windows.
+To disable DWARF compression,
+pass <code>-ldflags=-compressdwarf=false</code> to
+the <code>go</code> tool when building a binary.</p>
+<!-- CL 109699 -->
+<p>Go 1.11 adds experimental support for calling Go functions from
+within a debugger.
+This is useful, for example, to call <code>String</code> methods
+when paused at a breakpoint.
+This is currently only supported by Delve (version 1.1.0 and up).</p>
+<h3 id="test">Test</h3>
+<p>Since Go 1.10, the <code>go</code> <code>test</code> command runs
+<code>go</code> <code>vet</code> on the package being tested,
+to identify problems before running the test. Since <code>vet</code>
+typechecks the code with <a href="https://go.dev/pkg/go/types/">go/types</a>
+before running, tests that do not typecheck will now fail.
+In particular, tests that contain an unused variable inside a
+closure compiled with Go 1.10, because the Go compiler incorrectly
+accepted them (<a href="https://go.dev/issues/3059">Issue #3059</a>),
+but will now fail, since <code>go/types</code> correctly reports an
+&ldquo;unused variable&rdquo; error in this case.</p>
+<!-- CL 102696 -->
+<p>The <code>-memprofile</code> flag
+to <code>go</code> <code>test</code> now defaults to the
+&ldquo;allocs&rdquo; profile, which records the total bytes allocated since the
+test began (including garbage-collected bytes).</p>
+<h3 id="vet">Vet</h3>
+<!-- CL 108555 -->
+<p>The <a href="https://go.dev/cmd/vet/"><code>go</code> <code>vet</code></a>
+command now reports a fatal error when the package under analysis
+does not typecheck. Previously, a type checking error simply caused
+a warning to be printed, and <code>vet</code> to exit with status 1.</p>
+<!-- CL 108559 -->
+<p>Additionally, <a href="https://go.dev/cmd/vet"><code>go</code> <code>vet</code></a>
+has become more robust when format-checking <code>printf</code> wrappers.
+Vet now detects the mistake in this example:</p>
+<pre><code>func wrapper(s string, args ...interface{}) {
+    fmt.Printf(s, args...)
+}
+
+func main() {
+    wrapper(&quot;%s&quot;, 42)
+}
+</code></pre>
+<h3 id="trace">Trace</h3>
+<!-- CL 63274 -->
+<p>With the new <code>runtime/trace</code>
+package&rsquo;s <a href="https://go.dev/pkg/runtime/trace/#hdr-User_annotation">user
+annotation API</a>, users can record application-level information
+in execution traces and create groups of related goroutines.
+The <code>go</code> <code>tool</code> <code>trace</code>
+command visualizes this information in the trace view and the new
+user task/region analysis page.</p>
+<h3 id="cgo">Cgo</h3>
+<p>Since Go 1.10, cgo has translated some C pointer types to the Go
+type <code>uintptr</code>. These types include
+the <code>CFTypeRef</code> hierarchy in Darwin&rsquo;s CoreFoundation
+framework and the <code>jobject</code> hierarchy in Java&rsquo;s JNI
+interface. In Go 1.11, several improvements have been made to the code
+that detects these types. Code that uses these types may need some
+updating. See the <a href="go1.10.html#cgo">Go 1.10 release notes</a> for
+details. <!-- CL 126275, CL 127156, CL 122217, CL 122575, CL 123177 --></p>
+<h3 id="go_command">Go command</h3>
+<!-- CL 126656 -->
+<p>The environment variable <code>GOFLAGS</code> may now be used
+to set default flags for the <code>go</code> command.
+This is useful in certain situations.
+Linking can be noticeably slower on underpowered systems due to DWARF,
+and users may want to set <code>-ldflags=-w</code> by default.
+For modules, some users and CI systems will want vendoring always,
+so they should set <code>-mod=vendor</code> by default.
+For more information, see the <a href="https://go.dev/cmd/go/#hdr-Environment_variables"><code>go</code>
+command documentation</a>.</p>
+<h3 id="godoc">Godoc</h3>
+<p>Go 1.11 will be the last release to support <code>godoc</code>&rsquo;s command-line interface.
+In future releases, <code>godoc</code> will only be a web server. Users should use
+<code>go</code> <code>doc</code> for command-line help output instead.</p>
+<!-- CL 85396, CL 124495 -->
+<p>The <code>godoc</code> web server now shows which version of Go introduced
+new API features. The initial Go version of types, funcs, and methods are shown
+right-aligned. For example, see <a href="https://go.dev/pkg/os/#UserCacheDir"><code>UserCacheDir</code></a>, with &ldquo;1.11&rdquo;
+on the right side. For struct fields, inline comments are added when the struct field was
+added in a Go version other than when the type itself was introduced.
+For a struct field example, see
+<a href="https://go.dev/pkg/net/http/httptrace/#ClientTrace.Got1xxResponse"><code>ClientTrace.Got1xxResponse</code></a>.</p>
+<h3 id="gofmt">Gofmt</h3>
+<p>One minor detail of the default formatting of Go source code has changed.
+When formatting expression lists with inline comments, the comments were
+aligned according to a heuristic.
+However, in some cases the alignment would be split up too easily, or
+introduce too much whitespace.
+The heuristic has been changed to behave better for human-written code.</p>
+<p>Note that these kinds of minor updates to gofmt are expected from time to
+time.
+In general, systems that need consistent formatting of Go source code should
+use a specific version of the <code>gofmt</code> binary.
+See the <a href="https://go.dev/pkg/go/format/">go/format</a> package documentation for more
+information.</p>
+<h3 id="run">Run</h3>
+<!-- CL 109341 -->
+<p>The <a href="https://go.dev/cmd/go/"><code>go</code> <code>run</code></a>
+command now allows a single import path, a directory name or a
+pattern matching a single package.
+This allows <code>go</code> <code>run</code> <code>pkg</code> or <code>go</code> <code>run</code> <code>dir</code>, most importantly <code>go</code> <code>run</code> <code>.</code></p>
+<h2 id="runtime">Runtime</h2>
+<!-- CL 85887 -->
+<p>The runtime now uses a sparse heap layout so there is no longer a
+limit to the size of the Go heap (previously, the limit was 512GiB).
+This also fixes rare &ldquo;address space conflict&rdquo; failures in mixed Go/C
+binaries or binaries compiled with <code>-race</code>.</p>
+<!-- CL 108679, CL 106156 -->
+<p>On macOS and iOS, the runtime now uses <code>libSystem.dylib</code> instead of
+calling the kernel directly. This should make Go binaries more
+compatible with future versions of macOS and iOS.
+The <a href="https://go.dev/pkg/syscall">syscall</a> package still makes direct
+system calls; fixing this is planned for a future release.</p>
+<h2 id="performance">Performance</h2>
+<p>As always, the changes are so general and varied that precise
+statements about performance are difficult to make. Most programs
+should run a bit faster, due to better generated code and
+optimizations in the core library.</p>
+<!-- CL 74851 -->
+<p>There were multiple performance changes to the <code>math/big</code>
+package as well as many changes across the tree specific to <code>GOARCH=arm64</code>.</p>
+<h3 id="performance-compiler">Compiler toolchain</h3>
+<!-- CL 110055 -->
+<p>The compiler now optimizes map clearing operations of the form:</p>
+<pre><code>for k := range m {
+    delete(m, k)
+}
+</code></pre>
+<!-- CL 109517 -->
+<p>The compiler now optimizes slice extension of the form
+<code>append(s,</code> <code>make([]T,</code> <code>n)...)</code>.</p>
+<!-- CL 100277, CL 105635, CL 109776 -->
+<p>The compiler now performs significantly more aggressive bounds-check
+and branch elimination. Notably, it now recognizes transitive
+relations, so if <code>i&lt;j</code> and <code>j&lt;len(s)</code>,
+it can use these facts to eliminate the bounds check
+for <code>s[i]</code>. It also understands simple arithmetic such
+as <code>s[i-10]</code> and can recognize more inductive cases in
+loops. Furthermore, the compiler now uses bounds information to more
+aggressively optimize shift operations.</p>
+<h2 id="library">Standard library</h2>
+<p>All of the changes to the standard library are minor.</p>
+<h3 id="minor_library_changes">Minor changes to the library</h3>
+<p>As always, there are various minor changes and updates to the library,
+made with the Go 1 <a href="go1compat.html">promise of compatibility</a>
+in mind.</p>
+<!-- CL 115095: https://golang.org/cl/115095: yes (`go test pkg` now always builds pkg even if there are no test files): cmd/go: output coverage report even if there are no test files -->
+<!-- CL 110395: https://golang.org/cl/110395: cmd/go, cmd/compile: use Windows response files to avoid arg length limits -->
+<!-- CL 112436: https://golang.org/cl/112436: cmd/pprof: add readline support similar to upstream -->
+<h4 id="cryptopkgcrypto"><a href="https://go.dev/pkg/crypto/">crypto</a></h4>
+<!-- CL 64451 -->
+<p>Certain crypto operations, including
+<a href="https://go.dev/pkg/crypto/ecdsa/#Sign"><code>ecdsa.Sign</code></a>,
+<a href="https://go.dev/pkg/crypto/rsa/#EncryptPKCS1v15"><code>rsa.EncryptPKCS1v15</code></a> and
+<a href="https://go.dev/pkg/crypto/rsa/#GenerateKey"><code>rsa.GenerateKey</code></a>,
+now randomly read an extra byte of randomness to ensure tests don&rsquo;t rely on internal behavior.</p>
+<!-- crypto -->
+<h4 id="cryptocipherpkgcryptocipher"><a href="https://go.dev/pkg/crypto/cipher/">crypto/cipher</a></h4>
+<!-- CL 48510, CL 116435 -->
+<p>The new function <a href="https://go.dev/pkg/crypto/cipher/#NewGCMWithTagSize"><code>NewGCMWithTagSize</code></a>
+implements Galois Counter Mode with non-standard tag lengths for compatibility with existing cryptosystems.</p>
+<!-- crypto/cipher -->
+<h4 id="cryptorsapkgcryptorsa"><a href="https://go.dev/pkg/crypto/rsa/">crypto/rsa</a></h4>
+<!-- CL 103876 -->
+<p><a href="https://go.dev/pkg/crypto/rsa/#PublicKey"><code>PublicKey</code></a> now implements a
+<a href="https://go.dev/pkg/crypto/rsa/#PublicKey.Size"><code>Size</code></a> method that
+returns the modulus size in bytes.</p>
+<!-- crypto/rsa -->
+<h4 id="cryptotlspkgcryptotls"><a href="https://go.dev/pkg/crypto/tls/">crypto/tls</a></h4>
+<!-- CL 85115 -->
+<p><a href="https://go.dev/pkg/crypto/tls/#ConnectionState"><code>ConnectionState</code></a>&rsquo;s new
+<a href="https://go.dev/pkg/crypto/tls/#ConnectionState.ExportKeyingMaterial"><code>ExportKeyingMaterial</code></a>
+method allows exporting keying material bound to the
+connection according to RFC 5705.</p>
+<!-- crypto/tls -->
+<h4 id="cryptox509pkgcryptox509"><a href="https://go.dev/pkg/crypto/x509/">crypto/x509</a></h4>
+<!-- CL 123355, CL 123695 -->
+<p>The deprecated, legacy behavior of treating the <code>CommonName</code> field as
+a hostname when no Subject Alternative Names are present is now disabled when the CN is not a
+valid hostname.
+The <code>CommonName</code> can be completely ignored by adding the experimental value
+<code>x509ignoreCN=1</code> to the <code>GODEBUG</code> environment variable.
+When the CN is ignored, certificates without SANs validate under chains with name constraints
+instead of returning <code>NameConstraintsWithoutSANs</code>.</p>
+<!-- CL 113475 -->
+<p>Extended key usage restrictions are again checked only if they appear in the <code>KeyUsages</code>
+field of <a href="https://go.dev/pkg/crypto/x509/#VerifyOptions"><code>VerifyOptions</code></a>, instead of always being checked.
+This matches the behavior of Go 1.9 and earlier.</p>
+<!-- CL 102699 -->
+<p>The value returned by <a href="https://go.dev/pkg/crypto/x509/#SystemCertPool"><code>SystemCertPool</code></a>
+is now cached and might not reflect system changes between invocations.</p>
+<!-- crypto/x509 -->
+<h4 id="debugelfpkgdebugelf"><a href="https://go.dev/pkg/debug/elf/">debug/elf</a></h4>
+<!-- CL 112115 -->
+<p>More <a href="https://go.dev/pkg/debug/elf/#ELFOSABI_NONE"><code>ELFOSABI</code></a>
+and <a href="https://go.dev/pkg/debug/elf/#EM_NONE"><code>EM</code></a>
+constants have been added.</p>
+<!-- debug/elf -->
+<h4 id="encodingasn1pkgencodingasn1"><a href="https://go.dev/pkg/encoding/asn1/">encoding/asn1</a></h4>
+<!-- CL 110561 -->
+<p><code>Marshal</code> and <a href="https://go.dev/pkg/encoding/asn1/#Unmarshal"><code>Unmarshal</code></a>
+now support &ldquo;private&rdquo; class annotations for fields.</p>
+<!-- encoding/asn1 -->
+<h4 id="encodingbase32pkgencodingbase32"><a href="https://go.dev/pkg/encoding/base32/">encoding/base32</a></h4>
+<!-- CL 112516 -->
+<p>The decoder now consistently
+returns <code>io.ErrUnexpectedEOF</code> for an incomplete
+chunk. Previously it would return <code>io.EOF</code> in some
+cases.</p>
+<!-- encoding/base32 -->
+<h4 id="encodingcsvpkgencodingcsv"><a href="https://go.dev/pkg/encoding/csv/">encoding/csv</a></h4>
+<!-- CL 99696 -->
+<p>The <code>Reader</code> now rejects attempts to set
+the <a href="https://go.dev/pkg/encoding/csv/#Reader.Comma"><code>Comma</code></a>
+field to a double-quote character, as double-quote characters
+already have a special meaning in CSV.</p>
+<!-- encoding/csv -->
+<!-- CL 100235 was reverted -->
+<h4 id="htmltemplatepkghtmltemplate"><a href="https://go.dev/pkg/html/template/">html/template</a></h4>
+<!-- CL 121815 -->
+<p>The package has changed its behavior when a typed interface
+value is passed to an implicit escaper function. Previously such
+a value was written out as (an escaped form)
+of <code>&lt;nil&gt;</code>. Now such values are ignored, just
+as an untyped <code>nil</code> value is (and always has been)
+ignored.</p>
+<!-- html/template -->
+<h4 id="imagegifpkgimagegif"><a href="https://go.dev/pkg/image/gif/">image/gif</a></h4>
+<!-- CL 93076 -->
+<p>Non-looping animated GIFs are now supported. They are denoted by having a
+<a href="https://go.dev/pkg/image/gif/#GIF.LoopCount"><code>LoopCount</code></a> of -1.</p>
+<!-- image/gif -->
+<h4 id="ioioutilpkgioioutil"><a href="https://go.dev/pkg/io/ioutil/">io/ioutil</a></h4>
+<!-- CL 105675 -->
+<p>The <a href="https://go.dev/pkg/io/ioutil/#TempFile"><code>TempFile</code></a>
+function now supports specifying where the random characters in
+the filename are placed. If the <code>prefix</code> argument
+includes a &ldquo;<code>*</code>&rdquo;, the random string replaces the
+&ldquo;<code>*</code>&rdquo;. For example, a <code>prefix</code> argument of &ldquo;<code>myname.*.bat</code>&rdquo; will
+result in a random filename such as
+&ldquo;<code>myname.123456.bat</code>&rdquo;. If no &ldquo;<code>*</code>&rdquo; is
+included the old behavior is retained, and the random digits are
+appended to the end.</p>
+<!-- io/ioutil -->
+<h4 id="mathbigpkgmathbig"><a href="https://go.dev/pkg/math/big/">math/big</a></h4>
+<!-- CL 108996 -->
+<p><a href="https://go.dev/pkg/math/big/#Int.ModInverse"><code>ModInverse</code></a> now returns nil when g and n are not relatively prime. The result was previously undefined.</p>
+<!-- math/big -->
+<h4 id="mimemultipartpkgmimemultipart"><a href="https://go.dev/pkg/mime/multipart/">mime/multipart</a></h4>
+<!-- CL 121055 -->
+<p>The handling of form-data with missing/empty file names has been
+restored to the behavior in Go 1.9: in the
+<a href="https://go.dev/pkg/mime/multipart/#Form"><code>Form</code></a> for
+the form-data part the value is available in
+the <code>Value</code> field rather than the <code>File</code>
+field. In Go releases 1.10 through 1.10.3 a form-data part with
+a missing/empty file name and a non-empty &ldquo;Content-Type&rdquo; field
+was stored in the <code>File</code> field. This change was a
+mistake in 1.10 and has been reverted to the 1.9 behavior.</p>
+<!-- mime/multipart -->
+<h4 id="mimequotedprintablepkgmimequotedprintable"><a href="https://go.dev/pkg/mime/quotedprintable/">mime/quotedprintable</a></h4>
+<!-- CL 121095 -->
+<p>To support invalid input found in the wild, the package now
+permits non-ASCII bytes but does not validate their encoding.</p>
+<!-- mime/quotedprintable -->
+<h4 id="netpkgnet"><a href="https://go.dev/pkg/net/">net</a></h4>
+<!-- CL 72810 -->
+<p>The new <a href="https://go.dev/pkg/net/#ListenConfig"><code>ListenConfig</code></a> type and the new
+<a href="https://go.dev/pkg/net/#Dialer.Control"><code>Dialer.Control</code></a> field permit
+setting socket options before accepting and creating connections, respectively.</p>
+<!-- CL 76391 -->
+<p>The <a href="https://go.dev/pkg/syscall/#RawConn"><code>syscall.RawConn</code></a> <code>Read</code>
+and <code>Write</code> methods now work correctly on Windows.</p>
+<!-- CL 107715 -->
+<p>The <code>net</code> package now automatically uses the
+<a href="https://man7.org/linux/man-pages/man2/splice.2.html" rel="noreferrer" target="_blank"><code>splice</code> system call</a>
+on Linux when copying data between TCP connections in
+<a href="https://go.dev/pkg/net/#TCPConn.ReadFrom"><code>TCPConn.ReadFrom</code></a>, as called by
+<a href="https://go.dev/pkg/io/#Copy"><code>io.Copy</code></a>. The result is faster, more efficient TCP proxying.</p>
+<!-- CL 108297 -->
+<p>The <a href="https://go.dev/pkg/net/#TCPConn.File"><code>TCPConn.File</code></a>,
+<a href="https://go.dev/pkg/net/#UDPConn.File"><code>UDPConn.File</code></a>,
+<a href="https://go.dev/pkg/net/#UnixCOnn.File"><code>UnixConn.File</code></a>,
+and <a href="https://go.dev/pkg/net/#IPConn.File"><code>IPConn.File</code></a>
+methods no longer put the returned <code>*os.File</code> into
+blocking mode.</p>
+<!-- net -->
+<h4 id="nethttppkgnethttp"><a href="https://go.dev/pkg/net/http/">net/http</a></h4>
+<!-- CL 71272 -->
+<p>The <a href="https://go.dev/pkg/net/http/#Transport"><code>Transport</code></a> type has a
+new <a href="https://go.dev/pkg/net/http/#Transport.MaxConnsPerHost"><code>MaxConnsPerHost</code></a>
+option that permits limiting the maximum number of connections
+per host.</p>
+<!-- CL 79919 -->
+<p>The <a href="https://go.dev/pkg/net/http/#Cookie"><code>Cookie</code></a> type has a new
+<a href="https://go.dev/pkg/net/http/#Cookie.SameSite"><code>SameSite</code></a> field
+(of new type also named
+<a href="https://go.dev/pkg/net/http/#SameSite"><code>SameSite</code></a>) to represent the new cookie attribute recently supported by most browsers.
+The <code>net/http</code>&rsquo;s <code>Transport</code> does not use the <code>SameSite</code>
+attribute itself, but the package supports parsing and serializing the
+attribute for browsers to use.</p>
+<!-- CL 81778 -->
+<p>It is no longer allowed to reuse a <a href="https://go.dev/pkg/net/http/#Server"><code>Server</code></a>
+after a call to
+<a href="https://go.dev/pkg/net/http/#Server.Shutdown"><code>Shutdown</code></a> or
+<a href="https://go.dev/pkg/net/http/#Server.Close"><code>Close</code></a>. It was never officially supported
+in the past and had often surprising behavior. Now, all future calls to the server&rsquo;s <code>Serve</code>
+methods will return errors after a shutdown or close.</p>
+<!-- CL 89275 was reverted before Go 1.11 -->
+<!-- CL 93296 -->
+<p>The constant <code>StatusMisdirectedRequest</code> is now defined for HTTP status code 421.</p>
+<!-- CL 123875 -->
+<p>The HTTP server will no longer cancel contexts or send on
+<a href="https://go.dev/pkg/net/http/#CloseNotifier"><code>CloseNotifier</code></a>
+channels upon receiving pipelined HTTP/1.1 requests. Browsers do
+not use HTTP pipelining, but some clients (such as
+Debian&rsquo;s <code>apt</code>) may be configured to do so.</p>
+<!-- CL 115255 -->
+<p><a href="https://go.dev/pkg/net/http/#ProxyFromEnvironment"><code>ProxyFromEnvironment</code></a>, which is used by the
+<a href="https://go.dev/pkg/net/http/#DefaultTransport"><code>DefaultTransport</code></a>, now
+supports CIDR notation and ports in the <code>NO_PROXY</code> environment variable.</p>
+<!-- net/http -->
+<h4 id="nethttphttputilpkgnethttphttputil"><a href="https://go.dev/pkg/net/http/httputil/">net/http/httputil</a></h4>
+<!-- CL 77410 -->
+<p>The
+<a href="https://go.dev/pkg/net/http/httputil/#ReverseProxy"><code>ReverseProxy</code></a>
+has a new
+<a href="https://go.dev/pkg/net/http/httputil/#ReverseProxy.ErrorHandler"><code>ErrorHandler</code></a>
+option to permit changing how errors are handled.</p>
+<!-- CL 115135 -->
+<p>The <code>ReverseProxy</code> now also passes
+&ldquo;<code>TE:</code> <code>trailers</code>&rdquo; request headers
+through to the backend, as required by the gRPC protocol.</p>
+<!-- net/http/httputil -->
+<h4 id="ospkgos"><a href="https://go.dev/pkg/os/">os</a></h4>
+<!-- CL 78835 -->
+<p>The new <a href="https://go.dev/pkg/os/#UserCacheDir"><code>UserCacheDir</code></a> function
+returns the default root directory to use for user-specific cached data.</p>
+<!-- CL 94856 -->
+<p>The new <a href="https://go.dev/pkg/os/#ModeIrregular"><code>ModeIrregular</code></a>
+is a <a href="https://go.dev/pkg/os/#FileMode"><code>FileMode</code></a> bit to represent
+that a file is not a regular file, but nothing else is known about it, or that
+it&rsquo;s not a socket, device, named pipe, symlink, or other file type for which
+Go has a defined mode bit.</p>
+<!-- CL 99337 -->
+<p><a href="https://go.dev/pkg/os/#Symlink"><code>Symlink</code></a> now works
+for unprivileged users on Windows 10 on machines with Developer
+Mode enabled.</p>
+<!-- CL 100077 -->
+<p>When a non-blocking descriptor is passed
+to <a href="https://go.dev/pkg/os#NewFile"><code>NewFile</code></a>, the
+resulting <code>*File</code> will be kept in non-blocking
+mode. This means that I/O for that <code>*File</code> will use
+the runtime poller rather than a separate thread, and that
+the <a href="https://go.dev/pkg/os/#File.SetDeadline"><code>SetDeadline</code></a>
+methods will work.</p>
+<!-- os -->
+<h4 id="ossignalpkgossignal"><a href="https://go.dev/pkg/os/signal/">os/signal</a></h4>
+<!-- CL 108376 -->
+<p>The new <a href="https://go.dev/pkg/os/signal/#Ignored"><code>Ignored</code></a> function reports
+whether a signal is currently ignored.</p>
+<!-- os/signal -->
+<h4 id="osuserpkgosuser"><a href="https://go.dev/pkg/os/user/">os/user</a></h4>
+<!-- CL 92456 -->
+<p>The <code>os/user</code> package can now be built in pure Go
+mode using the build tag &ldquo;<code>osusergo</code>&rdquo;,
+independent of the use of the environment
+variable <code>CGO_ENABLED=0</code>. Previously the only way to use
+the package&rsquo;s pure Go implementation was to disable <code>cgo</code>
+support across the entire program.</p>
+<!-- os/user -->
+<!-- CL 101715 was reverted -->
+<h4 id="runtimepkgruntime"><a href="https://go.dev/pkg/runtime/">runtime</a></h4>
+<!-- CL 70993 -->
+<p>Setting the <code>GODEBUG=tracebackancestors=<em>N</em></code>
+environment variable now extends tracebacks with the stacks at
+which goroutines were created, where <em>N</em> limits the
+number of ancestor goroutines to report.</p>
+<!-- runtime -->
+<h4 id="runtimepprofpkgruntimepprof"><a href="https://go.dev/pkg/runtime/pprof/">runtime/pprof</a></h4>
+<!-- CL 102696 -->
+<p>This release adds a new &ldquo;allocs&rdquo; profile type that profiles
+total number of bytes allocated since the program began
+(including garbage-collected bytes). This is identical to the
+existing &ldquo;heap&rdquo; profile viewed in <code>-alloc_space</code> mode.
+Now <code>go test -memprofile=...</code> reports an &ldquo;allocs&rdquo; profile
+instead of &ldquo;heap&rdquo; profile.</p>
+<!-- runtime/pprof -->
+<h4 id="syncpkgsync"><a href="https://go.dev/pkg/sync/">sync</a></h4>
+<!-- CL 87095 -->
+<p>The mutex profile now includes reader/writer contention
+for <a href="https://go.dev/pkg/sync/#RWMutex"><code>RWMutex</code></a>.
+Writer/writer contention was already included in the mutex
+profile.</p>
+<!-- sync -->
+<h4 id="syscallpkgsyscall"><a href="https://go.dev/pkg/syscall/">syscall</a></h4>
+<!-- CL 106275 -->
+<p>On Windows, several fields were changed from <code>uintptr</code> to a new
+<a href="https://go.dev/pkg/syscall/?GOOS=windows&amp;GOARCH=amd64#Pointer"><code>Pointer</code></a>
+type to avoid problems with Go&rsquo;s garbage collector. The same change was made
+to the <a href="https://godoc.org/golang.org/x/sys/windows" rel="noreferrer" target="_blank"><code>golang.org/x/sys/windows</code></a>
+package. For any code affected, users should first migrate away from the <code>syscall</code>
+package to the <code>golang.org/x/sys/windows</code> package, and then change
+to using the <code>Pointer</code>, while obeying the
+<a href="https://go.dev/pkg/unsafe/#Pointer"><code>unsafe.Pointer</code> conversion rules</a>.</p>
+<!-- CL 118658 -->
+<p>On Linux, the <code>flags</code> parameter to
+<a href="https://go.dev/pkg/syscall/?GOOS=linux&amp;GOARCH=amd64#Faccessat"><code>Faccessat</code></a>
+is now implemented just as in glibc. In earlier Go releases the
+flags parameter was ignored.</p>
+<!-- CL 118658 -->
+<p>On Linux, the <code>flags</code> parameter to
+<a href="https://go.dev/pkg/syscall/?GOOS=linux&amp;GOARCH=amd64#Fchmodat"><code>Fchmodat</code></a>
+is now validated. Linux&rsquo;s <code>fchmodat</code> doesn&rsquo;t support the <code>flags</code> parameter
+so we now mimic glibc&rsquo;s behavior and return an error if it&rsquo;s non-zero.</p>
+<!-- syscall -->
+<h4 id="textscannerpkgtextscanner"><a href="https://go.dev/pkg/text/scanner/">text/scanner</a></h4>
+<!-- CL 112037 -->
+<p>The <a href="https://go.dev/pkg/text/scanner/#Scanner.Scan"><code>Scanner.Scan</code></a> method now returns
+the <a href="https://go.dev/pkg/text/scanner/#RawString"><code>RawString</code></a> token
+instead of <a href="https://go.dev/pkg/text/scanner/#String"><code>String</code></a>
+for raw string literals.</p>
+<!-- text/scanner -->
+<h4 id="texttemplatepkgtexttemplate"><a href="https://go.dev/pkg/text/template/">text/template</a></h4>
+<!-- CL 84480 -->
+<p>Modifying template variables via assignments is now permitted via the <code>=</code> token:</p>
+<pre><code>  {{ $v := &quot;init&quot; }}
+  {{ if true }}
+    {{ $v = &quot;changed&quot; }}
+  {{ end }}
+  v: {{ $v }} {{/* &quot;changed&quot; */}}
+</code></pre>
+<!-- CL 95215 -->
+<p>In previous versions untyped <code>nil</code> values passed to
+template functions were ignored. They are now passed as normal
+arguments.</p>
+<!-- text/template -->
+<h4 id="timepkgtime"><a href="https://go.dev/pkg/time/">time</a></h4>
+<!-- CL 98157 -->
+<p>Parsing of timezones denoted by sign and offset is now
+supported. In previous versions, numeric timezone names
+(such as <code>+03</code>) were not considered valid, and only
+three-letter abbreviations (such as <code>MST</code>) were accepted
+when expecting a timezone name.</p>
+<!-- time -->
+</div>
+
+
+
+
+
+
+
+</article>
+
+
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/carousels.js"></script>
+  <script src="../js/searchBox.js"></script>
+  <script src="../js/misc.js"></script>
+  <script src="../js/hats.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/godocs.js"></script>
+  <script async src="../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

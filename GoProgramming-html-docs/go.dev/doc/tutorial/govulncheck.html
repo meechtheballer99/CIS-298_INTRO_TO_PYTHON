@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script >(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00add8">
+<link rel="canonical" href="govulncheck.html">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel="stylesheet" href="../../css/styles.css">
+<link rel="icon" href="../../images/favicon-gopher.png" sizes="any">
+<link rel="apple-touch-icon" href="https://go.dev/images/favicon-gopher-plain.png"/>
+<link rel="icon" href="../../images/favicon-gopher.svg" type="image/svg+xml">
+<link rel="me" href="https://hachyderm.io/@golang">
+
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W8MVQXG');</script>
+  
+<script src="../../js/site.js"></script>
+<meta name="og:url" content="https://go.dev/doc/tutorial/govulncheck">
+<meta name="og:title" content="Tutorial: Find and fix vulnerable dependencies with govulncheck - The Go Programming Language">
+<title>Tutorial: Find and fix vulnerable dependencies with govulncheck - The Go Programming Language</title>
+
+<meta name="og:image" content="https://go.dev/doc/gopher/gopher5logo.jpg">
+<meta name="twitter:image" content="https://go.dev/doc/gopher/gopherbelly300.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@golang">
+</head>
+<body class="Site">
+  
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8MVQXG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+
+
+<header class="Site-header js-siteHeader">
+  <div class="Header Header--dark">
+    <nav class="Header-nav">
+      <a href="https://go.dev/">
+        <img
+          class="js-headerLogo Header-logo"
+          src="../../images/go-logo-white.svg"
+          alt="Go">
+      </a>
+      <div class="skip-navigation-wrapper">
+        <a class="skip-to-content-link" aria-label="Skip to main content" href="govulncheck.html#main-content"> Skip to Main Content </a>
+      </div>
+      <div class="Header-rightContent">
+        <ul class="Header-menu">
+          <li class="Header-menuItem ">
+            <a href="govulncheck.html#"  class="js-desktop-menu-hover" aria-label=Why&#32;Go aria-describedby="dropdown-description">
+              Why Go <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                    </div>
+                    <p>Common problems companies solve with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                    </div>
+                    <p>Stories about how and why companies use Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                    </div>
+                    <p>How Go can help keep you secure by default</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://go.dev/learn/"  aria-label=Learn aria-describedby="dropdown-description">
+              Learn 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem  Header-menuItem--active">
+            <a href="govulncheck.html#"  class="js-desktop-menu-hover" aria-label=Docs aria-describedby="dropdown-description">
+              Docs <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                    </div>
+                    <p>The official Go language specification</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                    </div>
+                    <p>A complete introduction to building software with Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                    </div>
+                    <p>Reference documentation for Go&#39;s standard library</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                    </div>
+                    <p>Learn what&#39;s new in each Go release</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                    </div>
+                    <p>Tips for writing clear, performant, and idiomatic Go code</p>
+                  </li>
+              </ul>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="https://pkg.go.dev"  aria-label=Packages aria-describedby="dropdown-description">
+              Packages 
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+          </li>
+          <li class="Header-menuItem ">
+            <a href="govulncheck.html#"  class="js-desktop-menu-hover" aria-label=Community aria-describedby="dropdown-description">
+              Community <i class="material-icons" aria-hidden="true">arrow_drop_down</i>
+            </a>
+            <div class="screen-reader-only" id="dropdown-description" hidden>
+              Press Enter to activate/deactivate dropdown
+            </div>
+              <ul class="Header-submenu js-desktop-submenu-hover" aria-label="submenu">
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                    </div>
+                    <p>Videos from prior events</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Meet other local Go developers</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <p>Learn and network with Go developers from around the world</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                    </div>
+                    <p>The Go project&#39;s official blog.</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                    </div>
+                    <p>Get help and stay informed from Go</p>
+                  </li>
+                  <li class="Header-submenuItem">
+                    <div>
+                        Get connected
+                    </div>
+                    <p></p>
+                      <div class="Header-socialIcons">
+                        
+                        <a class="Header-socialIcon" aria-label="Get connected with google-groups (Opens in new window)" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with github (Opens in new window)" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with bluesky (Opens in new window)" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with mastodon (Opens in new window)" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with twitter (Opens in new window)" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with reddit (Opens in new window)" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with slack (Opens in new window)" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                        <a class="Header-socialIcon" aria-label="Get connected with stack-overflow (Opens in new window)" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                      </div>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+        <button class="Header-navOpen js-headerMenuButton Header-navOpen--white" aria-label="Open navigation.">
+        </button>
+      </div>
+    </nav>
+    
+  </div>
+</header>
+<aside class="NavigationDrawer js-header">
+  <nav class="NavigationDrawer-nav">
+    <div class="NavigationDrawer-header">
+      <a href="https://go.dev/">
+        <img class="NavigationDrawer-logo" src="../../images/go-logo-blue.svg" alt="Go.">
+      </a>
+    </div>
+    <ul class="NavigationDrawer-list">
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="govulncheck.html#"><span>Why Go</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="govulncheck.html#"><i class="material-icons">navigate_before</i>Why Go</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/case-studies">
+                          Case Studies
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/solutions/use-cases">
+                          Use Cases
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/security/">
+                          Security
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://go.dev/learn/">Learn</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-listItem--active NavigationDrawer-hasSubnav">
+            <a href="govulncheck.html#"><span>Docs</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="govulncheck.html#"><i class="material-icons">navigate_before</i>Docs</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../go_spec.html">
+                          Go Spec
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/doc">
+                          Go User Manual
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://pkg.go.dev/std">
+                          Standard library
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../devel/release.html">
+                          Release Notes
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="../effective_go.html">
+                          Effective Go
+                          
+                        </a>
+                      
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+        
+          <li class="NavigationDrawer-listItem ">
+            <a href="https://pkg.go.dev">Packages</a>
+          </li>
+        
+        
+          <li class="NavigationDrawer-listItem js-mobile-subnav-trigger  NavigationDrawer-hasSubnav">
+            <a href="govulncheck.html#"><span>Community</span> <i class="material-icons">navigate_next</i></a>
+
+            <div class="NavigationDrawer NavigationDrawer-submenuItem">
+              <nav class="NavigationDrawer-nav">
+                <div class="NavigationDrawer-header">
+                  <a href="govulncheck.html#"><i class="material-icons">navigate_before</i>Community</a>
+                </div>
+                <ul class="NavigationDrawer-list">
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/talks/">
+                          Recorded Talks
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://www.meetup.com/pro/go">
+                          Meetups
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/wiki/Conferences">
+                          Conferences
+                           <i class="material-icons">open_in_new</i>
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/blog">
+                          Go blog
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <a href="https://go.dev/help">
+                          Go project
+                          
+                        </a>
+                      
+                    </li>
+                    <li class="NavigationDrawer-listItem">
+                        <div>Get connected</div>
+                        <div class="Header-socialIcons">
+                          
+                            <a class="Header-socialIcon" href="https://groups.google.com/g/golang-nuts"><img src="../../images/logos/social/google-groups.svg" /></a>
+                            <a class="Header-socialIcon" href="https://github.com/golang"><img src="../../images/logos/social/github.svg" /></a>
+                            <a class="Header-socialIcon" href="https://bsky.app/profile/golang.org"><img src="../../images/logos/social/bluesky.svg" /></a>
+                            <a class="Header-socialIcon" href="https://hachyderm.io/@golang"><img src="../../images/logos/social/mastodon.svg" /></a>
+                            <a class="Header-socialIcon" href="https://twitter.com/golang"><img src="../../images/logos/social/twitter.svg" /></a>
+                            <a class="Header-socialIcon" href="https://www.reddit.com/r/golang/"><img src="../../images/logos/social/reddit.svg" /></a>
+                            <a class="Header-socialIcon" href="https://invite.slack.golangbridge.org/"><img src="../../images/logos/social/slack.svg" /></a>
+                            <a class="Header-socialIcon" href="https://stackoverflow.com/tags/go"><img src="../../images/logos/social/stack-overflow.svg" /></a>
+                        </div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+        
+    </ul>
+  </nav>
+</aside>
+<div class="NavigationDrawer-scrim js-scrim" role="presentation"></div>
+<main class="SiteContent SiteContent--default" id="main-content">
+  
+
+
+<article class="Doc Article">
+
+
+
+  
+<ol class="SiteBreadcrumb">
+  
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="../index.html">
+  Documentation
+  </a>
+</li>
+<li class="BreadcrumbNav-li ">
+  <a class="BreadcrumbNav-link" href="index.html">
+  Tutorials
+  </a>
+</li>
+<li class="BreadcrumbNav-li active">
+  <a class="BreadcrumbNav-link" href="govulncheck.html">
+  Tutorial: Find and fix vulnerable dependencies with govulncheck
+  </a>
+</li>
+</ol>
+
+
+
+<h1>Tutorial: Find and fix vulnerable dependencies with govulncheck</h1>
+
+
+
+
+
+
+
+
+<div class='markdown'>
+<p>Govulncheck is a low-noise tool that helps you find and fix vulnerable
+dependencies in your Go projects. It does this by scanning your project&rsquo;s
+dependencies for known vulnerabilities and then identifying any direct or
+indirect calls to those vulnerabilities in your code.</p>
+<p>In this tutorial, you will learn how to use govulncheck to scan a simple
+program for vulnerabilities. You will also learn how to prioritize and
+evaluate vulnerabilities so that you can focus on fixing the most important
+ones first.</p>
+<p>To learn more about govulncheck, see the
+<a href="https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck" rel="noreferrer" target="_blank">govulncheck documentation</a>,
+and this <a href="https://go.dev/blog/vuln">blog post on vulnerability management</a> for Go.
+We&rsquo;d also love to <a href="https://go.dev/s/govulncheck-feedback">hear your feedback</a>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Go.</strong> We recommend using the latest version of Go to follow this tutorial.
+(For installation instructions, see <a href="../install.html">Installing Go</a>.)</li>
+<li><strong>A code editor.</strong> Any editor you have will work fine.</li>
+<li><strong>A command terminal.</strong> Go works well using any terminal on Linux and Mac, and on PowerShell or cmd in Windows.</li>
+</ul>
+<p>The tutorial will take you through the following steps:</p>
+<ol>
+<li>Create a sample Go module with a vulnerable dependency</li>
+<li>Install and run govulncheck</li>
+<li>Evaluate vulnerabilities</li>
+<li>Upgrade vulnerable dependencies</li>
+</ol>
+<h2 id="create-a-sample-go-module-with-a-vulnerable-dependency">Create a sample Go module with a vulnerable dependency</h2>
+<p><strong>Step 1.</strong> To begin, create a new folder called <code>vuln-tutorial</code> and initialize a Go module.
+(If you are new to Go modules, check out <a href="create-module.html">go.dev/doc/tutorial/create-module</a>.</p>
+<p>For example, from your home directory, run the following:</p>
+<pre><code>$ mkdir vuln-tutorial
+$ cd vuln-tutorial
+$ go mod init vuln.tutorial
+</code></pre>
+<p><strong>Step 2.</strong> Create a file called <code>main.go</code> within the <code>vuln-tutorial</code> folder, and copy
+the following code into it:</p>
+<pre><code>package main
+
+import (
+        &quot;fmt&quot;
+        &quot;os&quot;
+
+        &quot;golang.org/x/text/language&quot;
+)
+
+func main() {
+        for _, arg := range os.Args[1:] {
+                tag, err := language.Parse(arg)
+                if err != nil {
+                        fmt.Printf(&quot;%s: error: %v\n&quot;, arg, err)
+                } else if tag == language.Und {
+                        fmt.Printf(&quot;%s: undefined\n&quot;, arg)
+                } else {
+                        fmt.Printf(&quot;%s: tag %s\n&quot;, arg, tag)
+                }
+        }
+}
+</code></pre>
+<p>This sample program takes a list of language tags as command line arguments
+and prints a message for each tag indicating if it was parsed successfully,
+the tag is undefined, or whether there was an error while parsing the tag.</p>
+<p><strong>Step 3.</strong> Run <code>go mod tidy</code>, which will populate the <code>go.mod</code> file with all the
+dependencies required by the code you added to <code>main.go</code> in the previous step.</p>
+<p>From the <code>vuln-tutorial</code> folder, run:</p>
+<pre><code>$ go mod tidy
+</code></pre>
+<p>You should see this output:</p>
+<pre><code>go: finding module for package golang.org/x/text/language
+go: downloading golang.org/x/text v0.9.0
+go: found golang.org/x/text/language in golang.org/x/text v0.9.0
+</code></pre>
+<p><strong>Step 4.</strong> Open your <code>go.mod</code> file to verify that it looks like this:</p>
+<pre><code>module vuln.tutorial
+
+go 1.20
+
+require golang.org/x/text v0.9.0
+</code></pre>
+<p><strong>Step 5.</strong> Downgrade the version of <code>golang.org/x/text</code> to v0.3.5, which contains known
+vulnerabilities. Run:</p>
+<pre><code>$ go get golang.org/x/text@v0.3.5
+</code></pre>
+<p>You should see this output:</p>
+<pre><code>go: downgraded golang.org/x/text v0.9.0 =&gt; v0.3.5
+</code></pre>
+<p>The <code>go.mod</code> file should now read:</p>
+<pre><code>module vuln.tutorial
+
+go 1.20
+
+require golang.org/x/text v0.3.5
+</code></pre>
+<p>Now, let’s see govulncheck in action.</p>
+<h2 id="install-and-run-govulncheck">Install and run govulncheck</h2>
+<p><strong>Step 6.</strong> Install govulncheck with the <code>go install</code> command:</p>
+<pre><code>$ go install golang.org/x/vuln/cmd/govulncheck@latest
+</code></pre>
+<p><strong>Step 7.</strong> From the folder you want to analyze (in this case, <code>vuln-tutorial</code>). Run:</p>
+<pre><code>$ govulncheck ./...
+</code></pre>
+<p>You should see this output:</p>
+<pre><code>govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
+
+Using go1.20.3 and govulncheck@v0.0.0 with
+vulnerability data from https://vuln.go.dev (last modified 2023-04-18 21:32:26 +0000 UTC).
+
+Scanning your code and 46 packages across 1 dependent module for known vulnerabilities...
+Your code is affected by 1 vulnerability from 1 module.
+
+Vulnerability #1: GO-2021-0113
+  Due to improper index calculation, an incorrectly formatted
+  language tag can cause Parse to panic via an out of bounds read.
+  If Parse is used to process untrusted user inputs, this may be
+  used as a vector for a denial of service attack.
+
+  More info: https://pkg.go.dev/vuln/GO-2021-0113
+
+  Module: golang.org/x/text
+    Found in: golang.org/x/text@v0.3.5
+    Fixed in: golang.org/x/text@v0.3.7
+
+    Call stacks in your code:
+      main.go:12:29: vuln.tutorial.main calls golang.org/x/text/language.Parse
+
+=== Informational ===
+
+Found 1 vulnerability in packages that you import, but there are no call
+stacks leading to the use of this vulnerability. You may not need to
+take any action. See https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck
+for details.
+
+Vulnerability #1: GO-2022-1059
+  An attacker may cause a denial of service by crafting an
+  Accept-Language header which ParseAcceptLanguage will take
+  significant time to parse.
+  More info: https://pkg.go.dev/vuln/GO-2022-1059
+  Found in: golang.org/x/text@v0.3.5
+  Fixed in: golang.org/x/text@v0.3.8
+
+</code></pre>
+<h3 id="interpreting-the-output">Interpreting the output</h3>
+<p><font size="2">  *Note: If you are not using the latest version of Go,
+you may see additional vulnerabilities from the standard library. </font></p>
+<p>Our code is affected by one vulnerability,
+<a href="https://pkg.go.dev/vuln/GO-2021-0113" rel="noreferrer" target="_blank">GO-2021-0113</a>, because it directly calls
+the <code>Parse</code> function of <code>golang.org/x/text/language</code> at a vulnerable version
+(v0.3.5).</p>
+<p>Another vulnerability, <a href="https://pkg.go.dev/vuln/GO-2022-1059" rel="noreferrer" target="_blank">GO-2022-1059</a>,
+exists in the <code>golang.org/x/text</code> module at v0.3.5.  However, it is reported as
+&ldquo;Informational&rdquo; because our code never (directly or indirectly) calls any of
+its vulnerable functions.</p>
+<p>Now, let&rsquo;s evaluate the vulnerabilities and determine an action to take.</p>
+<h3 id="evaluate-vulnerabilities">Evaluate vulnerabilities</h3>
+<p>a. Evaluate vulnerabilities.</p>
+<p>First, read the description of the vulnerability and determine if it actually
+applies to your code and your use case. If you need more information, visit
+the &ldquo;More info&rdquo; link.</p>
+<p>Based on the description, vulnerability GO-2021-0113 can cause a panic when
+<code>Parse</code> is used to process untrusted user inputs. Let&rsquo;s suppose that we intend
+our program to withstand untrusted inputs, and we are concerned about denial of
+service, so the vulnerability likely applies.</p>
+<p>GO-2022-1059 likely does not affect our code, because our code does not call
+any vulnerable functions from that report.</p>
+<p>b. Decide on an action.</p>
+<p>To mitigate GO-2021-0113, we have a few options:</p>
+<ul>
+<li><strong>Option 1: Upgrade to a fixed version.</strong> If there is a fix available,
+we can remove a vulnerable dependency by upgrading to a fixed version of the module.</li>
+<li><strong>Option 2: Stop using the vulnerable symbol(s).</strong> We could choose to
+remove all calls to the vulnerable function in our code.
+We would need to find an alternative or implement it ourselves.</li>
+</ul>
+<p>In this case, a fix is available, and the <code>Parse</code> function is integral to our
+program. Let&rsquo;s upgrade our dependency to the &ldquo;fixed in&rdquo; version, v0.3.7.</p>
+<p>We decided to deprioritize fixing the informational vulnerability,
+GO-2022-1059, but because it is in the same module as GO-2021-0113, and because the fixed in version for it is v0.3.8, we can
+easily remove both at the same time by upgrading to v0.3.8.</p>
+<h2 id="upgrade-vulnerable-dependencies">Upgrade vulnerable dependencies</h2>
+<p>Luckily, upgrading vulnerable dependencies is quite simple.</p>
+<p><strong>Step 8.</strong> Upgrade <code>golang.org/x/text</code> to v0.3.8:</p>
+<pre><code>$ go get golang.org/x/text@v0.3.8
+</code></pre>
+<p>You should see this output:</p>
+<pre><code>go: upgraded golang.org/x/text v0.3.5 =&gt; v0.3.8
+</code></pre>
+<p>(Note that we could have also chosen to upgrade to <code>latest</code>, or any other version after v0.3.8).</p>
+<p><strong>Step 9.</strong> Now run govulncheck again:</p>
+<pre><code>$ govulncheck ./...
+</code></pre>
+<p>You will now see this output:</p>
+<pre><code>govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
+
+Using go1.20.3 and govulncheck@v0.0.0 with
+vulnerability data from https://vuln.go.dev (last modified 2023-04-06 19:19:26 +0000 UTC).
+
+Scanning your code and 46 packages across 1 dependent module for known vulnerabilities...
+No vulnerabilities found.
+</code></pre>
+<p>Finally, govulncheck confirms that there are no vulnerabilities found.</p>
+<p>By regularly scanning your dependencies with command govulncheck, you can
+safeguard your codebase by identifying, prioritizing, and addressing
+vulnerabilities.</p>
+</div>
+
+
+
+
+
+
+
+</article>
+
+
+
+</main>
+<footer class="Site-footer">
+  <div class="Footer">
+    <div class="Container">
+      <div class="Footer-links">
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/solutions/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Why Go
+            </a>
+              <a href="https://go.dev/solutions/use-cases" class="Footer-link" aria-describedby="footer-description">
+                Use Cases
+              </a>
+              <a href="https://go.dev/solutions/case-studies" class="Footer-link" aria-describedby="footer-description">
+                Case Studies
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/learn/" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Get Started
+            </a>
+              <a href="https://go.dev/play" class="Footer-link" aria-describedby="footer-description">
+                Playground
+              </a>
+              <a href="https://go.dev/tour/" class="Footer-link" aria-describedby="footer-description">
+                Tour
+              </a>
+              <a href="https://stackoverflow.com/questions/tagged/go?tab=Newest" class="Footer-link" aria-describedby="footer-description">
+                Stack Overflow
+              </a>
+              <a href="https://go.dev/help/" class="Footer-link" aria-describedby="footer-description">
+                Help
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://pkg.go.dev" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Packages
+            </a>
+              <a href="https://go.dev/pkg/" class="Footer-link" aria-describedby="footer-description">
+                Standard Library
+              </a>
+              <a href="https://pkg.go.dev/about" class="Footer-link" aria-describedby="footer-description">
+                About Go Packages
+              </a>
+              <a href="https://pkg.go.dev/api" class="Footer-link" aria-describedby="footer-description">
+                pkg.go.dev API
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/project" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              About
+            </a>
+              <a href="https://go.dev/dl/" class="Footer-link" aria-describedby="footer-description">
+                Download
+              </a>
+              <a href="https://go.dev/blog/" class="Footer-link" aria-describedby="footer-description">
+                Blog
+              </a>
+              <a href="https://github.com/golang/go/issues" class="Footer-link" aria-describedby="footer-description">
+                Issue Tracker
+              </a>
+              <a href="../devel/release.html" class="Footer-link" aria-describedby="footer-description">
+                Release Notes
+              </a>
+              <a href="https://go.dev/brand" class="Footer-link" aria-describedby="footer-description">
+                Brand Guidelines
+              </a>
+              <a href="https://go.dev/conduct" class="Footer-link" aria-describedby="footer-description">
+                Code of Conduct
+              </a>
+          </div>
+          <div class="Footer-linkColumn">
+            <a href="https://go.dev/wiki/#the-go-community" class="Footer-link Footer-link--primary" aria-describedby="footer-description">
+              Connect
+            </a>
+              <a href="https://bsky.app/profile/golang.org" class="Footer-link" aria-describedby="footer-description">
+                Bluesky
+              </a>
+              <a href="https://hachyderm.io/@golang" class="Footer-link" aria-describedby="footer-description">
+                Mastodon
+              </a>
+              <a href="https://www.twitter.com/golang" class="Footer-link" aria-describedby="footer-description">
+                Twitter
+              </a>
+              <a href="https://github.com/golang" class="Footer-link" aria-describedby="footer-description">
+                GitHub
+              </a>
+              <a href="https://invite.slack.golangbridge.org/" class="Footer-link" aria-describedby="footer-description">
+                Slack
+              </a>
+              <a href="https://reddit.com/r/golang" class="Footer-link" aria-describedby="footer-description">
+                r/golang
+              </a>
+              <a href="https://www.meetup.com/pro/go" class="Footer-link" aria-describedby="footer-description">
+                Meetup
+              </a>
+              <a href="https://golangweekly.com/" class="Footer-link" aria-describedby="footer-description">
+                Golang Weekly
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="screen-reader-only" id="footer-description" hidden>
+          Opens in new window.
+  </div>
+  <div class="Footer">
+    <div class="Container Container--fullBleed">
+      <div class="Footer-bottom">
+        <img class="Footer-gopher" src="../../images/gophers/pilot-bust.svg" alt="The Go Gopher">
+        <ul class="Footer-listRow">
+          <li class="Footer-listItem">
+            <a href="https://go.dev/copyright" aria-describedby="footer-description">Copyright</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="https://go.dev/tos" aria-describedby="footer-description">Terms of Service</a>
+          </li>
+          <li class="Footer-listItem">
+            <a href="http://www.google.com/intl/en/policies/privacy/" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener">
+              Privacy Policy
+            </a>
+            </li>
+          <li class="Footer-listItem">
+            <a
+              href="https://go.dev/s/website-issue" aria-describedby="footer-description"
+              target="_blank"
+              rel="noopener"
+              >
+              Report an Issue
+            </a>
+          </li>
+          <li class="Footer-listItem go-Footer-listItem">
+            <button class="go-Button go-Button--text go-Footer-toggleTheme js-toggleTheme" aria-label="Toggle theme">
+              <img
+                data-value="auto"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_6_gm_grey_24dp.svg"
+                alt="System theme">
+              <img
+                data-value="dark"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/brightness_2_gm_grey_24dp.svg"
+                alt="Dark theme">
+              <img
+                data-value="light"
+                class="go-Icon go-Icon--inverted"
+                height="24"
+                width="24"
+                src="../../images/icons/light_mode_gm_grey_24dp.svg"
+                alt="Light theme">
+            </button>
+          </li>
+        </ul>
+        <a class="Footer-googleLogo" target="_blank" href="https://google.com" rel="noopener">
+          <img class="Footer-googleLogoImg" src="../../images/google-white.png" alt="Google logo">
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/jquery.js"></script>
+  <script src="../../js/carousels.js"></script>
+  <script src="../../js/searchBox.js"></script>
+  <script src="../../js/misc.js"></script>
+  <script src="../../js/hats.js"></script>
+  <script src="../../js/playground.js"></script>
+  <script src="../../js/godocs.js"></script>
+  <script async src="../../js/copypaste.js"></script>
+</footer>
+<section class="Cookie-notice js-cookieNotice">
+  <div>go.dev uses cookies from Google to deliver and enhance the quality of its services and to
+  analyze traffic. <a target=_blank href="https://policies.google.com/technologies/cookies">Learn more.</a></div>
+  <div><button class="go-Button">Okay</button></div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
